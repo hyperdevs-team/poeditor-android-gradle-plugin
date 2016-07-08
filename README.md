@@ -40,14 +40,14 @@ Attribute                     | Description
 ------------------------------|-----------------------------------------
 ```api_token```               | Poeditor API Token.
 ```project_id```              | Poeditor project ID.
-```default_lang```            | The lang to be used to build default ```strings.xml``` (```values``` folder)
-```res_dir_path```            | The path to the project's ```res``` folder.
+```default_lang```            | The lang to be used to build default ```strings.xml``` (```/values``` folder)
+```res_dir_path```            | The path to the project's ```/res``` folder.
 
 If you want to customize another property open a PR or leave a comment!
 
 Usage
 --------
-Just run the new ```importPoEditorStrings```` task via Android Studio or command line:
+Just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
 ```
 ./gradlew importPoEditorStrings
