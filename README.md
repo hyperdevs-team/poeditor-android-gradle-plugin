@@ -54,14 +54,22 @@ Just run the new ```importPoEditorStrings``` task via Android Studio or command 
 ```
 
 This task will:
-1. download all strings files (every available lang) from PoEditor given the api token and project id.
-2. process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
-3. create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang)
+- download all strings files (every available lang) from PoEditor given the api token and project id.
+- process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
+- create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang)
 
 Handle Tablet specific strings
 --------
-You can mark some strings as tablet specific strings by adding ```_tablet```suffix to the string key in PoEditor. The plugin will extract tablet strings to its own XML and save it in ```values-<lang>-sw600dp```
-Therefore you could define in poeditor ```welcome_message: Hey friend``` and ```welcome_message_tablet: Hey friend how are you doing today, you look great!```. The plugin will create two strings.xml:
+You can mark some strings as tablet specific strings by adding ```_tablet```suffix to the string key in PoEditor. The plugin will extract tablet strings to its own XML and save it in ```values-<lang>-sw600dp```.
+
+Therefore you could define:
+
+Poeditor Strings 
+
+```welcome_message: Hey friend``` and ```welcome_message_tablet: Hey friend how are you doing today, you look great!```
+
+The plugin will create two strings.xml:
+
 /values/strings.xml
 ```xml
 <string name="welcome_message">Hey friend</string>
@@ -86,8 +94,11 @@ will become, in strings.xml
 If you need more than one placeholder in the same string, you can use ordinals:
 
 PoEditor string:
+
 ```welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer}}``` 
+
 will become, in strings.xml
+
 ```xml
 <string name="welcome_message">Hey %1%s how are you, today offer is %1%s</string>
 ```
@@ -95,8 +106,11 @@ will become, in strings.xml
 This way you could change the order of the placeholders depending on the language:
 
 PoEditor string with spanish translation:
+
 ```welcome_message: La oferta del día es {1{current_offer}} para tí, {1{user_name}}``` 
+
 will become, in values-es/strings.xml
+
 ```xml
 <string name="welcome_message">La oferta del día es %2%s para tí, %1%s</string>
 ```
