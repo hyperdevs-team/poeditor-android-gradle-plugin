@@ -54,9 +54,9 @@ Just run the new ```importPoEditorStrings``` task via Android Studio or command 
 ```
 
 This task will:
-1. download all strings files (every available lang) from PoEditor given the api token and project id.
-2. process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
-4. create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang)
+# download all strings files (every available lang) from PoEditor given the api token and project id.
+# process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
+# create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang)
 
 Handle Tablet specific strings
 --------
