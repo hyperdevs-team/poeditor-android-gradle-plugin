@@ -85,8 +85,11 @@ Handle placeholders
 You can add placeholders to your strings. We've defined a placeholder markup to use in PoEditor string definition; it uses  {{value}}: 
 
 PoEditor string:
+
 ```welcome_message: Hey {{user_name}} how are you``` 
+
 will become, in strings.xml
+
 ```xml
 <string name="welcome_message">Hey %1%s how are you</string>
 ```
@@ -107,12 +110,12 @@ This way you could change the order of the placeholders depending on the languag
 
 PoEditor string with spanish translation:
 
-```welcome_message: La oferta del día es {1{current_offer}} para tí, {1{user_name}}``` 
+```welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}}``` 
 
 will become, in values-es/strings.xml
 
 ```xml
-<string name="welcome_message">La oferta del día es %2%s para tí, %1%s</string>
+<string name="welcome_message">La oferta del día es %2%s para ti, %1%s</string>
 ```
 
 To-Do
