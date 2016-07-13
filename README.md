@@ -103,7 +103,7 @@ PoEditor string:
 will become, in strings.xml
 
 ```xml
-<string name="welcome_message">Hey %1%s how are you, today offer is %1%s</string>
+<string name="welcome_message">Hey %1%s how are you, today offer is %2%s</string>
 ```
 
 This way you could change the order of the placeholders depending on the language:
