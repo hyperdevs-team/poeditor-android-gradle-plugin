@@ -110,15 +110,15 @@ class ImportPoEditorStringsTask extends DefaultTask {
             // If language folders doesn't exist, create it (both for smartphones and tablets)
             // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
 
-            // TODO manage langauge specializations: values-es-rMX for Mexican
-            def valuesFolder = it != defaultLang ? "values-${it}" : "values"
+            def valuesModifier = createValuesModifierFromLangCode(it)
+            def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
             File stringsFolder = new File("${resDirPath}/${valuesFolder}")
             if (!stringsFolder.exists()) {
                 println 'Creating strings folder for new language'
                 def folderCreated = stringsFolder.mkdir()
                 println "Folder created: ${folderCreated}"
             }
-            def tabletValuesFolder = it != defaultLang ? "values-${it}-sw600dp" : "values-sw600dp"
+            def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
             File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
             if (!tabletStringsFolder.exists()) {
                 println 'Creating tablet strings folder for new language'
@@ -137,6 +137,20 @@ class ImportPoEditorStringsTask extends DefaultTask {
             new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
                 w << curatedTabletStringsXmlText
             }
+        }
+    }
+
+    /**
+     * Creates values file modifier taking into account specializations (i.e values-es-rMX for Mexican)
+     * @param langCode
+     * @return proper values file modifier (i.e. es-rMX)
+     */
+    String createValuesModifierFromLangCode(String langCode) {
+        if (!langCode.contains("-")) {
+            return langCode
+        } else {
+            String[] langParts = langCode.split("-")
+            return langParts[0] + "-" + "r" + langParts[1].toUpperCase()
         }
     }
 
