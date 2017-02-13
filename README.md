@@ -6,19 +6,19 @@ What is PoEditor? [Check it out](https://poeditor.com)
 Download
 --------
 
-Add [jitpack.io](https://jitpack.io/) to your repositories:
+In your main build.gradle, buildscript block, add [jitpack.io](https://jitpack.io/) to the repositories and include the plugin as a dependency:
 ```groovy
-allprojects {
+buildscript {
     repositories { 
-        maven { url "https://jitpack.io" }
+        maven { url 'https://jitpack.io' }
+        ...
     }
+    dependencies {
+        ...
+        classpath 'com.github.bq:poeditor-android-gradle-plugin:0.2.5'
 }
 ```
 
-Include the dependency:
-```groovy
-classpath "com.github.bq:poeditor-android-gradle-plugin:0.2.5"
-```
 Enjoy!
 
 Configuration
