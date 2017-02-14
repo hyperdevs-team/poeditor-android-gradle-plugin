@@ -15,4 +15,6 @@ class PoEditorPluginExtension {
     def String default_lang = "es"
     // Path to res/ directory: i.e. "${project.rootDir}/app/src/main/res"
     def String res_dir_path = ""
+
+    def Boolean generate_tablet_res = false;
 }

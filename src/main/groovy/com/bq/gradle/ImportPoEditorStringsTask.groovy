@@ -113,31 +113,38 @@ class ImportPoEditorStringsTask extends DefaultTask {
             // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
             def valuesModifier = createValuesModifierFromLangCode(it)
             def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
-            File stringsFolder = new File("${resDirPath}/${valuesFolder}")
-            if (!stringsFolder.exists()) {
-                println 'Creating strings folder for new language'
-                def folderCreated = stringsFolder.mkdir()
-                println "Folder created: ${folderCreated}"
-            }
-            def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
-            File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
-            if (!tabletStringsFolder.exists()) {
-                println 'Creating tablet strings folder for new language'
-                def tabletFolderCreated = tabletStringsFolder.mkdir()
-                println "Folder created: ${tabletFolderCreated}"
+            if(curatedStringsXmlText.length() > 0) {
+                File stringsFolder = new File("${resDirPath}/${valuesFolder}")
+                if (!stringsFolder.exists()) {
+                    println 'Creating strings folder for new language'
+                    def folderCreated = stringsFolder.mkdir()
+                    println "Folder created: ${folderCreated}"
+                }
+                // Write downloaded and post-processed XML to files
+                println "Writing strings.xml file"
+                new File(stringsFolder, 'strings.xml').withWriter { w ->
+                    w << curatedStringsXmlText
+                }
             }
 
-            // TODO delete existing strings.xml files
+           if(project.extensions.poEditorPlugin.generate_tablet_res) {
+                def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
+                File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
+                if (!tabletStringsFolder.exists()) {
+                    println 'Creating tablet strings folder for new language'
+                    def tabletFolderCreated = tabletStringsFolder.mkdir()
+                    println "Folder created: ${tabletFolderCreated}"
+                }
 
-            // Write downloaded and post-processed XML to files
-            println "Writing strings.xml file"
-            new File(stringsFolder, 'strings.xml').withWriter { w ->
-                w << curatedStringsXmlText
+                println "Writing tablet strings.xml file"
+                new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
+                    w << curatedTabletStringsXmlText
+                }
+
             }
-            println "Writing tablet strings.xml file"
-            new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
-                w << curatedTabletStringsXmlText
-            }
+
+
+
         }
     }
 
