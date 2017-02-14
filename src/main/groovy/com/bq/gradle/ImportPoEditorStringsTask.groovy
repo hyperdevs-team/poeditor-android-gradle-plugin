@@ -100,6 +100,7 @@ class ImportPoEditorStringsTask extends DefaultTask {
             // Build final strings XMLs ready to be written to files
             StringWriter sw = new StringWriter()
             XmlNodePrinter np = new XmlNodePrinter(new PrintWriter(sw))
+            np.setPreserveWhitespace(true)
             np.print(translationFileRecords)
             def curatedStringsXmlText = sw.toString()
             StringWriter tabletSw = new StringWriter()
@@ -107,9 +108,9 @@ class ImportPoEditorStringsTask extends DefaultTask {
             tabletNp.print(tabletRecords)
             def curatedTabletStringsXmlText = tabletSw.toString()
 
+
             // If language folders doesn't exist, create it (both for smartphones and tablets)
             // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
-
             def valuesModifier = createValuesModifierFromLangCode(it)
             def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
             File stringsFolder = new File("${resDirPath}/${valuesFolder}")
