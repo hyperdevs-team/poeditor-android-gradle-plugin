@@ -106,9 +106,20 @@ class ImportPoEditorStringsTaskTest {
         Project project = ProjectBuilder.builder().build()
         def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
 
+        print("199%".replaceAll(/%(?![0-9a-z]+(|\\$[a-z]?))/, "%%"))
         // Test HTML tags are fixed
         assertEquals('Hello <b>%1$s</b>.',
                 ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello &lt;b&gt;{{name}}&lt;/b&gt;.'))
+    }
+
+    @Test
+    public void testPostProcessIncomingXMLStringHTMLWithPrintf() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
+
+        // Test HTML tags are fixed
+        assertEquals('Hello <b>%1$s</b>.',
+                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello &lt;b&gt;%1$s&lt;/b&gt;.'))
     }
 
     @Test
@@ -140,5 +151,23 @@ class ImportPoEditorStringsTaskTest {
                 '    "Ir arriba {1{sectionname}} usuario {2{username}}"\n' +
                 '  </string>\n' +
                 ' </resources>'))
+    }
+
+    @Test
+    public void testCreateValuesModifierFromLangCodeWithNormalLangCode() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
+
+        assertEquals('es',
+                ((ImportPoEditorStringsTask)task).createValuesModifierFromLangCode('es'))
+    }
+
+    @Test
+    public void testCreateValuesModifierFromLangCodeWithSpecializedLangCode() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
+
+        assertEquals('es-rMX',
+                ((ImportPoEditorStringsTask)task).createValuesModifierFromLangCode('es-mx'))
     }
 }

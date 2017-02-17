@@ -6,19 +6,19 @@ What is PoEditor? [Check it out](https://poeditor.com)
 Download
 --------
 
-Add [jitpack.io](https://jitpack.io/) to your repositories:
+In your main build.gradle, buildscript block, add [jitpack.io](https://jitpack.io/) to the repositories and include the plugin as a dependency:
 ```groovy
-allprojects {
+buildscript {
     repositories { 
-        maven { url "https://jitpack.io" }
+        maven { url 'https://jitpack.io' }
+        ...
     }
+    dependencies {
+        ...
+        classpath 'com.github.bq:poeditor-android-gradle-plugin:0.2.5'
 }
 ```
 
-Include the dependency:
-```groovy
-classpath "com.github.bq:poeditor-android-gradle-plugin:0.2.5"
-```
 Enjoy!
 
 Configuration
@@ -56,7 +56,8 @@ Just run the new ```importPoEditorStrings``` task via Android Studio or command 
 This task will:
 - download all strings files (every available lang) from PoEditor given the api token and project id.
 - process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
-- create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang)
+- create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
+region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
 
 Handle Tablet specific strings
 --------
@@ -120,7 +121,6 @@ will become, in values-es/strings.xml
 
 To-Do
 -------
-* Manage language specializations: i.e. values-es-rMX for Mexican.
 * Change placeholder system to avoid using ordinals by taking into account the placeholder value instead.
 
 License
