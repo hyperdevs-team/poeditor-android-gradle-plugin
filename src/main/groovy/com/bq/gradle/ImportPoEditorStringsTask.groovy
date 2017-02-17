@@ -49,7 +49,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
                     "poEditorPlugin.res_dir_path = <your_res_dir_path> \n\n "
                     + e.getMessage()
             )
-            return
         }
 
         // Retrieve available languages from PoEditor
@@ -63,88 +62,94 @@ class ImportPoEditorStringsTask extends DefaultTask {
                     "An error occurred while trying to export from PoEditor API: \n\n" +
                             langsJson.toString()
             )
-            return
         }
 
         // Iterate over every available language
-        langsJson.list.code.each {
-            // Retrieve translation file URL for the given language
-            println "Retrieving translation file URL for language code: ${it}"
-            // TODO curl may not be installed in the host SO. Add a safe check and, if curl is not available, stop the process and print an error message
-            def translationFileInfo = ['curl', '-X', 'POST', '-d', "api_token=${apiToken}", '-d', 'action=export', '-d', "id=${projectId}", '-d', 'type=android_strings', '-d', "language=${it}", 'https://poeditor.com/api/'].execute()
-            def translationFileInfoJson = jsonSlurper.parseText(translationFileInfo.text)
-            def translationFileUrl = translationFileInfoJson.item
-            // Download translation File in "Android Strings" XML format
-            println "Downloading file from Url: ${translationFileUrl}"
-            def translationFile = ['curl', '-X', 'GET', translationFileUrl].execute()
-
-            // Post process the downloaded XML:
-            def translationFileText = postProcessIncomingXMLString(translationFile.text)
-
-            // Extract tablet strings to a separate strings XML
-            def translationFileRecords = new XmlParser().parseText(translationFileText)
-            def tabletNodes = translationFileRecords.children().findAll {
-                it.@name.endsWith('_tablet')
+        langsJson.list.each {
+            def check_progress = project.extensions.poEditorPlugin.only_download_complete_lang;
+            if( !check_progress || (check_progress && it.percentage == 100.0)) {
+                parseLanguage(it, apiToken, projectId, resDirPath)
+            }else{
+                println("Skipping Langague: ${it.name}")
             }
-            String tabletXmlString = """
+        }
+    }
+
+     def parseLanguage(it, apiToken, projectId, resDirPath) {
+        def defaultLang
+        def jsonSlurper = new JsonSlurper();
+
+        // Retrieve translation file URL for the given language
+        println "Retrieving translation file URL for language code: ${it}"
+        // TODO curl may not be installed in the host SO. Add a safe check and, if curl is not available, stop the process and print an error message
+        def translationFileInfo = ['curl', '-X', 'POST', '-d', "api_token=${apiToken}", '-d', 'action=export', '-d', "id=${projectId}", '-d', 'type=android_strings', '-d', "language=${it.code}", 'https://poeditor.com/api/'].execute()
+        def translationFileInfoJson = jsonSlurper.parseText(translationFileInfo.text)
+        def translationFileUrl = translationFileInfoJson.item
+        // Download translation File in "Android Strings" XML format
+        println "Downloading file from Url: ${translationFileUrl}"
+        def translationFile = ['curl', '-X', 'GET', translationFileUrl].execute()
+
+        // Post process the downloaded XML:
+        def translationFileText = postProcessIncomingXMLString(translationFile.text)
+
+        // Extract tablet strings to a separate strings XML
+        def translationFileRecords = new XmlParser().parseText(translationFileText)
+        def tabletNodes = translationFileRecords.children().findAll {
+            it.@name.endsWith('_tablet')
+        }
+        String tabletXmlString = """
                     <resources>
                      <!-- Tablet strings -->
                     </resources>"""
-            def tabletRecords = new XmlParser().parseText(tabletXmlString)
-            tabletNodes.each {
-                translationFileRecords.remove(it)
-                it.@name = it.@name.replace("_tablet", "")
-                tabletRecords.append(it)
+        def tabletRecords = new XmlParser().parseText(tabletXmlString)
+        tabletNodes.each {
+            translationFileRecords.remove(it)
+            it.@name = it.@name.replace("_tablet", "")
+            tabletRecords.append(it)
+        }
+
+        // Build final strings XMLs ready to be written to files
+        StringWriter sw = new StringWriter()
+        XmlNodePrinter np = new XmlNodePrinter(new PrintWriter(sw))
+        np.setPreserveWhitespace(true)
+        np.print(translationFileRecords)
+        def curatedStringsXmlText = sw.toString()
+        StringWriter tabletSw = new StringWriter()
+        XmlNodePrinter tabletNp = new XmlNodePrinter(new PrintWriter(tabletSw))
+        tabletNp.print(tabletRecords)
+        def curatedTabletStringsXmlText = tabletSw.toString()
+
+        // If language folders doesn't exist, create it (both for smartphones and tablets)
+        // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
+        def valuesModifier = createValuesModifierFromLangCode(it.code)
+        def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
+        if (curatedStringsXmlText.length() > 0) {
+            File stringsFolder = new File("${resDirPath}/${valuesFolder}")
+            if (!stringsFolder.exists()) {
+                println 'Creating strings folder for new language'
+                def folderCreated = stringsFolder.mkdir()
+                println "Folder created: ${folderCreated}"
+            }
+            // Write downloaded and post-processed XML to files
+            println "Writing strings.xml file"
+            new File(stringsFolder, 'strings.xml').withWriter { w ->
+                w << curatedStringsXmlText
+            }
+        }
+
+        if (project.extensions.poEditorPlugin.generate_tablet_res) {
+            def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
+            File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
+            if (!tabletStringsFolder.exists()) {
+                println 'Creating tablet strings folder for new language'
+                def tabletFolderCreated = tabletStringsFolder.mkdir()
+                println "Folder created: ${tabletFolderCreated}"
             }
 
-            // Build final strings XMLs ready to be written to files
-            StringWriter sw = new StringWriter()
-            XmlNodePrinter np = new XmlNodePrinter(new PrintWriter(sw))
-            np.setPreserveWhitespace(true)
-            np.print(translationFileRecords)
-            def curatedStringsXmlText = sw.toString()
-            StringWriter tabletSw = new StringWriter()
-            XmlNodePrinter tabletNp = new XmlNodePrinter(new PrintWriter(tabletSw))
-            tabletNp.print(tabletRecords)
-            def curatedTabletStringsXmlText = tabletSw.toString()
-
-
-            // If language folders doesn't exist, create it (both for smartphones and tablets)
-            // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
-            def valuesModifier = createValuesModifierFromLangCode(it)
-            def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
-            if(curatedStringsXmlText.length() > 0) {
-                File stringsFolder = new File("${resDirPath}/${valuesFolder}")
-                if (!stringsFolder.exists()) {
-                    println 'Creating strings folder for new language'
-                    def folderCreated = stringsFolder.mkdir()
-                    println "Folder created: ${folderCreated}"
-                }
-                // Write downloaded and post-processed XML to files
-                println "Writing strings.xml file"
-                new File(stringsFolder, 'strings.xml').withWriter { w ->
-                    w << curatedStringsXmlText
-                }
+            println "Writing tablet strings.xml file"
+            new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
+                w << curatedTabletStringsXmlText
             }
-
-           if(project.extensions.poEditorPlugin.generate_tablet_res) {
-                def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
-                File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
-                if (!tabletStringsFolder.exists()) {
-                    println 'Creating tablet strings folder for new language'
-                    def tabletFolderCreated = tabletStringsFolder.mkdir()
-                    println "Folder created: ${tabletFolderCreated}"
-                }
-
-                println "Writing tablet strings.xml file"
-                new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
-                    w << curatedTabletStringsXmlText
-                }
-
-            }
-
-
-
         }
     }
 
@@ -165,8 +170,8 @@ class ImportPoEditorStringsTask extends DefaultTask {
     String postProcessIncomingXMLString(String incomingXMLString) {
         // Post process the downloaded XML
         return incomingXMLString
-                // Replace % with %%
-                .replace("%", "%%")
+                // Replace % with %% if not negative lookahead of a properly formatted
+                .replaceAll(/%(?![0-9a-z]+(|\$[a-z]?))/, "%%")
                 // Replace &lt; with < and &gt; with >
                 .replace("&lt;", "<").replace("&gt;", ">")
                 // Replace placeholders from {{bookTitle}} to %1$s format.
