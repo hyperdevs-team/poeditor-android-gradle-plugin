@@ -141,4 +141,22 @@ class ImportPoEditorStringsTaskTest {
                 '  </string>\n' +
                 ' </resources>'))
     }
+
+    @Test
+    public void testCreateValuesModifierFromLangCodeWithNormalLangCode() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
+
+        assertEquals('es',
+                ((ImportPoEditorStringsTask)task).createValuesModifierFromLangCode('es'))
+    }
+
+    @Test
+    public void testCreateValuesModifierFromLangCodeWithSpecializedLangCode() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
+
+        assertEquals('es-rMX',
+                ((ImportPoEditorStringsTask)task).createValuesModifierFromLangCode('es-mx'))
+    }
 }
