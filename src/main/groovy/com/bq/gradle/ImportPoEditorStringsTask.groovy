@@ -24,12 +24,14 @@ class ImportPoEditorStringsTask extends DefaultTask {
         def projectId = ""
         def defaultLang = ""
         def resDirPath = ""
+        def generateTabletRes = false
 
         try {
             apiToken = project.extensions.poEditorPlugin.api_token
             projectId = project.extensions.poEditorPlugin.project_id
             defaultLang = project.extensions.poEditorPlugin.default_lang
             resDirPath = project.extensions.poEditorPlugin.res_dir_path
+            generateTabletRes = project.extensions.poEditorPlugin.generate_tablet_res
 
             if (apiToken.length() == 0)
                 throw new Exception('Invalid params: api_token is ""');
@@ -92,52 +94,53 @@ class ImportPoEditorStringsTask extends DefaultTask {
         // Post process the downloaded XML:
         def translationFileText = postProcessIncomingXMLString(translationFile.text)
 
-        // Extract tablet strings to a separate strings XML
-        def translationFileRecords = new XmlParser().parseText(translationFileText)
-        def tabletNodes = translationFileRecords.children().findAll {
-            it.@name.endsWith('_tablet')
-        }
-        String tabletXmlString = """
-                    <resources>
-                     <!-- Tablet strings -->
-                    </resources>"""
-        def tabletRecords = new XmlParser().parseText(tabletXmlString)
-        tabletNodes.each {
-            translationFileRecords.remove(it)
-            it.@name = it.@name.replace("_tablet", "")
-            tabletRecords.append(it)
-        }
-
-        // Build final strings XMLs ready to be written to files
-        StringWriter sw = new StringWriter()
-        XmlNodePrinter np = new XmlNodePrinter(new PrintWriter(sw))
-        np.setPreserveWhitespace(true)
-        np.print(translationFileRecords)
-        def curatedStringsXmlText = sw.toString()
-        StringWriter tabletSw = new StringWriter()
-        XmlNodePrinter tabletNp = new XmlNodePrinter(new PrintWriter(tabletSw))
-        tabletNp.print(tabletRecords)
-        def curatedTabletStringsXmlText = tabletSw.toString()
-
-        // If language folders doesn't exist, create it (both for smartphones and tablets)
-        // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
-        def valuesModifier = createValuesModifierFromLangCode(it.code)
-        def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
-        if (curatedStringsXmlText.length() > 0) {
-            File stringsFolder = new File("${resDirPath}/${valuesFolder}")
-            if (!stringsFolder.exists()) {
-                println 'Creating strings folder for new language'
-                def folderCreated = stringsFolder.mkdir()
-                println "Folder created: ${folderCreated}"
+        if (generateTabletRes) {
+            // Extract tablet strings to a separate strings XML
+            def translationFileRecords = new XmlParser().parseText(translationFileText)
+            def tabletNodes = translationFileRecords.children().findAll {
+                it.@name.endsWith('_tablet')
             }
-            // Write downloaded and post-processed XML to files
-            println "Writing strings.xml file"
-            new File(stringsFolder, 'strings.xml').withWriter { w ->
-                w << curatedStringsXmlText
+            String tabletXmlString = """
+                        <resources>
+                         <!-- Tablet strings -->
+                        </resources>"""
+            def tabletRecords = new XmlParser().parseText(tabletXmlString)
+            tabletNodes.each {
+                translationFileRecords.remove(it)
+                it.@name = it.@name.replace("_tablet", "")
+                tabletRecords.append(it)
             }
-        }
 
-        if (project.extensions.poEditorPlugin.generate_tablet_res) {
+            // Build final strings XMLs ready to be written to files
+            StringWriter sw = new StringWriter()
+            XmlNodePrinter np = new XmlNodePrinter(new PrintWriter(sw))
+            np.setPreserveWhitespace(true)
+            np.print(translationFileRecords)
+            def curatedStringsXmlText = sw.toString()
+            StringWriter tabletSw = new StringWriter()
+            XmlNodePrinter tabletNp = new XmlNodePrinter(new PrintWriter(tabletSw))
+            
+            tabletNp.print(tabletRecords)
+            def curatedTabletStringsXmlText = tabletSw.toString()
+
+            // If language folders doesn't exist, create it (both for smartphones and tablets)
+            // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
+            def valuesModifier = createValuesModifierFromLangCode(it.code)
+            def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
+            if (curatedStringsXmlText.length() > 0) {
+                File stringsFolder = new File("${resDirPath}/${valuesFolder}")
+                if (!stringsFolder.exists()) {
+                    println 'Creating strings folder for new language'
+                    def folderCreated = stringsFolder.mkdir()
+                    println "Folder created: ${folderCreated}"
+                }
+                // Write downloaded and post-processed XML to files
+                println "Writing strings.xml file"
+                new File(stringsFolder, 'strings.xml').withWriter { w ->
+                    w << curatedStringsXmlText
+                }
+            }
+
             def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
             File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
             if (!tabletStringsFolder.exists()) {
@@ -149,6 +152,18 @@ class ImportPoEditorStringsTask extends DefaultTask {
             println "Writing tablet strings.xml file"
             new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
                 w << curatedTabletStringsXmlText
+            }
+        } else {
+            File stringsFolder = new File("${resDirPath}/${valuesFolder}")
+            if (!stringsFolder.exists()) {
+                println 'Creating strings folder for new language'
+                def folderCreated = stringsFolder.mkdir()
+                println "Folder created: ${folderCreated}"
+            }
+            // Write downloaded and post-processed XML to files
+            println "Writing strings.xml file"
+            new File(stringsFolder, 'strings.xml').withWriter { w ->
+                w << translationFileText
             }
         }
     }
