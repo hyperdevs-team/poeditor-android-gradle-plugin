@@ -70,14 +70,14 @@ class ImportPoEditorStringsTask extends DefaultTask {
         langsJson.list.each {
             def check_progress = project.extensions.poEditorPlugin.only_download_complete_lang;
             if( !check_progress || (check_progress && it.percentage > 97.0)) {
-                parseLanguage(it, apiToken, projectId, resDirPath)
+                parseLanguage(it, apiToken, projectId, resDirPath, generateTabletRes)
             }else{
                 println("Skipping Langague: ${it.name}")
             }
         }
     }
 
-     def parseLanguage(it, apiToken, projectId, resDirPath) {
+     def parseLanguage(it, apiToken, projectId, resDirPath, generateTabletRes) {
         def defaultLang
         def jsonSlurper = new JsonSlurper();
 

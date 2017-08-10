@@ -17,7 +17,7 @@ allprojects {
 
 Include the dependency:
 ```groovy
-classpath "com.github.bq:poeditor-android-gradle-plugin:0.2.5"
+classpath "com.github.santanaluiz:poeditor-android-gradle-plugin:0.2.7"
 ```
 Enjoy!
 
