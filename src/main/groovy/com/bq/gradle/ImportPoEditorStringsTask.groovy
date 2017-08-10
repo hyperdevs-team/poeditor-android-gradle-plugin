@@ -88,10 +88,12 @@ class ImportPoEditorStringsTask extends DefaultTask {
         def translationFileUrl = translationFileInfoJson.item
         // Download translation File in "Android Strings" XML format
         println "Downloading file from Url: ${translationFileUrl}"
-        def translationFile = ['curl', '-X', 'GET', translationFileUrl].execute()
+        //def translationFile = ['curl', '-H', '"charset=UTF-8"', '-X', 'GET', translationFileUrl].execute()
+        def translationFile = new URL(translationFileUrl)
 
         // Post process the downloaded XML:
-        def translationFileText = postProcessIncomingXMLString(translationFile.text)
+        //def translationFileText = postProcessIncomingXMLString(translationFile.getText())
+        def translationFileText = translationFile.getText()
         // If language folders doesn't exist, create it (both for smartphones and tablets)
         // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
         def valuesModifier = createValuesModifierFromLangCode(it.code)
