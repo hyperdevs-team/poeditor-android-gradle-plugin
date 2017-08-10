@@ -6,19 +6,19 @@ What is PoEditor? [Check it out](https://poeditor.com)
 Download
 --------
 
-In your main build.gradle, buildscript block, add [jitpack.io](https://jitpack.io/) to the repositories and include the plugin as a dependency:
+Add [jitpack.io](https://jitpack.io/) to your repositories:
 ```groovy
-buildscript {
+allprojects {
     repositories { 
-        maven { url 'https://jitpack.io' }
-        ...
+        maven { url "https://jitpack.io" }
     }
-    dependencies {
-        ...
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:0.2.5'
 }
 ```
 
+Include the dependency:
+```groovy
+classpath "com.github.bq:poeditor-android-gradle-plugin:0.2.5"
+```
 Enjoy!
 
 Configuration
@@ -32,6 +32,7 @@ poEditorPlugin.api_token = <poeditor_api_token>
 poEditorPlugin.project_id = <poeditor_project_id> 
 poEditorPlugin.default_lang = "en"
 poEditorPlugin.res_dir_path = "${project.rootDir}/app/src/main/res"
+poEditorPlugin.generate_tablet_res = true
 ```
 
 The complete attribute list:
@@ -42,6 +43,7 @@ Attribute                     | Description
 ```project_id```              | Poeditor project ID.
 ```default_lang```            | The lang to be used to build default ```strings.xml``` (```/values``` folder)
 ```res_dir_path```            | The path to the project's ```/res``` folder.
+```generate_tablet_res```     | Enable/Disable generate tablet strings. Default value: `false`
 
 If you want to customize another property open a PR or leave a comment!
 
@@ -56,8 +58,7 @@ Just run the new ```importPoEditorStrings``` task via Android Studio or command 
 This task will:
 - download all strings files (every available lang) from PoEditor given the api token and project id.
 - process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
-- create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
-region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
+- create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang)
 
 Handle Tablet specific strings
 --------
@@ -121,6 +122,7 @@ will become, in values-es/strings.xml
 
 To-Do
 -------
+* Manage language specializations: i.e. values-es-rMX for Mexican.
 * Change placeholder system to avoid using ordinals by taking into account the placeholder value instead.
 
 License
