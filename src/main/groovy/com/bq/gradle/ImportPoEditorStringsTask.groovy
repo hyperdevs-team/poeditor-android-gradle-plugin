@@ -93,6 +93,7 @@ class ImportPoEditorStringsTask extends DefaultTask {
 
         // Post process the downloaded XML:
         def translationFileText = postProcessIncomingXMLString(translationFile.text)
+        def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
 
         if (generateTabletRes) {
             // Extract tablet strings to a separate strings XML
@@ -126,7 +127,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
             // If language folders doesn't exist, create it (both for smartphones and tablets)
             // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
             def valuesModifier = createValuesModifierFromLangCode(it.code)
-            def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
             if (curatedStringsXmlText.length() > 0) {
                 File stringsFolder = new File("${resDirPath}/${valuesFolder}")
                 if (!stringsFolder.exists()) {
