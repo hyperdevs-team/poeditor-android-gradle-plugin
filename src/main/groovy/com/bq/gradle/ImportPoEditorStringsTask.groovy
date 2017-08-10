@@ -92,7 +92,7 @@ class ImportPoEditorStringsTask extends DefaultTask {
         def translationFile = new URL(translationFileUrl)
 
         // Post process the downloaded XML:
-        def translationFileText = postProcessIncomingXMLString(translationFile.getText())
+        def translationFileText = postProcessIncomingXMLString(translationFile.getText('UTF-8'))
         // If language folders doesn't exist, create it (both for smartphones and tablets)
         // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
         def valuesModifier = createValuesModifierFromLangCode(it.code)
