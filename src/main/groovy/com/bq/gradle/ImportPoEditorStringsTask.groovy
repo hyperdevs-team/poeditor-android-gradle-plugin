@@ -70,15 +70,14 @@ class ImportPoEditorStringsTask extends DefaultTask {
         langsJson.list.each {
             def check_progress = project.extensions.poEditorPlugin.only_download_complete_lang;
             if( !check_progress || (check_progress && it.percentage > 97.0)) {
-                parseLanguage(it, apiToken, projectId, resDirPath, generateTabletRes)
+                parseLanguage(it, apiToken, projectId, resDirPath, generateTabletRes, defaultLang)
             }else{
                 println("Skipping Langague: ${it.name}")
             }
         }
     }
 
-     def parseLanguage(it, apiToken, projectId, resDirPath, generateTabletRes) {
-        def defaultLang
+     def parseLanguage(it, apiToken, projectId, resDirPath, generateTabletRes, defaultLang) {
         def jsonSlurper = new JsonSlurper();
 
         // Retrieve translation file URL for the given language
@@ -93,6 +92,9 @@ class ImportPoEditorStringsTask extends DefaultTask {
 
         // Post process the downloaded XML:
         def translationFileText = postProcessIncomingXMLString(translationFile.text)
+        // If language folders doesn't exist, create it (both for smartphones and tablets)
+        // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
+        def valuesModifier = createValuesModifierFromLangCode(it.code)
         def valuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}" : "values"
 
         if (generateTabletRes) {
@@ -124,9 +126,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
             tabletNp.print(tabletRecords)
             def curatedTabletStringsXmlText = tabletSw.toString()
 
-            // If language folders doesn't exist, create it (both for smartphones and tablets)
-            // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
-            def valuesModifier = createValuesModifierFromLangCode(it.code)
             if (curatedStringsXmlText.length() > 0) {
                 File stringsFolder = new File("${resDirPath}/${valuesFolder}")
                 if (!stringsFolder.exists()) {
