@@ -92,8 +92,7 @@ class ImportPoEditorStringsTask extends DefaultTask {
         def translationFile = new URL(translationFileUrl)
 
         // Post process the downloaded XML:
-        //def translationFileText = postProcessIncomingXMLString(translationFile.getText())
-        def translationFileText = translationFile.getText()
+        def translationFileText = postProcessIncomingXMLString(translationFile.getText())
         // If language folders doesn't exist, create it (both for smartphones and tablets)
         // TODO investigate if we can infer the res folder path instead of passing it using poEditorPlugin.res_dir_path
         def valuesModifier = createValuesModifierFromLangCode(it.code)
@@ -151,7 +150,7 @@ class ImportPoEditorStringsTask extends DefaultTask {
             }
 
             println "Writing tablet strings.xml file"
-            new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
+            new File(tabletStringsFolder, 'strings.xml').withWriter('UTF-8') { w ->
                 w << curatedTabletStringsXmlText
             }
         } else {
@@ -163,7 +162,7 @@ class ImportPoEditorStringsTask extends DefaultTask {
             }
             // Write downloaded and post-processed XML to files
             println "Writing strings.xml file"
-            new File(stringsFolder, 'strings.xml').withWriter { w ->
+            new File(stringsFolder, 'strings.xml').withWriter('UTF-8') { w ->
                 w << translationFileText
             }
         }
@@ -188,8 +187,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
         return incomingXMLString
                 // Replace % with %% if not negative lookahead of a properly formatted
                 .replaceAll(/%(?![0-9a-z]+(|\$[a-z]?))/, "%%")
-                // Replace &lt; with < and &gt; with >
-                .replace("&lt;", "<").replace("&gt;", ">")
                 // Replace placeholders from {{bookTitle}} to %1$s format.
                 // First of all, manage each strings separately
                 .split('</string>').collect { s ->
