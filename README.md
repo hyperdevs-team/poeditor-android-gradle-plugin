@@ -123,6 +123,10 @@ To-Do
 -------
 * Change placeholder system to avoid using ordinals by taking into account the placeholder value instead.
 
+iOS alternative
+-------
+If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/bq/poeditor-parser-swift)
+
 License
 -------
 This project is licensed under the Apache Software License, Version 2.0.
