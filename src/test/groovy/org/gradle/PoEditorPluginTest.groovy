@@ -1,6 +1,6 @@
 package org.gradle
 
-import com.bq.gradle.ImportPoEditorStringsTask
+import com.masmovil.gradle.ImportPoEditorStringsTask
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Test
@@ -16,7 +16,7 @@ class PoEditorPluginTest {
     @Test
     public void poeditorPluginAddsImportPoEditorStringsTaskToProject() {
         Project project = ProjectBuilder.builder().build()
-        project.apply plugin: 'com.bq.poeditor'
+        project.apply plugin: 'com.masmovil.poeditor'
 
         assertTrue(project.tasks.importPoEditorStrings instanceof ImportPoEditorStringsTask)
     }

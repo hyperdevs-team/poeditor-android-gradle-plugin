@@ -1,7 +1,7 @@
 package org.gradle
 
-import com.bq.gradle.ImportPoEditorStringsTask
-import com.bq.gradle.PoEditorPluginExtension
+import com.masmovil.gradle.ImportPoEditorStringsTask
+import com.masmovil.gradle.PoEditorPluginExtension
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Test

@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         ...
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:0.2.5'
+        classpath 'com.github.masmovil:poeditor-android-gradle-plugin:0.2.5'
 }
 ```
 
@@ -26,7 +26,7 @@ Configuration
 Apply and configure the plugin to your app's module build.gradle file.
 
 ```groovy
-apply plugin: 'com.bq.poeditor'
+apply plugin: 'com.masmovil.poeditor'
 
 poEditorPlugin.api_token = <poeditor_api_token>
 poEditorPlugin.project_id = <poeditor_project_id> 
@@ -125,7 +125,7 @@ To-Do
 
 iOS alternative
 -------
-If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/bq/poeditor-parser-swift)
+If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/masmovil/poeditor-parser-swift)
 
 License
 -------

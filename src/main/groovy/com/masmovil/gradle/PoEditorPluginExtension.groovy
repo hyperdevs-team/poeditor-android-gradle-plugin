@@ -1,4 +1,4 @@
-package com.bq.gradle
+package com.masmovil.gradle
 
 /**
  * Extension class that represents the needed params that will

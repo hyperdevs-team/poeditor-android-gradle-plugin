@@ -1,4 +1,4 @@
-package com.bq.gradle
+package com.masmovil.gradle
 
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
@@ -117,13 +117,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
                 println 'Creating strings folder for new language'
                 def folderCreated = stringsFolder.mkdir()
                 println "Folder created: ${folderCreated}"
-            }
-            def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
-            File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
-            if (!tabletStringsFolder.exists()) {
-                println 'Creating tablet strings folder for new language'
-                def tabletFolderCreated = tabletStringsFolder.mkdir()
-                println "Folder created: ${tabletFolderCreated}"
             }
 
             // TODO delete existing strings.xml files
