@@ -126,10 +126,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
             new File(stringsFolder, 'strings.xml').withWriter { w ->
                 w << curatedStringsXmlText
             }
-            println "Writing tablet strings.xml file"
-            new File(tabletStringsFolder, 'strings.xml').withWriter { w ->
-                w << curatedTabletStringsXmlText
-            }
         }
     }
 
