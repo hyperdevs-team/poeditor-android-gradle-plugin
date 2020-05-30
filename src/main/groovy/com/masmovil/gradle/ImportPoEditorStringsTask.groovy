@@ -43,18 +43,18 @@ class ImportPoEditorStringsTask extends DefaultTask {
         } catch (Exception e) {
             throw new IllegalStateException(
                     "You shoud define in your build.gradle: \n\n" +
-                    "poEditorPlugin.api_token = <your_api_token>\n" +
-                    "poEditorPlugin.project_id = <your_project_id>\n" +
-                    "poEditorPlugin.default_lang = <your_default_lang> \n" +
-                    "poEditorPlugin.res_dir_path = <your_res_dir_path> \n\n "
-                    + e.getMessage()
+                            "poEditorPlugin.api_token = <your_api_token>\n" +
+                            "poEditorPlugin.project_id = <your_project_id>\n" +
+                            "poEditorPlugin.default_lang = <your_default_lang> \n" +
+                            "poEditorPlugin.res_dir_path = <your_res_dir_path> \n\n "
+                            + e.getMessage()
             )
             return
         }
 
         // Retrieve available languages from PoEditor
         def jsonSlurper = new JsonSlurper()
-        def langs = ['curl', '-X', 'POST', '-d', "api_token=${apiToken}", '-d', 'action=list_languages', '-d', "id=${projectId}", POEDITOR_API_URL].execute()
+        def langs = ['curl', '-X', 'POST', '-k', '-d', "api_token=${apiToken}", '-d', 'action=list_languages', '-d', "id=${projectId}", POEDITOR_API_URL].execute()
         def langsJson = jsonSlurper.parseText(langs.text)
 
         // Check if the response was 200
@@ -71,12 +71,12 @@ class ImportPoEditorStringsTask extends DefaultTask {
             // Retrieve translation file URL for the given language
             println "Retrieving translation file URL for language code: ${it}"
             // TODO curl may not be installed in the host SO. Add a safe check and, if curl is not available, stop the process and print an error message
-            def translationFileInfo = ['curl', '-X', 'POST', '-d', "api_token=${apiToken}", '-d', 'action=export', '-d', "id=${projectId}", '-d', 'type=android_strings', '-d', "language=${it}", 'https://poeditor.com/api/'].execute()
+            def translationFileInfo = ['curl', '-X', 'POST', '-k', '-d', "api_token=${apiToken}", '-d', 'action=export', '-d', "id=${projectId}", '-d', 'type=android_strings', '-d', "language=${it}", 'https://poeditor.com/api/'].execute()
             def translationFileInfoJson = jsonSlurper.parseText(translationFileInfo.text)
             def translationFileUrl = translationFileInfoJson.item
             // Download translation File in "Android Strings" XML format
             println "Downloading file from Url: ${translationFileUrl}"
-            def translationFile = ['curl', '-X', 'GET', translationFileUrl].execute()
+            def translationFile = ['curl', '-X', 'GET', '-k', translationFileUrl].execute()
 
             // Post process the downloaded XML:
             def translationFileText = postProcessIncomingXMLString(translationFile.text)
@@ -146,25 +146,25 @@ class ImportPoEditorStringsTask extends DefaultTask {
     String postProcessIncomingXMLString(String incomingXMLString) {
         // Post process the downloaded XML
         return incomingXMLString
-                // Replace % with %%
+        // Replace % with %%
                 .replace("%", "%%")
-                // Replace &lt; with < and &gt; with >
+        // Replace &lt; with < and &gt; with >
                 .replace("&lt;", "<").replace("&gt;", ">")
-                // Replace placeholders from {{bookTitle}} to %1$s format.
-                // First of all, manage each strings separately
+        // Replace placeholders from {{bookTitle}} to %1$s format.
+        // First of all, manage each strings separately
                 .split('</string>').collect { s ->
-                    // Second, replace each placeholder taking into account ther order set as part of the placeholder
-                    def placeHolderInStringCounter = 1
-                    s.replaceAll("\\{\\d?\\{(.*?)\\}\\}") { it ->
-                        // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2%s
-                        def match = it[0].toString()
-                        if (Character.isDigit(match.charAt(1))) {
-                            '%' + match.charAt(1) + '$s'
-                        } else { // If not, use '1' as the ordinal: {{pages_count}} -> %1%s
-                            '%1$s'
-                        }
-                    }
-                }.join('</string>')
+            // Second, replace each placeholder taking into account ther order set as part of the placeholder
+            def placeHolderInStringCounter = 1
+            s.replaceAll("\\{\\d?\\{(.*?)\\}\\}") { it ->
+                // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2%s
+                def match = it[0].toString()
+                if (Character.isDigit(match.charAt(1))) {
+                    '%' + match.charAt(1) + '$s'
+                } else { // If not, use '1' as the ordinal: {{pages_count}} -> %1%s
+                    '%1$s'
+                }
+            }
+        }.join('</string>')
     }
 
 }
