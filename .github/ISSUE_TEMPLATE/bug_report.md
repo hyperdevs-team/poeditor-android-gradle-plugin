@@ -16,10 +16,9 @@ A clear and concise description of what the bug is.
 
 **Steps to reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. I set up the following configuration
+2. I sync the strings
+3. See error
 
 Also attach notes or stack traces if applicable.
 
