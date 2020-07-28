@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.bq.poeditor.gradle.network.api
+package com.bq.poeditor.gradle.network
 
+import com.bq.poeditor.gradle.network.api.PoEditorApi
+import com.bq.poeditor.gradle.network.api.PoEditorResponse
+import com.bq.poeditor.gradle.network.api.ProjectLanguage
 import retrofit2.Response
 
 /**

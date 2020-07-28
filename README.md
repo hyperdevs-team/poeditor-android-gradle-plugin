@@ -10,29 +10,69 @@ It also provides a built-in syntax to handle placeholders to enhance the already
 ## Setting Up
 In your main `build.gradle`, add [jitpack.io](https://jitpack.io/) repository in the `buildscript` block and include the plug-in as a dependency:
 
+<details open><summary>Groovy</summary>
+
 ```groovy
 buildscript {
     repositories { 
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.0.0'
+        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.1.0'
     }
 }
 ```
 
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kt
+buildscript {
+    repositories { 
+        maven("https://jitpack.io")
+    }
+    dependencies {
+        classpath("com.github.bq:poeditor-android-gradle-plugin:1.1.0")
+    }
+}
+```
+
+</details>
+
 ## How to use
 Apply and configure the plug-in in your app's `build.gradle` file:
+<details open><summary>Groovy</summary>
+
 ```groovy
-apply plugin: 'com.bq.poeditor'
+apply plugin: "com.android.application"
+apply plugin: "com.bq.poeditor"
 
 poEditor {
     apiToken = "your_api_token"
     projectId = 12345
     defaultLang = "en"
-    resDirPath = "${project.rootDir}/app/src/main/res"
 }
 ```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kt
+plugins {
+    id "com.android.application"
+    id "com.bq.poeditor"
+}
+
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+}
+```
+
+</details>
 
 The complete attribute list is the following:
 
@@ -41,7 +81,6 @@ Attribute                     | Description
 ```apiToken```                | PoEditor API Token.
 ```projectId```               | PoEditor project ID.
 ```defaultLang```             | The lang to be used to build default ```strings.xml``` (```/values``` folder)
-```resDirPath```              | The path to the project's ```/res``` folder.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -54,6 +93,93 @@ This task will:
 * Process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
 * Create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
 region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
+
+## Handling multiple flavors and build types
+
+Sometimes we might want to import different strings for a given flavor (for example, in white label apps, we could have
+different string definitions depending on the brand where they're used). The plugin supports this kind of apps by providing
+specific configurations via the `poEditorConfig` block.
+
+Let's see an example configuration:
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    // Default config that applies to all flavor/build type configurations. 
+    // Also executed when calling 'importPoEditorStrings'
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions 'type'
+    productFlavors {
+        free { dimension 'type' }
+        paid { dimension 'type' }
+    }
+
+    poEditorConfig {
+        free {
+            // Configuration for the free flavor, same syntax as the standard 'poEditor' block
+        }
+        paid {
+            // Configuration for the paid flavor, same syntax as the standard 'poEditor' block
+        }
+        debug {
+            // Configuration for the debug build type, same syntax as the standard 'poEditor' block
+        }
+        release {
+            // Configuration for the release build type, same syntax as the standard 'poEditor' block
+        }
+    }
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kt
+poEditor {
+    // Default config that applies to all flavor/build type configurations. 
+    // Also executed when calling 'importPoEditorStrings'
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions("type")
+
+    productFlavors {
+        register("free") { setDimension("type") }
+        register("paid") { setDimension("type") }
+    }
+
+    poEditorConfig {
+        register("free") {
+            // Configuration for the free flavor, same syntax as the standard 'poEditor' block
+        }
+        register("paid") {
+            // Configuration for the paid flavor, same syntax as the standard 'poEditor' block
+        }
+        register("debug") {
+            // Configuration for the debug build type, same syntax as the standard 'poEditor' block
+        }
+        register("release") {
+            // Configuration for the release build type, same syntax as the standard 'poEditor' block
+        }
+    }
+}
+```
+
+</details>
+
+Each flavor (`free` and `paid`) and build type (`debug` and `release`) will have its own task to import strings for said
+configuration: `importFreePoEditorStrings`, `importPaidPoEditorStrings`, `importDebugPoEditorStrings` and 
+`importReleasePoEditorStrings`.
+
+Now the `importPoEditorStrings` task will import the main strings configured in the `poEditor` block and also the
+strings for each defined flavor or build type.
+
 
 ## Handling tablet specific strings
 
@@ -75,7 +201,7 @@ The plug-in will create two `strings.xml` files:
 <string name="welcome_message">Hey friend how are you doing today, you look great!</string>
 ```
 
-## Handle placeholders
+## Handling placeholders
 You can add placeholders to your strings. We've defined a placeholder markup to use in PoEditor string definition: it uses a double braces syntax, like this one
 
 ```

@@ -20,6 +20,12 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        google().content {
+            includeGroup("com.android")
+            includeGroupByRegex("com\\.android\\..*")
+            includeGroupByRegex("com\\.google\\..*")
+            includeGroupByRegex("androidx\\..*")
+        }
     }
 
     dependencies {
@@ -38,10 +44,18 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
+    google().content {
+        includeGroup("com.android")
+        includeGroupByRegex("com\\.android\\..*")
+        includeGroupByRegex("com\\.google\\..*")
+        includeGroupByRegex("androidx\\..*")
+    }
 }
 
 dependencies {
     implementation(localGroovy())
+
+    compileOnly("com.android.tools.build:gradle:4.2.0-alpha01")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
 
