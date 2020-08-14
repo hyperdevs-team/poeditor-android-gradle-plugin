@@ -18,9 +18,9 @@ package com.bq.poeditor.gradle
 
 import com.bq.poeditor.gradle.network.api.PoEditorApi
 import com.bq.poeditor.gradle.utils.DateJsonAdapter
-import com.bq.poeditor.gradle.network.api.PoEditorApiControllerImpl
+import com.bq.poeditor.gradle.network.PoEditorApiControllerImpl
 import com.bq.poeditor.gradle.utils.TABLET_REGEX_STRING
-import com.bq.poeditor.gradle.utils.downloadUrlToString
+import com.bq.poeditor.gradle.ktx.downloadUrlToString
 import com.bq.poeditor.gradle.utils.logger
 import com.bq.poeditor.gradle.xml.AndroidXmlWriter
 import com.bq.poeditor.gradle.xml.XmlPostProcessor
@@ -73,7 +73,7 @@ object PoEditorStringsImporter {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
 
             // Retrieve available languages from PoEditor
-            logger.lifecycle("Retrieving project languages")
+            logger.lifecycle("Retrieving project languages...")
             val projectLanguages = poEditorApiController.getProjectLanguages(projectId)
 
             // Iterate over every available language

@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package com.bq.poeditor.gradle
+package com.bq.poeditor.gradle.ktx
 
-import com.bq.poeditor.gradle.utils.createValuesModifierFromLangCode
-import org.junit.Assert
-import org.junit.Test
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
-class LocaleUtilsTest {
-    @Test
-    fun testCreateValuesModifierFromLangCodeWithNormalLangCode() {
-        Assert.assertEquals("es", createValuesModifierFromLangCode("es"))
-    }
-
-    @Test
-    fun testCreateValuesModifierFromLangCodeWithSpecializedLangCode() {
-        Assert.assertEquals("es-rMX", createValuesModifierFromLangCode("es-mx"))
-    }
+/**
+ * Downloads a file from network and outputs it as a String.
+ *
+ * Returns null if the request fails.
+ */
+fun OkHttpClient.downloadUrlToString(fileUrl: String): String {
+    val translationFileRequest = Request.Builder()
+            .url(fileUrl)
+            .build()
+    return newCall(translationFileRequest).execute().body!!.string()
 }

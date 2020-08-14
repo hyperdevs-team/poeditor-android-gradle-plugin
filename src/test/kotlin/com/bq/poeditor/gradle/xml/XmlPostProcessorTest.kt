@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.bq.poeditor.gradle
+package com.bq.poeditor.gradle.xml
 
 import com.bq.poeditor.gradle.utils.ALL_REGEX_STRING
 import com.bq.poeditor.gradle.utils.TABLET_REGEX_STRING
-import com.bq.poeditor.gradle.xml.XmlPostProcessor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -42,21 +41,21 @@ class XmlPostProcessorTest {
      * Plugin tests
      */
     @Test
-    fun testPostProcessIncomingXmlStringPercentage() {
+    fun `Postprocessing percentage symbol in strings works`() {
         // Test % is changed to %%
         Assert.assertEquals("Hello my friend. I love you 100%%.",
                 xmlPostProcessor.formatTranslationXml("Hello my friend. I love you 100%."))
     }
 
     @Test
-    fun testPostProcessIncomingXmlStringLineEnd() {
+    fun `Postprocessing line breaks keeps them`() {
         // Test \n is maintained
         Assert.assertEquals("Hello my friend\nHow are you?.",
                 xmlPostProcessor.formatTranslationXml("Hello my friend\nHow are you?."))
     }
 
     @Test
-    fun testPostProcessIncomingXmlStringPlaceHolders() {
+    fun `Postprocessing placeholders works`() {
         // Test placeholders are translated to Android format
         Assert.assertEquals("Hello %1\$s.",
                 xmlPostProcessor.formatTranslationXml("Hello {{name}}."))
@@ -67,14 +66,14 @@ class XmlPostProcessorTest {
     }
 
     @Test
-    fun testPostProcessIncomingXmlStringHtml() {
+    fun `Postprocessing string HTML escapes sequences`() {
         // Test Html tags are fixed
         Assert.assertEquals("Hello <b>%1\$s</b>.",
                 xmlPostProcessor.formatTranslationXml("Hello &lt;b&gt;{{name}}&lt;/b&gt;."))
     }
 
     @Test
-    fun testPostProcessIncomingXmlStringWithComplexXml() {
+    fun `Postprocessing complex XML works`() {
         // Test complete Xml
         val inputXmlString = """
                             <resources>
@@ -114,7 +113,7 @@ class XmlPostProcessorTest {
     }
 
     @Test
-    fun testSplitTranslationXmlString() {
+    fun `Splitting tablet translation strings works`() {
         // Test complete Xml
         val expectedKey = "general_button_goTop"
         val inputXmlString = """

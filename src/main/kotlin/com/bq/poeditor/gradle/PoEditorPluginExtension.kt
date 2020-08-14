@@ -16,17 +16,74 @@
 
 package com.bq.poeditor.gradle
 
+import org.gradle.api.Named
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
+
 /**
  * Extension class that represents the needed params that will
  * be passed to the different tasks of the plugin.
  */
-open class PoEditorPluginExtension {
-    // PoEditor API TOKEN
-    var apiToken = ""
-    // PoEditor PROJECT ID
-    var projectId = ""
-    // Default (and fallback) language code: i.e. "es"
-    var defaultLang = "en"
-    // Path to res/ directory: i.e. "${project.rootDir}/app/src/main/res"
-    var resDirPath = ""
+open class PoEditorPluginExtension
+@JvmOverloads constructor(objects: ObjectFactory, private val name: String = "default") : Named {
+    @Internal
+    override fun getName(): String = name
+
+    /**
+     * PoEditor API token.
+     *
+     * Must be present in order to run the plugin.
+     */
+    @get:Input
+    val apiToken: Property<String> = objects.property(String::class.java)
+
+    /**
+     * PoEditor project ID.
+     *
+     * Must be present in order to run the plugin.
+     */
+    @get:Input
+    val projectId: Property<Int> = objects.property(Int::class.java)
+
+    /**
+     * Default language of the project, in ISO-2 format.
+     *
+     * Defaults to 'en' if not defined.
+     */
+    @get:Optional
+    @get:Input
+    val defaultLang: Property<String> = objects.property(String::class.java)
+
+    /**
+     * Sets the PoEditor API token.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `apiToken.set(value)`.
+     */
+    fun setApiToken(value: String) = apiToken.set(value)
+
+    /**
+     * Sets the PoEditor API project ID.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `projectId.set(value)`.
+     */
+    fun setProjectId(value: Int) = projectId.set(value)
+
+    /**
+     * Sets the language of the project, in ISO-2 format.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `defaultLang.set(value)`.
+     */
+    fun setDefaultLang(value: String) = defaultLang.set(value)
 }

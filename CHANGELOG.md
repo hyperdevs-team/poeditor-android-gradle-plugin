@@ -6,13 +6,84 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add support for flavor and build type configuration. The sample configuration is as follows:
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    // Default config that applies to all flavor/build type configurations. 
+    // Also executed when calling 'importPoEditorStrings'
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions 'type'
+    productFlavors {
+        free { dimension 'type' }
+        paid { dimension 'type' }
+    }
+
+    poEditorConfig {
+        free {
+            // Configuration for the free flavor, same syntax as usual
+        }
+        paid {
+            // Configuration for the paid flavor, same syntax as usual
+        }
+        debug {
+            // Configuration for the debug build type, same syntax as usual
+        }
+        release {
+            // Configuration for the release build type, same syntax as usual
+        }
+    }
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kt
+poEditor {
+    // Default config that applies to all flavor/build type configurations. 
+    // Also executed when calling 'importPoEditorStrings'
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions("type")
+
+    productFlavors {
+        register("free") { setDimension("type") }
+        register("paid") { setDimension("type") }
+    }
+
+    poEditorConfig {
+        register("free") {
+            // Configuration for the free flavor, same syntax as usual
+        }
+        register("paid") {
+            // Configuration for the paid flavor, same syntax as usual
+        }
+        register("debug") {
+            // Configuration for the debug build type, same syntax as usual
+        }
+        register("release") {
+            // Configuration for the release build type, same syntax as usual
+        }
+    }
+}
+```
+
+</details>
+
 ### Changed
 - No changed features!
 ### Deprecated
 - No deprecated features!
 ### Removed
-- No removed features!
+- The `resDirPath` parameter is no longer needed, since it gets inferred from the flavor or build type configured in the app
 ### Fixed
 - No fixed issues!
 ### Security
