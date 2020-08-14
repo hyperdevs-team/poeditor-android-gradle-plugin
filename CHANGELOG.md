@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- No new features!
+### Changed
+- No changed features!
+### Deprecated
+- No deprecated features!
+### Removed
+- No removed features!
+### Fixed
+- No fixed issues!
+### Security
+- No security issues fixed!
+
+## [1.1.0] - 2020-08-14
+### Added
 - Add support for flavor and build type configuration. The sample configuration is as follows:
 <details open><summary>Groovy</summary>
 
@@ -75,19 +89,10 @@ android {
     }
 }
 ```
-
 </details>
 
-### Changed
-- No changed features!
-### Deprecated
-- No deprecated features!
 ### Removed
 - The `resDirPath` parameter is no longer needed, since it gets inferred from the flavor or build type configured in the app
-### Fixed
-- No fixed issues!
-### Security
-- No security issues fixed!
 
 ## [1.0.0] - 2020-07-21
 ### Added
@@ -116,7 +121,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/0.2.5...1.0.0
 [0.2.5]: https://github.com/bq/poeditor-android-gradle-plugin/compare/v0.2.4...0.2.5
 [0.2.4]: https://github.com/bq/poeditor-android-gradle-plugin/releases/tag/v0.2.4
