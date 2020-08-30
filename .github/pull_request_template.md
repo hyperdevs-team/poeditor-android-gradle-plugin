@@ -1,5 +1,5 @@
 ### Github issue (delete if this does not apply)
-https://github.com/bq/poeditor-android-gradle-plugin/issues/change_me_issue_number
+Resolves #change_me_issue_number
 
 ### PR's key points
  
