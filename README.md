@@ -217,7 +217,7 @@ welcome_message: Hey {{user_name}} how are you
 will become, in `strings.xml`
 
 ```xml
-<string name="welcome_message">Hey %1%s how are you</string>
+<string name="welcome_message">Hey %1$s how are you</string>
 ```
 
 If you need more than one placeholder in the same string, you can use ordinals too:
@@ -231,7 +231,7 @@ welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer
 will become, `in strings.xml`
 
 ```xml
-<string name="welcome_message">Hey %1%s how are you, today offer is %2%s</string>
+<string name="welcome_message">Hey %1$s how are you, today offer is %2$s</string>
 ```
 
 This way you could change the order of the placeholders depending on the language:
@@ -245,7 +245,7 @@ welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}
 will become, in `values-es/strings.xml`
 
 ```xml
-<string name="welcome_message">La oferta del día es %2%s para ti, %1%s</string>
+<string name="welcome_message">La oferta del día es %2$s para ti, %1$s</string>
 ```
 
 ## iOS alternative
