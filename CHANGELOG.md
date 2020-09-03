@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add proper support for `plurals`
+- No new features!
 ### Changed
 - No changed features!
 ### Deprecated
@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [1.2.0] - 2020-09-03
+### Added
+- Add proper support for `plurals`
 
 ## [1.1.0] - 2020-08-14
 ### Added
@@ -137,7 +141,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/0.2.5...1.0.0
 [0.2.5]: https://github.com/bq/poeditor-android-gradle-plugin/compare/v0.2.4...0.2.5
