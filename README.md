@@ -18,7 +18,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.1.0'
+        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.2.0'
     }
 }
 ```
