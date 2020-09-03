@@ -30,7 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 class XmlPostProcessor {
     companion object {
         private val DEFAULT_ENCODING = Charsets.UTF_8
-        private val TEXT_VARIABLE_REGEX = Regex("""\{\d?\{(.*?)\}\}""")
+        private val PLACEHOLDER_REGEX = Regex("""\{\d?\{(.*?)\}\}""")
     }
 
     /**
@@ -48,29 +48,25 @@ class XmlPostProcessor {
      * Format variables and texts to conform to Android strings.xml format.
      */
     fun formatTranslationXml(translationXmlString: String): String {
+        val placeholderTransform : (MatchResult) -> CharSequence = { matchResult ->
+            // TODO: if the string has multiple variables but any of them has no order number,
+            //  throw an exception
+            // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2$s
+            val match = matchResult.groupValues[0]
+            if (Character.isDigit(match[1])) {
+                "%${match[1]}\$s"
+            } else { // If not, use "1" as the ordinal: {{pages_count}} -> %1$s
+                "%1\$s"
+            }
+        }
+
         return translationXmlString
             // Replace % with %%
             .replace("%", "%%")
             // Replace &lt; with < and &gt; with >
             .replace("&lt;", "<").replace("&gt;", ">")
             // Replace placeholders from {{variable}} to %1$s format.
-            // First of all, manage each string separately
-            .split("</string>")
-            .joinToString("</string>") { s ->
-                // Second, replace each placeholder taking into account their order set as part of the placeholder
-                val transform: (MatchResult) -> CharSequence = { matchResult ->
-                    // TODO: if the string has multiple variables but any of them has no order number,
-                    //  throw an exception
-                    // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2$s
-                    val match = matchResult.groupValues[0]
-                    if (Character.isDigit(match[1])) {
-                        "%${match[1]}\$s"
-                    } else { // If not, use "1" as the ordinal: {{pages_count}} -> %1%s
-                        "%1\$s"
-                    }
-                }
-                s.replace(TEXT_VARIABLE_REGEX, transform)
-            }
+            .replace(PLACEHOLDER_REGEX, placeholderTransform)
     }
 
     /**
@@ -120,10 +116,19 @@ class XmlPostProcessor {
         for (i in 0 until nodeList.length) {
             if (nodeList.item(i).nodeType == Node.ELEMENT_NODE) {
                 val nodeElement = nodeList.item(i) as Element
-                if (nodeElement.tagName == "resources") {
-                    matchedNodes.addAll(extractMatchingNodes(nodeElement.childNodes, regexString))
-                } else if (nodeElement.tagName == "string" && nodeElement.getAttribute("name").matches(regex)) {
-                    matchedNodes.add(nodeElement)
+                when {
+                    // Main XML node, process children
+                    nodeElement.tagName == "resources" -> {
+                        matchedNodes.addAll(extractMatchingNodes(nodeElement.childNodes, regexString))
+                    }
+                    // String node, add if name matches regex
+                    nodeElement.tagName == "string" && nodeElement.getAttribute("name").matches(regex) -> {
+                        matchedNodes.add(nodeElement)
+                    }
+                    // Plurals node, add node and children if name matches regex
+                    nodeElement.tagName == "plurals" && nodeElement.getAttribute("name").matches(regex) -> {
+                        matchedNodes.add(nodeElement)
+                    }
                 }
             }
         }

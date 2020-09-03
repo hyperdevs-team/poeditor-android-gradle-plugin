@@ -151,4 +151,73 @@ class XmlPostProcessorTest {
                 xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
 
     }
+
+    @Test
+    fun `Postprocessing XML with plurals works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="general_link_showAll">
+                                "Ver todo {{name}}"
+                              </string>
+                              <string name="general_button_goTop">
+                                "Ir arriba"
+                              </string>
+                              <plurals name="general_quantity">
+                                <item quantity="one">"Un elemento seleccionado"</item>
+                                <item quantity="other">"{{element_quantity}} elementos seleccionados"</item>
+                              </plurals>
+                            </resources>
+                             """.trimIndent()
+
+        val expectedResult = """
+                            <resources>
+                              <string name="general_link_showAll">
+                                "Ver todo %1${'$'}s"
+                              </string>
+                              <string name="general_button_goTop">
+                                "Ir arriba"
+                              </string>
+                              <plurals name="general_quantity">
+                                <item quantity="one">"Un elemento seleccionado"</item>
+                                <item quantity="other">"%1${'$'}s elementos seleccionados"</item>
+                              </plurals>
+                            </resources>
+                             """.trimIndent()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Splitting tablet translation strings with plurals works`() {
+        // Test complete Xml
+        val expectedKey = "general_quantity"
+        val inputXmlString = """
+                            <resources>
+                              <plurals name="$expectedKey">
+                                <item quantity="one">"{{element_quantity}} elemento seleccionado"</item>
+                                <item quantity="other">"{{element_quantity}} elementos seleccionados"</item>
+                              </plurals>
+                              <plurals name="${expectedKey}_tablet">
+                                <item quantity="one">"{{element_quantity}} elemento seleccionado en tablet"</item>
+                                <item quantity="other">"{{element_quantity}} elementos seleccionados en tablet"</item>
+                              </plurals>
+                            </resources>
+                             """.trimIndent()
+
+        val allRegexString = ALL_REGEX_STRING
+        val tabletRegexString = TABLET_REGEX_STRING
+
+        val splitTranslationXmlMap = xmlPostProcessor.splitTranslationXml(inputXmlString, listOf(tabletRegexString))
+
+        // Check XML documents and see if the first string node has the proper name with XPath
+        val xpNamePath = "//resources/plurals[position()=1]/@name"
+
+        Assert.assertEquals(
+            expectedKey,
+            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(allRegexString)).trim())
+        Assert.assertEquals(
+            expectedKey,
+            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
+    }
 }
