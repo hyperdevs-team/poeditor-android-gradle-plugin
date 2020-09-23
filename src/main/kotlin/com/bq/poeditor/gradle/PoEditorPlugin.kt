@@ -41,6 +41,7 @@ class PoEditorPlugin : Plugin<Project> {
         val mainPoEditorExtension: PoEditorPluginExtension = project.extensions
             .create<PoEditorPluginExtension>(DEFAULT_PLUGIN_NAME).apply {
                 defaultLang.convention("en")
+                defaultResPath.convention(null)
             }
 
         // Create the main PoEditor task, and add it to the project
