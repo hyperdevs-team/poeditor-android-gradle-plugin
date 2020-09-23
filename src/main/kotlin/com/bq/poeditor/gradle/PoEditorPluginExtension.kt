@@ -64,7 +64,7 @@ open class PoEditorPluginExtension
      */
     @get:Optional
     @get:Input
-    val defaultResPath: Property<String?> = objects.property(String::class.java)
+    val defaultResPath: Property<String> = objects.property(String::class.java)
 
     /**
      * Sets the PoEditor API token.
@@ -104,5 +104,5 @@ open class PoEditorPluginExtension
      *
      * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
      */
-    fun setDefaultResPath(value: String?) = defaultResPath.set(value)
+    fun setDefaultResPath(value: String) = defaultResPath.set(value)
 }

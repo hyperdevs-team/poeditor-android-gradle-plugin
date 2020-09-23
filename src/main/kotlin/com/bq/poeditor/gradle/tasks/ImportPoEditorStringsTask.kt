@@ -43,7 +43,7 @@ abstract class ImportPoEditorStringsTask @Inject constructor(private val extensi
         val apiToken: String
         val projectId: Int
         val defaultLang: String
-        val defaultResPath: String?
+        val defaultResPath: String
 
         try {
             apiToken = extension.apiToken.get()
@@ -58,6 +58,6 @@ abstract class ImportPoEditorStringsTask @Inject constructor(private val extensi
         }
 
         PoEditorStringsImporter.importPoEditorStrings(
-            apiToken, projectId, defaultLang, defaultResPath ?: resourceDirectory.asFile.absolutePath)
+            apiToken, projectId, defaultLang, defaultResPath)
     }
 }
