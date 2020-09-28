@@ -81,6 +81,7 @@ Attribute                     | Description
 ```apiToken```                | PoEditor API Token.
 ```projectId```               | PoEditor project ID.
 ```defaultLang```             | The lang to be used to build default ```strings.xml``` (```/values``` folder)
+```defaultResPath```          | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -180,6 +181,46 @@ configuration: `importFreePoEditorStrings`, `importPaidPoEditorStrings`, `import
 Now the `importPoEditorStrings` task will import the main strings configured in the `poEditor` block and also the
 strings for each defined flavor or build type.
 
+## Handling library modules
+> Requires version 1.3.0 of the plug-in
+
+You can also apply the plug-in to library modules. Here's an example:
+Apply and configure the plug-in in your app's `build.gradle` file:
+<details open><summary>Groovy</summary>
+
+```groovy
+apply plugin: "com.android.library"
+apply plugin: "com.bq.poeditor"
+
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kt
+plugins {
+    id "com.android.library"
+    id "com.bq.poeditor"
+}
+
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+}
+```
+
+</details>
+
+You can also apply flavor and build type-specific configurations as you would do when setting them up with application modules.
+The plug-in will generate the proper tasks needed to import the strings under your module: `:<your_module>:import<your_flavor_or_build_type_if_any>PoEditorStrings`
+
 
 ## Handling tablet specific strings
 
@@ -254,6 +295,7 @@ If you want a similar solution for your iOS projects, check this out: [poeditor-
 ## Authors & Collaborators
 * **[Iván Martínez](https://github.com/imartinez)** - *Initial work*
 * **[Adrián García](https://github.com/adriangl)** - *Maintainer*
+* **[sonnet](https://github.com/rafid059)** - *Contributor*
 
 ## License
 This project is licensed under the Apache Software License, Version 2.0.
