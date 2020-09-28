@@ -74,7 +74,7 @@ class PoEditorPlugin : Plugin<Project> {
 
             if (!projectHasAnyAndroidPlugin) {
                 throw IllegalStateException(
-                    "The Android Application Gradle plug-in or the Android Library Gradle plug-in was not applied. " +
+                    "The Android Application Gradle plug-in or the Android Library Gradle plug-in were not applied. " +
                     "PoEditor plug-in cannot be configured.")
             }
         }

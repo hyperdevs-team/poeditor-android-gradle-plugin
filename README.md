@@ -185,7 +185,7 @@ strings for each defined flavor or build type.
 > Requires version 1.3.0 of the plug-in
 
 You can also apply the plug-in to library modules. Here's an example:
-Apply and configure the plug-in in your app's `build.gradle` file:
+Apply and configure the plug-in in your library's `build.gradle` file:
 <details open><summary>Groovy</summary>
 
 ```groovy
