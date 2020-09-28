@@ -36,16 +36,17 @@ typealias ConfigName = String
  */
 class PoEditorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
+        val mainResourceDirectory = getResourceDirectory(project, "main")
+
         // Add the 'poEditorPlugin' extension object in the project,
         // used to pass parameters to the main PoEditor task
         val mainPoEditorExtension: PoEditorPluginExtension = project.extensions
             .create<PoEditorPluginExtension>(DEFAULT_PLUGIN_NAME).apply {
                 defaultLang.convention("en")
+                defaultResPath.convention(mainResourceDirectory.asFile.absolutePath)
             }
 
         // Create the main PoEditor task, and add it to the project
-        val mainResourceDirectory = getResourceDirectory(project, "main")
-
         project.registerNewTask<ImportPoEditorStringsTask>(
             getPoEditorTaskName(),
             getMainPoEditorDescription(),

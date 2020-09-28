@@ -58,6 +58,15 @@ open class PoEditorPluginExtension
     val defaultLang: Property<String> = objects.property(String::class.java)
 
     /**
+     * Default resources path for the module where the strings should be put in.
+     *
+     * Defaults to the module with the `com.android.application` plugin.
+     */
+    @get:Optional
+    @get:Input
+    val defaultResPath: Property<String> = objects.property(String::class.java)
+
+    /**
      * Sets the PoEditor API token.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -86,4 +95,14 @@ open class PoEditorPluginExtension
      * Gradle Kotlin DSL users must use `defaultLang.set(value)`.
      */
     fun setDefaultLang(value: String) = defaultLang.set(value)
+
+    /**
+     * Sets the resources directory path for the strings.xml files.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
+     */
+    fun setDefaultResPath(value: String) = defaultResPath.set(value)
 }
