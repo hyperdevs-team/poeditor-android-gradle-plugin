@@ -22,7 +22,83 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+-  Add support for configuring non-standard resource directory path via `defaultResPath`. _Thanks to [@rafid059](https://github.com/rafid059) for the contribution!_
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    defaultResPath = "your/res/path"
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions 'type'
+    productFlavors {
+        free { dimension 'type' }
+        paid { dimension 'type' }
+    }
+
+    poEditorConfig {
+        free {
+            // Configuration for the free flavor, same syntax as usual
+            defaultResPath = "your/free/res/path"
+        }
+        paid {
+            // Configuration for the paid flavor, same syntax as usual
+            defaultResPath = "your/paid/res/path"
+        }
+        debug {
+            // Configuration for the debug build type, same syntax as usual
+            defaultResPath = "your/debug/res/path"
+        }
+        release {
+            // Configuration for the release build type, same syntax as usual
+            defaultResPath = "your/release/res/path"
+        }
+    }
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kt
+poEditor {
+    defaultResPath = "your/res/path"
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions("type")
+
+    productFlavors {
+        register("free") { setDimension("type") }
+        register("paid") { setDimension("type") }
+    }
+
+    poEditorConfig {
+        register("free") {
+            // Configuration for the free flavor, same syntax as usual
+            defaultResPath = "your/free/res/path"
+        }
+        register("paid") {
+            // Configuration for the paid flavor, same syntax as usual
+            defaultResPath = "your/paid/res/path"
+        }
+        register("debug") {
+            // Configuration for the debug build type, same syntax as usual
+            defaultResPath = "your/debug/res/path"
+        }
+        register("release") {
+            // Configuration for the release build type, same syntax as usual
+            defaultResPath = "your/release/res/path"
+        }
+    }
+}
+```
+</details>
+
 ### Changed
 - No changed features!
 ### Deprecated
