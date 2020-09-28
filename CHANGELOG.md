@@ -22,6 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- No new features!
+### Changed
+- No changed features!
+### Deprecated
+- No deprecated features!
+### Removed
+- No removed features!
+### Fixed
+- No fixed issues!
+### Security
+- No security issues fixed!
+
+## [1.3.0] - 2020-09-28
+### Added
 - Add support for using the plug-in in library modules.
 - Add support for configuring non-standard resource directory path via `defaultResPath`. _Thanks to [@rafid059](https://github.com/rafid059) for the contribution!_
 <details open><summary>Groovy</summary>
@@ -99,17 +113,6 @@ android {
 }
 ```
 </details>
-
-### Changed
-- No changed features!
-### Deprecated
-- No deprecated features!
-### Removed
-- No removed features!
-### Fixed
-- No fixed issues!
-### Security
-- No security issues fixed!
 
 ## [1.2.0] - 2020-09-03
 ### Added
@@ -218,7 +221,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.0...HEAD
+[1.3.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/0.2.5...1.0.0
