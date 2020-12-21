@@ -30,9 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fix percent symbols being escaped when variables are present.
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [1.3.1] - 2020-12-21
+### Fixed
+- Fix percent symbols being escaped when variables are present.
 
 ## [1.3.0] - 2020-09-28
 ### Added
@@ -221,7 +225,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.1...HEAD
+[1.3.1]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.0.0...1.1.0
