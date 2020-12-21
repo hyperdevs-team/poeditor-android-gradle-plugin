@@ -43,8 +43,15 @@ class XmlPostProcessorTest {
     @Test
     fun `Postprocessing percentage symbol in strings works`() {
         // Test % is changed to %%
-        Assert.assertEquals("Hello my friend. I love you 100%%.",
+        Assert.assertEquals("Hello my friend. I love you 100%.",
                 xmlPostProcessor.formatTranslationXml("Hello my friend. I love you 100%."))
+    }
+
+    @Test
+    fun `Postprocessing percentage symbol in text with variables works`() {
+        // Test % is not changed if variables are present
+        Assert.assertEquals("Hello %1\$s. I love you 100%%.",
+            xmlPostProcessor.formatTranslationXml("Hello {{friend}}. I love you 100%."))
     }
 
     @Test
