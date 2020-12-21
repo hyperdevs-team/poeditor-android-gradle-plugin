@@ -30,7 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 class XmlPostProcessor {
     companion object {
         private val DEFAULT_ENCODING = Charsets.UTF_8
-        private val PLACEHOLDER_REGEX = Regex("""\{\d?\{(.*?)\}\}""")
+        private val VARIABLE_REGEX = Regex("""\{\d?\{(.*?)\}\}""")
     }
 
     /**
@@ -48,7 +48,11 @@ class XmlPostProcessor {
      * Format variables and texts to conform to Android strings.xml format.
      */
     fun formatTranslationXml(translationXmlString: String): String {
-        val placeholderTransform : (MatchResult) -> CharSequence = { matchResult ->
+        // We need to check for variables to see if we have to escape percent symbols: if we find variables, we have to
+        // escape them
+        val containsVariables = translationXmlString.contains(VARIABLE_REGEX)
+
+        val placeholderTransform: (MatchResult) -> CharSequence = { matchResult ->
             // TODO: if the string has multiple variables but any of them has no order number,
             //  throw an exception
             // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2$s
@@ -61,12 +65,12 @@ class XmlPostProcessor {
         }
 
         return translationXmlString
-            // Replace % with %%
-            .replace("%", "%%")
+            // Replace % with %% if variables are found
+            .let { if (containsVariables) it.replace("%", "%%") else it }
             // Replace &lt; with < and &gt; with >
             .replace("&lt;", "<").replace("&gt;", ">")
             // Replace placeholders from {{variable}} to %1$s format.
-            .replace(PLACEHOLDER_REGEX, placeholderTransform)
+            .replace(VARIABLE_REGEX, placeholderTransform)
     }
 
     /**
