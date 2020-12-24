@@ -22,13 +22,16 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
+import java.util.*
+import javax.inject.Inject
 
 /**
  * Extension class that represents the needed params that will
  * be passed to the different tasks of the plugin.
  */
-open class PoEditorPluginExtension
-@JvmOverloads constructor(objects: ObjectFactory, private val name: String = "default") : Named {
+open class PoEditorPluginExtension constructor(objects: ObjectFactory, private val name: String) : Named {
+    @Inject constructor (objects: ObjectFactory) : this(objects, UUID.randomUUID().toString())
+
     @Internal
     override fun getName(): String = name
 

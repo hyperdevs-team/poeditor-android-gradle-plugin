@@ -54,7 +54,7 @@ class PoEditorPlugin : Plugin<Project> {
             getPoEditorTaskName(),
             getMainPoEditorDescription(),
             PLUGIN_GROUP,
-            arrayOf(mainPoEditorExtension, mainResourceDirectory))
+            arrayOf(mainPoEditorExtension))
 
         // Add flavor and build-type configurations if the project has the "com.android.application" plugin
         project.plugins.withType<AppPlugin> {
@@ -164,22 +164,28 @@ class PoEditorPlugin : Plugin<Project> {
             // Only create the task if no other task is registered with the same name (would mean it's already
             // created.
             project.tasks.findByName(configTaskName) ?: run {
-                val configResourceDirectory = getResourceDirectory(project, configName)
-                val configExtension = buildExtensionForConfig(
-                    configName,
-                    configsExtensionContainer,
-                    mainExtension)
+                val rawConfigExtension = configsExtensionContainer.findByName(configName)?.also {
+                    // Don't forget to add the default resources path for the configuration
+                    val configResDir = getResourceDirectory(project, configName)
+                    it.defaultResPath.convention(configResDir.asFile.absolutePath)
+                }
 
-                val newConfigPoEditorTask = if (configExtension != null) {
+                val newConfigPoEditorTask = if (rawConfigExtension != null) {
+                    logger.debug("$TAG: Extension found for name '$configName', build proper task")
+
+                    val mergedConfigExtension = buildExtensionForConfig(project, rawConfigExtension, mainExtension)
+
                     project.registerNewTask<ImportPoEditorStringsTask>(
-                        getPoEditorTaskName(configName),
-                        getMainPoEditorDescription(),
+                        configTaskName,
+                        getPoEditorDescriptionForConfig(configName),
                         PLUGIN_GROUP,
-                        arrayOf(configExtension, configResourceDirectory))
+                        arrayOf(mergedConfigExtension))
                 } else {
+                    logger.debug("$TAG: No config found for name '$configName', default to dummy task")
+
                     project.registerNewTask<DummyImportPoEditorStringsTask>(
-                        getPoEditorTaskName(configName),
-                        getMainPoEditorDescription(),
+                        configTaskName,
+                        getPoEditorDescriptionForConfig(configName),
                         PLUGIN_GROUP,
                         arrayOf(configName))
                 }

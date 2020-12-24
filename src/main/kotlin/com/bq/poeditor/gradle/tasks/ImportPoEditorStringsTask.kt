@@ -21,18 +21,17 @@ import com.bq.poeditor.gradle.PoEditorStringsImporter
 import com.bq.poeditor.gradle.utils.DEFAULT_PLUGIN_NAME
 import com.bq.poeditor.gradle.utils.POEDITOR_CONFIG_NAME
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.Directory
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
 /**
  * Task that:
- * 1. downloads all strings files (every available lang) from PoEditor given a api_token and project_id.
- * 2. extracts "tablet" strings to another XML (strings with the suffix "_tablet")
- * 3. creates and saves two strings.xml files to values-<lang> and values-<lang>-sw600dp (tablet specific strings)
+ * 1. Downloads all strings files (every available lang) from PoEditor given a api_token and project_id.
+ * 2. Extracts "tablet" strings to another XML (strings with the suffix "_tablet")
+ * 3. Creates and saves two strings.xml files to values-<lang> and values-<lang>-sw600dp (tablet specific strings)
  */
-abstract class ImportPoEditorStringsTask @Inject constructor(private val extension: PoEditorPluginExtension,
-                                                             private val resourceDirectory: Directory) : DefaultTask() {
+abstract class ImportPoEditorStringsTask
+@Inject constructor(private val extension: PoEditorPluginExtension) : DefaultTask() {
 
     /**
      * Main task entrypoint.
