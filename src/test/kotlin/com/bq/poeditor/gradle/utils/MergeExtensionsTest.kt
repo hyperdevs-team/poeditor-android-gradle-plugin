@@ -119,5 +119,20 @@ class MergeExtensionsTest {
         assertEquals(testApiToken0, p0.apiToken.get())
     }
 
+    @Test
+    fun `Patatas`() {
+        val p0 = Extension()
+        val p1 = Extension()
+
+        p1.enabled.set(false)
+        p1.enabled.convention(true)
+
+        val exts = listOf(p0, p1).mapToExtensionMergeHolder(project)
+
+        val merged = mergeExtensions(exts)
+
+        assertEquals(false, p1.enabled.get())
+    }
+
     private inner class Extension : PoEditorPluginExtension(project.objects, "test")
 }

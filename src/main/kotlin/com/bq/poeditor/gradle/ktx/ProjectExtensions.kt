@@ -26,6 +26,17 @@ import org.gradle.kotlin.dsl.register
  *
  * Allows passing [Task] constructor parameters.
  */
+internal fun Project.registerNewTask(name: String,
+                                     description: String? = null,
+                                     group: String? = null,
+                                     block: Task.() -> Unit = {}) =
+    registerNewTask(name, description, group, emptyArray(), block)
+
+/**
+ * Helper function to register a new task in a [Project].
+ *
+ * Allows passing [Task] constructor parameters.
+ */
 @Suppress("SpreadOperator")
 internal inline fun <reified T : Task> Project.registerNewTask(name: String,
                                                                description: String? = null,
