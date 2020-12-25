@@ -28,8 +28,7 @@ import javax.inject.Inject
  * Extension class that represents the needed params that will
  * be passed to the different tasks of the plugin.
  */
-open class PoEditorPluginExtension constructor(objects: ObjectFactory, private val name: String) : Named {
-    @Inject constructor (objects: ObjectFactory) : this(objects, "default")
+open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, private val name: String) : Named {
 
     @Internal
     override fun getName(): String = name

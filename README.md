@@ -18,7 +18,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.3.1'
+        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.4.0'
     }
 }
 ```
@@ -27,13 +27,13 @@ buildscript {
 
 <details><summary>Kotlin</summary>
 
-```kt
+```kotlin
 buildscript {
     repositories { 
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.bq:poeditor-android-gradle-plugin:1.3.1")
+        classpath("com.github.bq:poeditor-android-gradle-plugin:1.4.0")
     }
 }
 ```
@@ -59,7 +59,7 @@ poEditor {
 
 <details><summary>Kotlin</summary>
 
-```kt
+```kotlin
 plugins {
     id "com.android.application"
     id "com.bq.poeditor"
@@ -80,8 +80,9 @@ Attribute                     | Description
 ------------------------------|-----------------------------------------
 ```apiToken```                | PoEditor API Token.
 ```projectId```               | PoEditor project ID.
-```defaultLang```             | The lang to be used to build default ```strings.xml``` (```/values``` folder)
+```defaultLang```             | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
 ```defaultResPath```          | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
+```enabled```                 | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -140,7 +141,7 @@ android {
 
 <details><summary>Kotlin</summary>
 
-```kt
+```kotlin
 poEditor {
     // Default config that applies to all flavor/build type configurations. 
     // Also executed when calling 'importPoEditorStrings'
@@ -179,7 +180,89 @@ configuration: `importFreePoEditorStrings`, `importPaidPoEditorStrings`, `import
 `importReleasePoEditorStrings`.
 
 Now the `importPoEditorStrings` task will import the main strings configured in the `poEditor` block and also the
-strings for each defined flavor or build type.
+strings for each defined flavor or build type.`
+
+## Disabling task generation for specific configurations
+> Requires version 1.4.0 of the plug-in
+
+There may be some cases where you only want certain configurations to have a related task. 
+One of these examples may be to only have tasks for the configured flavors or build types, but you don't want to have the
+main `poEditor` block to download any strings. For these cases you have the `enabled` variable that you can set to false
+when you want to disable a configuration.
+
+Keep in mind that, if you disable the main `poEditor` block, you'll need to enable each specific configuration separately 
+since they inherit the main block configuration. Let's see how this works:
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    // Default config that applies to all flavor/build type configurations. 
+    // Also executed when calling 'importPoEditorStrings'
+    enabled = false // This'll disable task generation for every configuration.
+    apiToken = "your_common_api_token"
+}
+
+android {
+    flavorDimensions 'type'
+    productFlavors {
+        free { dimension 'type' }
+        paid { dimension 'type' }
+    }
+
+    poEditorConfig {
+        free {
+            // Specific configuration for the free flavor
+            enabled = true // Explicitly enabled since the main block disables task generation
+            projectId = 12345
+        }
+        paid {
+            // Specific configuration for the paid flavor
+            enabled = true // Explicitly enabled since the main block disables task generation
+            projectId = 54321
+        }
+    }
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    // Default config that applies to all flavor/build type configurations. 
+    // Also executed when calling 'importPoEditorStrings'
+    enabled = false // This'll disable task generation for every configuration.
+    apiToken = "your_common_api_token"
+}
+
+android {
+    // If you have the following flavors...
+    flavorDimensions("type")
+
+    productFlavors {
+        register("free") { setDimension("type") }
+        register("paid") { setDimension("type") }
+    }
+
+    poEditorConfig {
+        register("free") {
+            // Specific configuration for the free flavor
+            enabled = true // Explicitly enabled since the main block disables task generation
+            projectId = 12345
+        }
+        register("paid") {
+            // Specific configuration for the paid flavor
+            enabled = true // Explicitly enabled since the main block disables task generation
+            projectId = 54321
+        }
+    }
+}
+```
+
+</details>
+
 
 ## Handling library modules
 > Requires version 1.3.0 of the plug-in
@@ -203,7 +286,7 @@ poEditor {
 
 <details><summary>Kotlin</summary>
 
-```kt
+```kotlin
 plugins {
     id "com.android.library"
     id "com.bq.poeditor"
@@ -221,8 +304,52 @@ poEditor {
 You can also apply flavor and build type-specific configurations as you would do when setting them up with application modules.
 The plug-in will generate the proper tasks needed to import the strings under your module: `:<your_module>:import<your_flavor_or_build_type_if_any>PoEditorStrings`
 
+## Enahanced syntax
+The plug-in enhances your PoEditor experience by adding useful features over your project by adding useful syntax for certain tasks.
 
-## Handling tablet specific strings
+### Variables
+The plug-in does not parse string placeholders, instead it uses variables with a specific markup to use in PoEditor's string definition: it uses a double braces syntax to declare them.
+This allows more clarity for translators that use the platform, since it allows them to know what the placeholders really mean and better reuse them in translations.
+
+For example, the PoEditor string:
+
+```
+welcome_message: Hey {{user_name}} how are you
+``` 
+
+will become, in `strings.xml`
+
+```xml
+<string name="welcome_message">Hey %1$s how are you</string>
+```
+
+If you need more than one variable in the same string, you can also use ordinals. The string:
+
+```
+welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer}}
+``` 
+
+will become, `in strings.xml`
+
+```xml
+<string name="welcome_message">Hey %1$s how are you, today offer is %2$s</string>
+```
+
+This way you can change the order of the placeholders depending on the language:
+
+The same string, with the following Spanish translation:
+
+```
+welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}}
+``` 
+
+will become, in `values-es/strings.xml`
+
+```xml
+<string name="welcome_message">La oferta del día es %2$s para ti, %1$s</string>
+```
+
+### Tablet specific strings
 
 You can mark some strings as tablet specific strings by adding ```_tablet```suffix to the string key in PoEditor. 
 The plug-in will extract tablet strings to its own XML and save it in ```values-<lang>-sw600dp```.
@@ -240,53 +367,6 @@ The plug-in will create two `strings.xml` files:
 `/values-sw600dp/strings.xml`
 ```xml
 <string name="welcome_message">Hey friend how are you doing today, you look great!</string>
-```
-
-## Handling placeholders
-You can add placeholders to your strings. We've defined a placeholder markup to use in PoEditor string definition: it uses a double braces syntax, like this one
-
-```
-{{value}}
-```
-
-The PoEditor string:
-
-```
-welcome_message: Hey {{user_name}} how are you
-``` 
-
-will become, in `strings.xml`
-
-```xml
-<string name="welcome_message">Hey %1$s how are you</string>
-```
-
-If you need more than one placeholder in the same string, you can use ordinals too:
-
-PoEditor string:
-
-```
-welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer}}
-``` 
-
-will become, `in strings.xml`
-
-```xml
-<string name="welcome_message">Hey %1$s how are you, today offer is %2$s</string>
-```
-
-This way you could change the order of the placeholders depending on the language:
-
-PoEditor string with Spanish translation:
-
-```
-welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}}
-``` 
-
-will become, in `values-es/strings.xml`
-
-```xml
-<string name="welcome_message">La oferta del día es %2$s para ti, %1$s</string>
 ```
 
 ## iOS alternative

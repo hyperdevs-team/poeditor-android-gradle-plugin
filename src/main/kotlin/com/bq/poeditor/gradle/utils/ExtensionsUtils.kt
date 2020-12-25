@@ -22,6 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.newInstance
+import java.util.*
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -95,6 +96,6 @@ internal fun List<PoEditorPluginExtension>.mapToExtensionMergeHolder(project: Pr
             original = it,
             // This is an injected instance of PoEditorPluginExtension, so you need to provide proper arguments that
             // match its constructor
-            uninitializedCopy = project.objects.newInstance(project.objects))
+            uninitializedCopy = project.objects.newInstance(project.objects, UUID.randomUUID().toString()))
     }
 }
