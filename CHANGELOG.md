@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.0] - 2020-12-25
 ### Added
 - Add the `enabled` variable to enable or disable specific configurations.
+### Removed
+- Remove tasks that are disabled with the `enabled` flag or not configured.
 ### Fixed
 - Fix an issue that didn't save flavor or build type specific strings in their default resources folder.
 

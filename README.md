@@ -82,7 +82,7 @@ Attribute                     | Description
 ```projectId```               | PoEditor project ID.
 ```defaultLang```             | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
 ```defaultResPath```          | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
-```enabled```                 | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true.
+```enabled```                 | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
