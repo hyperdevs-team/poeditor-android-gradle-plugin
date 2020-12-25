@@ -23,6 +23,8 @@ import org.gradle.kotlin.dsl.register
 
 /**
  * Helper function to register a new task in a [Project].
+ *
+ * Allows passing [Task] constructor parameters.
  */
 internal fun Project.registerNewTask(name: String,
                                      description: String? = null,

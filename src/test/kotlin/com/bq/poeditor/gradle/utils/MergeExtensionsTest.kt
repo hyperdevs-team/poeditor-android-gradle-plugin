@@ -28,19 +28,19 @@ class MergeExtensionsTest {
 
     @Test
     fun `Merging empty list of extensions fails`() {
-        val exts = emptyList<PoEditorPluginExtension>()
+        val exts = emptyList<PoEditorPluginExtension>().mapToExtensionMergeHolder(project)
 
-        assertThrows(NoSuchElementException::class.java) { mergeExtensions(exts) }
+        assertThrows(IllegalArgumentException::class.java) { mergeExtensions(exts) }
     }
 
     @Test
     fun `Merging single extension returns self`() {
-        val p0 = Extension().apply { apiToken.set("test") }
-        val exts = listOf(p0)
+        val child = Extension().apply { apiToken.set("test") }
+        val exts = listOf(child).mapToExtensionMergeHolder(project)
 
         val merged = mergeExtensions(exts)
 
-        assertSame(p0, merged)
+        assertSame(child, merged)
     }
 
     @Test
@@ -48,9 +48,9 @@ class MergeExtensionsTest {
         val testApiToken = "test"
         val testProjectId = 1234
 
-        val p0 = Extension().apply { apiToken.set(testApiToken) }
-        val p1 = Extension().apply { projectId.set(testProjectId) }
-        val exts = listOf(p0, p1)
+        val child = Extension().apply { apiToken.set(testApiToken) }
+        val parent = Extension().apply { projectId.set(testProjectId) }
+        val exts = listOf(child, parent).mapToExtensionMergeHolder(project)
 
         val merged = mergeExtensions(exts)
 
@@ -65,15 +65,15 @@ class MergeExtensionsTest {
         val testProjectId1 = 2345
         val testDefaultLang = "es"
 
-        val p0 = Extension().apply {
+        val child = Extension().apply {
             apiToken.set(testApiToken)
             projectId.set(testProjectId0)
         }
-        val p1 = Extension().apply {
+        val parent = Extension().apply {
             projectId.set(testProjectId1)
             defaultLang.set(testDefaultLang)
         }
-        val exts = listOf(p0, p1)
+        val exts = listOf(child, parent).mapToExtensionMergeHolder(project)
 
         val merged = mergeExtensions(exts)
 
@@ -88,19 +88,17 @@ class MergeExtensionsTest {
         val testProjectId = 1234
         val testDefaultLang = "es"
 
-        val p0 = Extension().apply { apiToken.set(testApiToken) }
-        val p1 = Extension().apply { projectId.set(testProjectId) }
-        val p2 = Extension().apply { defaultLang.set(testDefaultLang) }
-        val exts = listOf(p0, p1, p2)
+        val grandchild = Extension().apply { apiToken.set(testApiToken) }
+        val child = Extension().apply { projectId.set(testProjectId) }
+        val parent = Extension().apply { defaultLang.set(testDefaultLang) }
+        val exts = listOf(grandchild, child, parent).mapToExtensionMergeHolder(project)
 
-        mergeExtensions(exts)
+        val merged = mergeExtensions(exts)
 
         val modifiedDefaultLang = "en"
-        p2.defaultLang.set(modifiedDefaultLang)
+        parent.defaultLang.set(modifiedDefaultLang)
 
-        assertEquals(modifiedDefaultLang, p2.defaultLang.get())
-        assertEquals(modifiedDefaultLang, p1.defaultLang.get())
-        assertEquals(modifiedDefaultLang, p0.defaultLang.get())
+        assertEquals(parent.defaultLang.get(), merged.defaultLang.get())
     }
 
     @Test
@@ -108,18 +106,18 @@ class MergeExtensionsTest {
         val testApiToken0 = "test0"
         val testApiToken1 = "test1"
 
-        val p0 = Extension().apply { apiToken.set(testApiToken0) }
-        val p1 = Extension().apply { apiToken.set(testApiToken1) }
-        val exts = listOf(p0, p1)
+        val child = Extension().apply { apiToken.set(testApiToken0) }
+        val parent = Extension().apply { apiToken.set(testApiToken1) }
+        val exts = listOf(child, parent).mapToExtensionMergeHolder(project)
 
         mergeExtensions(exts)
 
         val modifiedTestApiToken1 = "test1_mod"
-        p1.apiToken.set(modifiedTestApiToken1)
+        parent.apiToken.set(modifiedTestApiToken1)
 
-        assertEquals(modifiedTestApiToken1, p1.apiToken.get())
-        assertEquals(testApiToken0, p0.apiToken.get())
+        assertEquals(modifiedTestApiToken1, parent.apiToken.get())
+        assertEquals(testApiToken0, child.apiToken.get())
     }
 
-    private inner class Extension : PoEditorPluginExtension(project.objects)
+    private inner class Extension : PoEditorPluginExtension(project.objects, "test")
 }

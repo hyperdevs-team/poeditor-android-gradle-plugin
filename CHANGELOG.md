@@ -34,6 +34,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [1.4.0] - 2020-12-25
+### Added
+- Add the `enabled` variable to enable or disable specific configurations.
+### Removed
+- Remove tasks that are disabled with the `enabled` flag or not configured.
+### Fixed
+- Fix an issue that didn't save flavor or build type specific strings in their default resources folder.
+
 ## [1.3.1] - 2020-12-21
 ### Fixed
 - Fix percent symbols being escaped when variables are present.
@@ -82,7 +90,7 @@ android {
 
 <details><summary>Kotlin</summary>
 
-```kt
+```kotlin
 poEditor {
     defaultResPath = "your/res/path"
 }
@@ -162,7 +170,7 @@ android {
 
 <details><summary>Kotlin</summary>
 
-```kt
+```kotlin
 poEditor {
     // Default config that applies to all flavor/build type configurations. 
     // Also executed when calling 'importPoEditorStrings'
@@ -225,7 +233,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.1...HEAD
+[Unreleased]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.4.0...HEAD
+[1.4.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/bq/poeditor-android-gradle-plugin/compare/1.1.0...1.2.0

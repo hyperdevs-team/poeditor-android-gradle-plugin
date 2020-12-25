@@ -22,15 +22,23 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
+import javax.inject.Inject
 
 /**
  * Extension class that represents the needed params that will
  * be passed to the different tasks of the plugin.
  */
-open class PoEditorPluginExtension
-@JvmOverloads constructor(objects: ObjectFactory, private val name: String = "default") : Named {
+open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, private val name: String) : Named {
+
     @Internal
     override fun getName(): String = name
+
+    /**
+     * Whether the configuration is enabled or not.
+     */
+    @get:Optional
+    @get:Input
+    val enabled : Property<Boolean> = objects.property(Boolean::class.java)
 
     /**
      * PoEditor API token.
@@ -65,6 +73,16 @@ open class PoEditorPluginExtension
     @get:Optional
     @get:Input
     val defaultResPath: Property<String> = objects.property(String::class.java)
+
+    /**
+     * Sets the configuration as enabled or not.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `apiToken.set(value)`.
+     */
+    fun setEnabled(value: Boolean) = enabled.set(value)
 
     /**
      * Sets the PoEditor API token.

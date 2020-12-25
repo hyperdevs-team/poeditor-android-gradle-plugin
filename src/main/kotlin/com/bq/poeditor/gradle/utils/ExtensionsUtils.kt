@@ -18,62 +18,84 @@ package com.bq.poeditor.gradle.utils
 
 import com.bq.poeditor.gradle.PoEditorPluginExtension
 import com.bq.poeditor.gradle.TAG
-import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.newInstance
+import java.util.*
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
 /**
  * Creates an extension for the given config name (flavor or build type name) by merging data from the base
- * configuration extension extension and the provided configuration extension, if any.
- *
- * Returns null when no extension could be found that matches [configName].
+ * configuration extension and the provided configuration extension.
  */
-internal fun buildExtensionForConfig(configName: String,
-                                     extensionContainer: NamedDomainObjectContainer<PoEditorPluginExtension>,
-                                     baseExtension: PoEditorPluginExtension): PoEditorPluginExtension? {
-    val configExtension = extensionContainer.findByName(configName)
+internal fun buildExtensionForConfig(project: Project,
+                                     configExtension: PoEditorPluginExtension,
+                                     baseExtension: PoEditorPluginExtension): PoEditorPluginExtension {
+    val extensions = listOfNotNull(configExtension, baseExtension)
+        .distinctBy { it.name }
+        .mapToExtensionMergeHolder(project)
 
-    if (configExtension == null) {
-        logger.debug("$TAG: No config found for config '$configName'")
-        return null
-    }
-
-    val extensions = listOfNotNull(
-        configExtension,
-        baseExtension
-    ).distinctBy { it.name }
-
-    logger.debug("$TAG: Extensions found for name '$configName': $extensions")
+    logger.debug("$TAG: Extensions found: $extensions")
 
     return mergeExtensions(extensions)
 }
 
-internal fun mergeExtensions(extensions: List<PoEditorPluginExtension>): PoEditorPluginExtension {
-    requireNotNull(extensions.isNotEmpty()) { "At least one extension must be provided." }
-    if (extensions.size == 1) return extensions.single()
+internal fun mergeExtensions(extensions: List<ExtensionMergeHolder>): PoEditorPluginExtension {
+    require(extensions.isNotEmpty()) { "At least one extension must be provided." }
 
-    for (i in 1 until extensions.size) {
-        val parent = extensions[i]
-        val child = extensions[i - 1]
+    if (extensions.size == 1) return extensions.single().original
 
-        PoEditorPluginExtension::class.declaredMemberProperties.linkProperties(parent, child)
+    val extensionsWithInitializationRoot = extensions + extensions.last()
+
+    for (i in 1 until extensionsWithInitializationRoot.size) {
+        val parentCopy = extensionsWithInitializationRoot[i].uninitializedCopy
+        val (child, childCopy) = extensionsWithInitializationRoot[i - 1]
+
+        PoEditorPluginExtension::class.declaredMemberProperties.linkProperties(parentCopy, child, childCopy)
     }
 
-    return extensions.first()
+    return extensions.first().uninitializedCopy
 }
 
-private fun <T> Collection<KProperty1<T, *>>.linkProperties(parent: T, child: T) {
+private fun <T> Collection<KProperty1<T, *>>.linkProperties(parent: T, child: T, childCopy: T) {
     for (property in this) {
         if (property.name == "name") continue
 
-        val value = property.get(child)
+        val value = property.get(childCopy)
         @Suppress("UNCHECKED_CAST")
         if (value is Property<*>) {
-            value.convention(property.get(parent) as Property<Nothing>)
+            val originalProperty = property.get(child) as Property<Nothing>
+            val parentFallback = property.get(parent) as Property<Nothing>
+            if (value !== parentFallback) {
+                value.set(originalProperty.orElse(parentFallback))
+            } else {
+                value.set(originalProperty)
+            }
         } else if (value is ListProperty<*>) {
-            value.convention(property.get(parent) as ListProperty<Nothing>)
+            val originalProperty = property.get(child) as ListProperty<Nothing>
+            val parentFallback = property.get(parent) as ListProperty<Nothing>
+            if (value !== parentFallback) {
+                value.set(originalProperty.map {
+                    it.takeUnless { it.isEmpty() }!!
+                }.orElse(parentFallback))
+            } else {
+                value.set(originalProperty)
+            }
         }
+    }
+}
+
+internal data class ExtensionMergeHolder(val original: PoEditorPluginExtension,
+                                         val uninitializedCopy: PoEditorPluginExtension)
+
+internal fun List<PoEditorPluginExtension>.mapToExtensionMergeHolder(project: Project): List<ExtensionMergeHolder> {
+    return this.map {
+        ExtensionMergeHolder(
+            original = it,
+            // This is an injected instance of PoEditorPluginExtension, so you need to provide proper arguments that
+            // match its constructor
+            uninitializedCopy = project.objects.newInstance(project.objects, UUID.randomUUID().toString()))
     }
 }
