@@ -16,6 +16,8 @@
 
 package com.bq.poeditor.gradle.xml
 
+import com.bq.poeditor.gradle.ktx.dumpToString
+import com.bq.poeditor.gradle.ktx.toDocument
 import com.bq.poeditor.gradle.utils.ALL_REGEX_STRING
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -31,6 +33,13 @@ class XmlPostProcessor {
     companion object {
         private val DEFAULT_ENCODING = Charsets.UTF_8
         private val VARIABLE_REGEX = Regex("""\{\d?\{(.*?)\}\}""")
+
+        private const val TAG_RESOURCES = "resources"
+        private const val TAG_STRING = "string"
+        private const val TAG_PLURALS = "plurals"
+        private const val TAG_ITEM = "item"
+
+        private const val ATTR_NAME = "name"
     }
 
     /**
@@ -40,17 +49,29 @@ class XmlPostProcessor {
      * - Format variables and texts to conform to Android strings.xml format
      * - Split to multiple XML files depending on regex matching
      */
-    fun postProcessTranslationXml(translationXmlString: String,
+    fun postProcessTranslationXml(translationFileXmlString: String,
                                   fileSplitRegexStringList: List<String>): Map<String, Document> =
-        splitTranslationXml(formatTranslationXml(translationXmlString), fileSplitRegexStringList)
+        splitTranslationXml(formatTranslationXml(translationFileXmlString), fileSplitRegexStringList)
 
     /**
-     * Format variables and texts to conform to Android strings.xml format.
+     * Formats a given translations XML string to conform to Android strings.xml format.
      */
-    fun formatTranslationXml(translationXmlString: String): String {
-        // We need to check for variables to see if we have to escape percent symbols: if we find variables, we have to
-        // escape them
-        val containsVariables = translationXmlString.contains(VARIABLE_REGEX)
+    fun formatTranslationXml(translationFileXmlString: String): String {
+        // Parse line by line by traversing the original file using DOM
+        val translationFileXmlDocument = translationFileXmlString.toDocument()
+
+        formatTranslationXmlDocument(translationFileXmlDocument, translationFileXmlDocument.childNodes)
+
+        return translationFileXmlDocument.dumpToString()
+    }
+
+    /**
+     * Formats a given string to conform to Android strings.xml format.
+     */
+    fun formatTranslationString(translationString: String): String {
+        // We need to check for variables to see if we have to escape percent symbols: if we find variables, we have
+        // to escape them
+        val containsVariables = translationString.contains(VARIABLE_REGEX)
 
         val placeholderTransform: (MatchResult) -> CharSequence = { matchResult ->
             // TODO: if the string has multiple variables but any of them has no order number,
@@ -64,7 +85,7 @@ class XmlPostProcessor {
             }
         }
 
-        return translationXmlString
+        return translationString
             // Replace % with %% if variables are found
             .let { if (containsVariables) it.replace("%", "%%") else it }
             // Replace &lt; with < and &gt; with >
@@ -98,9 +119,9 @@ class XmlPostProcessor {
                 nodes.forEach { node ->
                     node.parentNode.removeChild(node)
                     val copiedNode = (node.cloneNode(true) as Element).apply {
-                        val name = getAttribute("name")
+                        val name = getAttribute(ATTR_NAME)
                         val nameWithoutRegex = regex.find(name)?.groups?.get(1)?.value ?: ""
-                        setAttribute("name", nameWithoutRegex)
+                        setAttribute(ATTR_NAME, nameWithoutRegex)
                     }
                     xmlRecords.adoptNode(copiedNode)
                     xmlRecords.firstChild.appendChild(copiedNode)
@@ -113,6 +134,42 @@ class XmlPostProcessor {
             .plus(ALL_REGEX_STRING to translationFileRecords)
     }
 
+    private fun formatTranslationXmlDocument(document: Document, nodeList: NodeList, rootNode: Node? = null) {
+        for (i in 0 until nodeList.length) {
+            if (nodeList.item(i).nodeType == Node.ELEMENT_NODE) {
+                val nodeElement = nodeList.item(i) as Element
+                when (nodeElement.tagName) {
+                    TAG_RESOURCES -> {
+                        // Main node, traverse its children
+                        formatTranslationXmlDocument(document, nodeElement.childNodes, nodeElement)
+                    }
+                    TAG_PLURALS -> {
+                        // Plurals node, process its children
+                        formatTranslationXmlDocument(document, nodeElement.childNodes, nodeElement)
+                    }
+                    TAG_STRING -> {
+                        // String node, apply transformation to the content
+                        processTextAndReplaceNodeContent(document, nodeElement, rootNode)
+                    }
+                    TAG_ITEM -> {
+                        // Plurals item node, apply transformation to the content
+                        processTextAndReplaceNodeContent(document, nodeElement, rootNode)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun processTextAndReplaceNodeContent(document: Document, nodeElement: Element, rootNode: Node?) {
+        val content = nodeElement.textContent
+        val processedContent = formatTranslationString(content)
+        val copiedNodeElement = (nodeElement.cloneNode(true) as Element).apply {
+            textContent = processedContent
+        }
+        document.adoptNode(copiedNodeElement)
+        rootNode?.replaceChild(copiedNodeElement, nodeElement)
+    }
+
     private fun extractMatchingNodes(nodeList: NodeList, regexString: String): List<Node> {
         val matchedNodes = mutableListOf<Node>()
         val regex = Regex(regexString)
@@ -120,18 +177,22 @@ class XmlPostProcessor {
         for (i in 0 until nodeList.length) {
             if (nodeList.item(i).nodeType == Node.ELEMENT_NODE) {
                 val nodeElement = nodeList.item(i) as Element
-                when {
-                    // Main XML node, process children
-                    nodeElement.tagName == "resources" -> {
+                when (nodeElement.tagName) {
+                    TAG_RESOURCES -> {
+                        // Main XML node, process children
                         matchedNodes.addAll(extractMatchingNodes(nodeElement.childNodes, regexString))
                     }
-                    // String node, add if name matches regex
-                    nodeElement.tagName == "string" && nodeElement.getAttribute("name").matches(regex) -> {
-                        matchedNodes.add(nodeElement)
+                    TAG_STRING -> {
+                        // String node, add node if name matches regex
+                        if (nodeElement.getAttribute(ATTR_NAME).matches(regex)) {
+                            matchedNodes.add(nodeElement)
+                        }
                     }
-                    // Plurals node, add node and children if name matches regex
-                    nodeElement.tagName == "plurals" && nodeElement.getAttribute("name").matches(regex) -> {
-                        matchedNodes.add(nodeElement)
+                    TAG_PLURALS -> {
+                        // Plurals node, add node and children if name matches regex
+                        if (nodeElement.getAttribute(ATTR_NAME).matches(regex)) {
+                            matchedNodes.add(nodeElement)
+                        }
                     }
                 }
             }

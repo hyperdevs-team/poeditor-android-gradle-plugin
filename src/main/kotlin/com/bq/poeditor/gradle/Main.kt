@@ -23,7 +23,7 @@ package com.bq.poeditor.gradle
 fun main() {
     val apiToken = "your_api_token"
     val projectId = 1234567890
-    val resDirPath = "your_res_dir_path"
+    val resDirPath = "output"
     val defaultLanguage = "en"
 
     PoEditorStringsImporter.importPoEditorStrings(apiToken, projectId, defaultLanguage, resDirPath)

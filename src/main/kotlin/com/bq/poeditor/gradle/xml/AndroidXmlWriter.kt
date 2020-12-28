@@ -16,15 +16,13 @@
 
 package com.bq.poeditor.gradle.xml
 
+import com.bq.poeditor.gradle.ktx.dumpToString
 import com.bq.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.bq.poeditor.gradle.utils.TABLET_RES_FOLDER_SUFFIX
 import com.bq.poeditor.gradle.utils.logger
 import com.bq.poeditor.gradle.utils.createValuesModifierFromLangCode
 import org.w3c.dom.Document
-import org.w3c.dom.bootstrap.DOMImplementationRegistry
-import org.w3c.dom.ls.DOMImplementationLS
 import java.io.File
-import java.io.StringWriter
 import java.lang.IllegalStateException
 
 /**
@@ -70,19 +68,6 @@ class AndroidXmlWriter {
             }
         }
 
-        val registry = DOMImplementationRegistry.newInstance()
-        val impl = registry.getDOMImplementation("LS") as DOMImplementationLS
-        val output = impl.createLSOutput().apply { encoding = "UTF-8" }
-        val serializer = impl.createLSSerializer()
-
-        val writer = StringWriter()
-        output.characterStream = writer
-
-        serializer.domConfig.setParameter("format-pretty-print",
-            java.lang.Boolean.TRUE)
-        serializer.domConfig.setParameter("xml-declaration", true)
-
-        serializer.write(document, output)
-        File(stringsFolderFile, "strings.xml").writeText(writer.toString())
+        File(stringsFolderFile, "strings.xml").writeText(document.dumpToString())
     }
 }

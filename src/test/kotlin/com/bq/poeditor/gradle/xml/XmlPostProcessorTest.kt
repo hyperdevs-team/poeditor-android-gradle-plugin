@@ -16,11 +16,13 @@
 
 package com.bq.poeditor.gradle.xml
 
+import com.bq.poeditor.gradle.ktx.dumpToString
 import com.bq.poeditor.gradle.utils.ALL_REGEX_STRING
 import com.bq.poeditor.gradle.utils.TABLET_REGEX_STRING
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathFactory
 
@@ -44,39 +46,53 @@ class XmlPostProcessorTest {
     fun `Postprocessing percentage symbol in strings works`() {
         // Test % is changed to %%
         Assert.assertEquals("Hello my friend. I love you 100%.",
-                xmlPostProcessor.formatTranslationXml("Hello my friend. I love you 100%."))
+            xmlPostProcessor.formatTranslationString("Hello my friend. I love you 100%."))
     }
 
     @Test
     fun `Postprocessing percentage symbol in text with variables works`() {
         // Test % is not changed if variables are present
         Assert.assertEquals("Hello %1\$s. I love you 100%%.",
-            xmlPostProcessor.formatTranslationXml("Hello {{friend}}. I love you 100%."))
+            xmlPostProcessor.formatTranslationString("Hello {{friend}}. I love you 100%."))
     }
 
     @Test
     fun `Postprocessing line breaks keeps them`() {
         // Test \n is maintained
         Assert.assertEquals("Hello my friend\nHow are you?.",
-                xmlPostProcessor.formatTranslationXml("Hello my friend\nHow are you?."))
+            xmlPostProcessor.formatTranslationString("Hello my friend\nHow are you?."))
     }
 
     @Test
-    fun `Postprocessing placeholders works`() {
-        // Test placeholders are translated to Android format
+    fun `Postprocessing percentage symbol in text with line breaks and variables works`() {
+        // Test % is changed if variables in multiple lines are present
+        Assert.assertEquals("I love you 100%%.\nMy friend %1\$s.",
+            xmlPostProcessor.formatTranslationString("I love you 100%.\nMy friend {{friend}}."))
+    }
+
+    @Test
+    fun `Postprocessing percentage symbol in text with line breaks works`() {
+        // Test % is not changed if multiple lines are present
+        Assert.assertEquals("I love you this much:\n100%.",
+            xmlPostProcessor.formatTranslationString("I love you this much:\n100%."))
+    }
+
+    @Test
+    fun `Postprocessing variables works`() {
+        // Test variables are converted to Android format
         Assert.assertEquals("Hello %1\$s.",
-                xmlPostProcessor.formatTranslationXml("Hello {{name}}."))
+            xmlPostProcessor.formatTranslationString("Hello {{name}}."))
         Assert.assertEquals("Hello %1\$s. How are you %1\$s?",
-                xmlPostProcessor.formatTranslationXml("Hello {{name}}. How are you {{name}}?"))
+            xmlPostProcessor.formatTranslationString("Hello {{name}}. How are you {{name}}?"))
         Assert.assertEquals("Hello %1\$s. This is your score: %2\$s",
-                xmlPostProcessor.formatTranslationXml("Hello {1{name}}. This is your score: {2{score}}"))
+            xmlPostProcessor.formatTranslationString("Hello {1{name}}. This is your score: {2{score}}"))
     }
 
     @Test
     fun `Postprocessing string HTML escapes sequences`() {
         // Test Html tags are fixed
         Assert.assertEquals("Hello <b>%1\$s</b>.",
-                xmlPostProcessor.formatTranslationXml("Hello &lt;b&gt;{{name}}&lt;/b&gt;."))
+            xmlPostProcessor.formatTranslationString("Hello &lt;b&gt;{{name}}&lt;/b&gt;."))
     }
 
     @Test
@@ -97,7 +113,7 @@ class XmlPostProcessorTest {
                                 "Ir${'\n'}abajo"
                               </string>
                             </resources>
-                             """.trimIndent()
+                             """
 
         val expectedResult = """
                             <resources>
@@ -114,7 +130,89 @@ class XmlPostProcessorTest {
                                 "Ir${'\n'}abajo"
                               </string>
                             </resources>
-                             """.trimIndent()
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Postprocessing XML with percentages works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend">
+                                "Hello {{name}}"
+                              </string>
+                              <string name="hello_friend_love_100">
+                                "Hello {{name}}. I love you 100%"
+                              </string>
+                              <string name="hello_love_100">
+                                "Hello. I love you 100%"
+                              </string>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend">
+                                "Hello %1${'$'}s"
+                              </string>
+                              <string name="hello_friend_love_100">
+                                "Hello %1${'$'}s. I love you 100%%"
+                              </string>
+                              <string name="hello_love_100">
+                                "Hello. I love you 100%"
+                              </string>
+                            </resources>
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Postprocessing XML with percentages and line breaks works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend">
+                                "I love you this much: 
+                                100%"
+                              </string>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend">
+                                "I love you this much: 
+                                100%"
+                              </string>
+                            </resources>
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Postprocessing XML with percentages and variables with line breaks works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend">
+                                "Hello {{name}}
+                                I love you 100%"
+                              </string>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend">
+                                "Hello %1${'$'}s
+                                I love you 100%%"
+                              </string>
+                            </resources>
+                             """.formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -132,7 +230,7 @@ class XmlPostProcessorTest {
                                 "${expectedKey}_tablet"
                               </string>
                             </resources>
-                             """.trimIndent()
+                             """
 
         val allRegexString = ALL_REGEX_STRING
         val tabletRegexString = TABLET_REGEX_STRING
@@ -144,18 +242,18 @@ class XmlPostProcessorTest {
         val xpTextPath = "//resources/string[position()=1]/text()"
 
         Assert.assertEquals(
-                expectedKey,
-                xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(allRegexString)).trim())
+            expectedKey,
+            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(allRegexString)).trim())
         Assert.assertEquals(
-                expectedKey,
-                xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
+            expectedKey,
+            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
 
         Assert.assertEquals(
-                "\"$expectedKey\"",
-                xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(allRegexString)).trim())
+            "\"$expectedKey\"",
+            xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(allRegexString)).trim())
         Assert.assertEquals(
-                "\"${expectedKey}_tablet\"",
-                xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
+            "\"${expectedKey}_tablet\"",
+            xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
 
     }
 
@@ -175,7 +273,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"{{element_quantity}} elementos seleccionados"</item>
                               </plurals>
                             </resources>
-                             """.trimIndent()
+                             """
 
         val expectedResult = """
                             <resources>
@@ -190,7 +288,47 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"%1${'$'}s elementos seleccionados"</item>
                               </plurals>
                             </resources>
-                             """.trimIndent()
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Postprocessing XML with plurals and percentages works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <plurals name="hello_friend">
+                                <item quantity="one">"Hello my {{ friend_number }} friend"</item>
+                                <item quantity="other">"Hello my {{ friend_number }} friends"</item>
+                              </plurals>
+                              <plurals name="hello_friend_love_100">
+                                <item quantity="one">"Hello my {{ friend_number }} friend. I love you 100%"</item>
+                                <item quantity="other">"Hello my {{ friend_number }} friends. I love you 100%"</item>
+                              </plurals>
+                              <plurals name="hello_love_100">
+                                <item quantity="one">"Hello friend. I love you 100%"</item>
+                                <item quantity="other">"Hello friends. I love you 100%"</item>
+                              </plurals>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <plurals name="hello_friend">
+                                <item quantity="one">"Hello my %1${'$'}s friend"</item>
+                                <item quantity="other">"Hello my %1${'$'}s friends"</item>
+                              </plurals>
+                              <plurals name="hello_friend_love_100">
+                                <item quantity="one">"Hello my %1${'$'}s friend. I love you 100%%"</item>
+                                <item quantity="other">"Hello my %1${'$'}s friends. I love you 100%%"</item>
+                              </plurals>
+                              <plurals name="hello_love_100">
+                                <item quantity="one">"Hello friend. I love you 100%"</item>
+                                <item quantity="other">"Hello friends. I love you 100%"</item>
+                              </plurals>
+                            </resources>
+                             """.formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -210,7 +348,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"{{element_quantity}} elementos seleccionados en tablet"</item>
                               </plurals>
                             </resources>
-                             """.trimIndent()
+                             """
 
         val allRegexString = ALL_REGEX_STRING
         val tabletRegexString = TABLET_REGEX_STRING
@@ -227,4 +365,10 @@ class XmlPostProcessorTest {
             expectedKey,
             xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
     }
+
+    private fun String.formatXml(): String =
+        DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder()
+            .parse(this.byteInputStream(Charsets.UTF_8))
+            .dumpToString()
 }
