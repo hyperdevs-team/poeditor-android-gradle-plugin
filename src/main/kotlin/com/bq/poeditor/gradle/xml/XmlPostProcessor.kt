@@ -16,8 +16,9 @@
 
 package com.bq.poeditor.gradle.xml
 
-import com.bq.poeditor.gradle.ktx.dumpToString
+import com.bq.poeditor.gradle.ktx.toAndroidXmlString
 import com.bq.poeditor.gradle.ktx.toDocument
+import com.bq.poeditor.gradle.ktx.unescapeHtmlTags
 import com.bq.poeditor.gradle.utils.ALL_REGEX_STRING
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -62,7 +63,7 @@ class XmlPostProcessor {
 
         formatTranslationXmlDocument(translationFileXmlDocument, translationFileXmlDocument.childNodes)
 
-        return translationFileXmlDocument.dumpToString()
+        return translationFileXmlDocument.toAndroidXmlString()
     }
 
     /**
@@ -88,8 +89,7 @@ class XmlPostProcessor {
         return translationString
             // Replace % with %% if variables are found
             .let { if (containsVariables) it.replace("%", "%%") else it }
-            // Replace &lt; with < and &gt; with >
-            .replace("&lt;", "<").replace("&gt;", ">")
+            .unescapeHtmlTags()
             // Replace placeholders from {{variable}} to %1$s format.
             .replace(VARIABLE_REGEX, placeholderTransform)
     }

@@ -128,3 +128,6 @@ gradle-app.setting
 
 # Output directory for tests
 /output
+
+# Donenv configuration file
+.env

@@ -16,7 +16,7 @@
 
 package com.bq.poeditor.gradle.xml
 
-import com.bq.poeditor.gradle.ktx.dumpToString
+import com.bq.poeditor.gradle.ktx.toAndroidXmlString
 import com.bq.poeditor.gradle.utils.ALL_REGEX_STRING
 import com.bq.poeditor.gradle.utils.TABLET_REGEX_STRING
 import org.junit.Assert
@@ -218,46 +218,6 @@ class XmlPostProcessorTest {
     }
 
     @Test
-    fun `Splitting tablet translation strings works`() {
-        // Test complete Xml
-        val expectedKey = "general_button_goTop"
-        val inputXmlString = """
-                            <resources>
-                              <string name="$expectedKey">
-                                "$expectedKey"
-                              </string>
-                              <string name="${expectedKey}_tablet">
-                                "${expectedKey}_tablet"
-                              </string>
-                            </resources>
-                             """
-
-        val allRegexString = ALL_REGEX_STRING
-        val tabletRegexString = TABLET_REGEX_STRING
-
-        val splitTranslationXmlMap = xmlPostProcessor.splitTranslationXml(inputXmlString, listOf(tabletRegexString))
-
-        // Check XML documents and see if the first string node has the proper name and the proper text with XPath
-        val xpNamePath = "//resources/string[position()=1]/@name"
-        val xpTextPath = "//resources/string[position()=1]/text()"
-
-        Assert.assertEquals(
-            expectedKey,
-            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(allRegexString)).trim())
-        Assert.assertEquals(
-            expectedKey,
-            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
-
-        Assert.assertEquals(
-            "\"$expectedKey\"",
-            xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(allRegexString)).trim())
-        Assert.assertEquals(
-            "\"${expectedKey}_tablet\"",
-            xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
-
-    }
-
-    @Test
     fun `Postprocessing XML with plurals works`() {
         // Test complete Xml
         val inputXmlString = """
@@ -334,6 +294,68 @@ class XmlPostProcessorTest {
     }
 
     @Test
+    fun `Postprocessing XML with string HTML symbols works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "Hello &lt;b&gt;{{name}}&lt;/b&gt;"
+                              </string>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "Hello <b>%1${'$'}s</b>"
+                              </string>
+                            </resources>
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Splitting tablet translation strings works`() {
+        // Test complete Xml
+        val expectedKey = "general_button_goTop"
+        val inputXmlString = """
+                            <resources>
+                              <string name="$expectedKey">
+                                "$expectedKey"
+                              </string>
+                              <string name="${expectedKey}_tablet">
+                                "${expectedKey}_tablet"
+                              </string>
+                            </resources>
+                             """
+
+        val allRegexString = ALL_REGEX_STRING
+        val tabletRegexString = TABLET_REGEX_STRING
+
+        val splitTranslationXmlMap = xmlPostProcessor.splitTranslationXml(inputXmlString, listOf(tabletRegexString))
+
+        // Check XML documents and see if the first string node has the proper name and the proper text with XPath
+        val xpNamePath = "//resources/string[position()=1]/@name"
+        val xpTextPath = "//resources/string[position()=1]/text()"
+
+        Assert.assertEquals(
+            expectedKey,
+            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(allRegexString)).trim())
+        Assert.assertEquals(
+            expectedKey,
+            xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
+
+        Assert.assertEquals(
+            "\"$expectedKey\"",
+            xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(allRegexString)).trim())
+        Assert.assertEquals(
+            "\"${expectedKey}_tablet\"",
+            xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
+
+    }
+
+    @Test
     fun `Splitting tablet translation strings with plurals works`() {
         // Test complete Xml
         val expectedKey = "general_quantity"
@@ -370,5 +392,5 @@ class XmlPostProcessorTest {
         DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(this.byteInputStream(Charsets.UTF_8))
-            .dumpToString()
+            .toAndroidXmlString()
 }

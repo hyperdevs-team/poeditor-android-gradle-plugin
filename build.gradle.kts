@@ -68,6 +68,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
     implementation("com.squareup.okhttp3:okhttp:4.7.2")
 
+    implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test"))
     testImplementation("junit:junit:4.13")

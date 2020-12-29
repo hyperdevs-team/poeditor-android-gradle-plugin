@@ -20,6 +20,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No security issues fixed!
 -->
 
+## [Unreleased]
+### Added
+- No new features!
+### Changed
+- No changed features!
+### Deprecated
+- No deprecated features!
+### Removed
+- No removed features!
+### Fixed
+- No fixed issues!
+### Security
+- No security issues fixed!
+
+## [1.4.2] - 2020-12-29
+### Added
+- [Dotenv support](https://github.com/cdimascio/dotenv-kotlin) for the `Main.kt` file for easier local development.
+### Fixed
+- Fix HTML tags being escaped when parsing.
+
 ## [1.4.1] - 2020-12-28
 ### Fixed
 - Fix percent symbols not being properly escaped (again) by processing the XML file line by line.

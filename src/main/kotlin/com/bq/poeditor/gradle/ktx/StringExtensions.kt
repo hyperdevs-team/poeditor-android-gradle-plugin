@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package com.bq.poeditor.gradle
+package com.bq.poeditor.gradle.ktx
 
-import io.github.cdimascio.dotenv.Dotenv
+private val UNESCAPED_HTML_TAGS_REGEX = Regex("""&lt;([^.]*?)&gt;""")
 
 /**
- * Only for testing purposes.
- *
- * Declare the variables API_TOKEN, PROJECT_ID, RES_DIR_PATH and DEFAULT_LANGUAGE in /.env
+ * Unescapes HTML tags from string.
  */
-@Suppress("MagicNumber")
-fun main() {
-    val dotenv: Dotenv = Dotenv.load()
-
-    val apiToken = dotenv.get("API_TOKEN", "")
-    val projectId = dotenv.get("PROJECT_ID", "-1").toInt()
-    val resDirPath = dotenv.get("RES_DIR_PATH", "")
-    val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
-
-    PoEditorStringsImporter.importPoEditorStrings(apiToken, projectId, defaultLanguage, resDirPath)
-}
+fun String.unescapeHtmlTags() = this.replace(UNESCAPED_HTML_TAGS_REGEX, "<$1>")

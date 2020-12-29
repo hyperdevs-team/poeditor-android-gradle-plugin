@@ -34,9 +34,9 @@ fun String.toDocument(): Document =
         .parse(this.byteInputStream(DEFAULT_ENCODING))
 
 /**
- * Convers a [Document] into a formatted [String].
+ * Converts a [Document] into a formatted [String].
  */
-fun Document.dumpToString(): String {
+fun Document.toAndroidXmlString(): String {
     val registry = DOMImplementationRegistry.newInstance()
     val impl = registry.getDOMImplementation("LS") as DOMImplementationLS
     val output = impl.createLSOutput().apply { encoding = "UTF-8" }
@@ -51,5 +51,5 @@ fun Document.dumpToString(): String {
 
     serializer.write(this, output)
 
-    return writer.toString()
+    return writer.toString().unescapeHtmlTags()
 }

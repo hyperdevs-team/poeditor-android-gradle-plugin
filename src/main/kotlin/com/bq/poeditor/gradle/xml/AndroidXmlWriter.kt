@@ -16,7 +16,7 @@
 
 package com.bq.poeditor.gradle.xml
 
-import com.bq.poeditor.gradle.ktx.dumpToString
+import com.bq.poeditor.gradle.ktx.toAndroidXmlString
 import com.bq.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.bq.poeditor.gradle.utils.TABLET_RES_FOLDER_SUFFIX
 import com.bq.poeditor.gradle.utils.logger
@@ -68,6 +68,6 @@ class AndroidXmlWriter {
             }
         }
 
-        File(stringsFolderFile, "strings.xml").writeText(document.dumpToString())
+        File(stringsFolderFile, "strings.xml").writeText(document.toAndroidXmlString())
     }
 }
