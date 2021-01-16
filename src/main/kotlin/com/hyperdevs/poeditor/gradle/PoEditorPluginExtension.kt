@@ -20,6 +20,7 @@ package com.hyperdevs.poeditor.gradle
 
 import org.gradle.api.Named
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
@@ -77,6 +78,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val defaultResPath: Property<String> = objects.property(String::class.java)
 
     /**
+     * Tags to filter downloaded strings with, previously declared in PoEditor.
+     *
+     * Defaults to an empty list of tags if not present.
+     */
+    @get:Optional
+    @get:Input
+    val tags: ListProperty<String> = objects.listProperty(String::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -125,4 +135,14 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
      */
     fun setDefaultResPath(value: String) = defaultResPath.set(value)
+
+    /**
+     * Sets the tags to filter downloaded strings with, previously declared in PoEditor.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
+     */
+    fun setTags(value: List<String>) = tags.set(value)
 }

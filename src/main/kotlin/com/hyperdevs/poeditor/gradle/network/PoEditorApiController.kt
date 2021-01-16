@@ -34,10 +34,12 @@ interface PoEditorApiController {
 
     /**
      * Retrieves the translation file URL for a given project, language code, and export type.
+     * Also supports a list of tags to filter.
      */
     fun getTranslationFileUrl(projectId: Int,
                               code: String,
-                              type: String): String
+                              type: String,
+                              tags: List<String>?): String
 }
 
 /**
@@ -47,20 +49,28 @@ class PoEditorApiControllerImpl(private val apiToken: String,
                                 private val poEditorApi: PoEditorApi) : PoEditorApiController {
     override fun getProjectLanguages(projectId: Int): List<ProjectLanguage> {
         val response = poEditorApi.getProjectLanguages(
-                apiToken = apiToken,
-                id = projectId).execute()
+            apiToken = apiToken,
+            id = projectId).execute()
         return response.onSuccessful { it.list }
     }
 
-    override fun getTranslationFileUrl(projectId: Int, code: String, type: String): String {
+    override fun getTranslationFileUrl(projectId: Int, code: String, type: String, tags: List<String>?): String {
         val response = poEditorApi.getExportFileInfo(
-                apiToken = apiToken,
-                id = projectId,
-                type = type,
-                language = code)
-                .execute()
+            apiToken = apiToken,
+            id = projectId,
+            type = type,
+            language = code,
+            tags = processTags(tags))
+            .execute()
         return response.onSuccessful { it.item }
     }
+
+    /**
+     * Tags must be in the format: ["tag1", "tag2", ... , "tagN"]
+     * Check the documentation for details: https://poeditor.com/api_reference/#export
+     */
+    private fun processTags(tags: List<String>?): String? =
+        tags?.takeIf { it.isNotEmpty() }?.joinToString { "\"$it\"" }?.let { "[$it]" }
 
     private inline fun <T : PoEditorResponse, U> Response<T>.onSuccessful(func: (T) -> U): U {
         if (isSuccessful && body()?.response?.code == "200") {
@@ -68,7 +78,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         }
 
         throw IllegalStateException(
-                "An error occurred while trying to retrieve data from PoEditor API: \n\n" +
-                        body().toString())
+            "An error occurred while trying to retrieve data from PoEditor API: \n\n" +
+            body().toString())
     }
 }

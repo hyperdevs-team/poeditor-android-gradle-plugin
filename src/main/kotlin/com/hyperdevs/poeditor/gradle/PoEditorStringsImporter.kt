@@ -70,7 +70,8 @@ object PoEditorStringsImporter {
     fun importPoEditorStrings(apiToken: String,
                               projectId: Int,
                               defaultLang: String,
-                              resDirPath: String) {
+                              resDirPath: String,
+                              tags: List<String>?) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
 
@@ -83,15 +84,17 @@ object PoEditorStringsImporter {
             projectLanguages.forEach { languageData ->
                 val languageCode = languageData.code
 
-                // Retrieve translation file URL for the given language and for the "android_strings" type
+                // Retrieve translation file URL for the given language and for the "android_strings" type,
+                // acknowledging passed tags if present
                 logger.lifecycle("Retrieving translation file URL for language code: $languageCode")
                 val translationFileUrl = poEditorApiController.getTranslationFileUrl(
                     projectId = projectId,
                     code = languageCode,
-                    type = "android_strings")
+                    type = "android_strings",
+                    tags = tags)
 
                 // Download translation File to in-memory string
-                logger.debug("Downloading file from URL: $translationFileUrl")
+                logger.lifecycle("Downloading file from URL: $translationFileUrl")
                 val translationFile = okHttpClient.downloadUrlToString(translationFileUrl)
 
                 // Extract final files from downloaded translation XML

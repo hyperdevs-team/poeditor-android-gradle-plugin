@@ -50,6 +50,7 @@ class PoEditorPlugin : Plugin<Project> {
                 enabled.convention(true)
                 defaultLang.convention("en")
                 defaultResPath.convention(mainResourceDirectory.asFile.absolutePath)
+                tags.convention(emptyList())
             }
 
         // Add flavor and build-type configurations if the project has the "com.android.application" plugin

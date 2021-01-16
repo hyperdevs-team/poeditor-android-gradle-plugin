@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add support for PoEditor tags with the `tags` parameter.
 ### Changed
 - No changed features!
 ### Deprecated

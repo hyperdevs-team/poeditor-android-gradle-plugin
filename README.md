@@ -15,10 +15,10 @@ In your main `build.gradle`, add [jitpack.io](https://jitpack.io/) repository in
 ```groovy
 buildscript {
     repositories { 
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.0.0'
+        classpath "com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.1.0"
     }
 }
 ```
@@ -33,7 +33,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.0.0")
+        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.1.0")
     }
 }
 ```
@@ -83,6 +83,7 @@ Attribute                     | Description
 ```defaultLang```             | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
 ```defaultResPath```          | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
 ```enabled```                 | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
+```tags```                    | (Since 2.1.0) (Optional) List of PoEditor tags to download.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -304,7 +305,7 @@ poEditor {
 You can also apply flavor and build type-specific configurations as you would do when setting them up with application modules.
 The plug-in will generate the proper tasks needed to import the strings under your module: `:<your_module>:import<your_flavor_or_build_type_if_any>PoEditorStrings`
 
-## Enahanced syntax
+## Enhanced syntax
 The plug-in enhances your PoEditor experience by adding useful features over your project by adding useful syntax for certain tasks.
 
 ### Variables
