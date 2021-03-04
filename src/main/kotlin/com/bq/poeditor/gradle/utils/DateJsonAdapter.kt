@@ -20,6 +20,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import java.io.IOException
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +37,11 @@ class DateJsonAdapter : JsonAdapter<Date>() {
     @Throws(IOException::class)
     override fun fromJson(reader: JsonReader): Date {
         val string = reader.nextString()
-        return sdf.parse(string)
+        return try {
+            sdf.parse(string)
+        } catch (e: ParseException) {
+            Date(0)
+        }
     }
 
     @Synchronized
