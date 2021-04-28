@@ -16,4 +16,23 @@
  * limitations under the License.
  */
 
-rootProject.name = "poeditor"
+package com.hyperdevs.poeditor.gradle
+
+import io.github.cdimascio.dotenv.Dotenv
+
+/**
+ * Only for testing purposes.
+ *
+ * Declare the variables API_TOKEN, PROJECT_ID, RES_DIR_PATH and DEFAULT_LANGUAGE in /.env
+ */
+@Suppress("MagicNumber")
+fun main() {
+    val dotenv: Dotenv = Dotenv.load()
+
+    val apiToken = dotenv.get("API_TOKEN", "")
+    val projectId = dotenv.get("PROJECT_ID", "-1").toInt()
+    val resDirPath = dotenv.get("RES_DIR_PATH", "")
+    val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
+
+    PoEditorStringsImporter.importPoEditorStrings(apiToken, projectId, defaultLanguage, resDirPath)
+}

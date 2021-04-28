@@ -16,4 +16,18 @@
  * limitations under the License.
  */
 
-rootProject.name = "poeditor"
+package com.hyperdevs.poeditor.gradle.utils
+
+import org.gradle.api.logging.Logging
+
+const val ALL_REGEX_STRING = """^(.+)$"""
+
+const val TABLET_REGEX_STRING = """^(.+)_tablet$"""
+const val TABLET_RES_FOLDER_SUFFIX = "sw600dp"
+
+const val DEFAULT_PLUGIN_NAME = "poEditor"
+const val POEDITOR_CONFIG_NAME = "poEditorConfig"
+
+const val PLUGIN_GROUP = "Translations"
+
+val logger = Logging.getLogger(org.gradle.api.logging.Logger::class.java)!!

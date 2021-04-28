@@ -16,4 +16,19 @@
  * limitations under the License.
  */
 
-rootProject.name = "poeditor"
+package com.hyperdevs.poeditor.gradle.utils
+
+import org.junit.Assert
+import org.junit.Test
+
+class LocaleUtilsTest {
+    @Test
+    fun `Creating values modifier from standard lang code works`() {
+        Assert.assertEquals("es", createValuesModifierFromLangCode("es"))
+    }
+
+    @Test
+    fun `Creating values modifier from specialized lang code works`() {
+        Assert.assertEquals("es-rMX", createValuesModifierFromLangCode("es-mx"))
+    }
+}

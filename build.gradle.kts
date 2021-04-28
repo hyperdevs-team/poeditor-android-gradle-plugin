@@ -1,4 +1,6 @@
 /*
+ * Copyright 2021 HyperDevs
+ *
  * Copyright 2020 BQ
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +16,7 @@
  * limitations under the License.
  */
 
-group = "com.github.bq"
+group = "com.github.hyperdevs-team"
 
 buildscript {
     repositories {

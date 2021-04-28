@@ -1,5 +1,5 @@
 # PoEditor Android Gradle Plug-in
-[![Release](https://jitpack.io/v/bq/poeditor-android-gradle-plugin.svg)](https://jitpack.io/#bq/poeditor-android-gradle-plugin)
+[![Release](https://jitpack.io/v/hyperdevs-team/poeditor-android-gradle-plugin.svg)](https://jitpack.io/#hyperdevs-team/poeditor-android-gradle-plugin)
 
 Simple plug-in that eases importing [PoEditor](https://poeditor.com) localized strings to your Android project.
 
@@ -18,7 +18,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:1.4.1'
+        classpath 'com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.0.0'
     }
 }
 ```
@@ -33,7 +33,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.bq:poeditor-android-gradle-plugin:1.4.1")
+        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.0.0")
     }
 }
 ```
@@ -46,7 +46,7 @@ Apply and configure the plug-in in your app's `build.gradle` file:
 
 ```groovy
 apply plugin: "com.android.application"
-apply plugin: "com.bq.poeditor"
+apply plugin: "com.hyperdevs.poeditor"
 
 poEditor {
     apiToken = "your_api_token"
@@ -62,7 +62,7 @@ poEditor {
 ```kotlin
 plugins {
     id "com.android.application"
-    id "com.bq.poeditor"
+    id "com.hyperdevs.poeditor"
 }
 
 poEditor {
@@ -273,7 +273,7 @@ Apply and configure the plug-in in your library's `build.gradle` file:
 
 ```groovy
 apply plugin: "com.android.library"
-apply plugin: "com.bq.poeditor"
+apply plugin: "com.hyperdevs.poeditor"
 
 poEditor {
     apiToken = "your_api_token"
@@ -289,7 +289,7 @@ poEditor {
 ```kotlin
 plugins {
     id "com.android.library"
-    id "com.bq.poeditor"
+    id "com.hyperdevs.poeditor"
 }
 
 poEditor {
@@ -370,16 +370,22 @@ The plug-in will create two `strings.xml` files:
 ```
 
 ## iOS alternative
-If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/bq/poeditor-parser-swift)
+If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)
 
 ## Authors & Collaborators
 * **[Iván Martínez](https://github.com/imartinez)** - *Initial work*
 * **[Adrián García](https://github.com/adriangl)** - *Maintainer*
 * **[sonnet](https://github.com/rafid059)** - *Contributor*
 
+## Acknowledgements
+The work in this repository up to April 28th, 2021 was done by [bq](https://github.com/bq).
+Thanks for all the work!!
+
 ## License
 This project is licensed under the Apache Software License, Version 2.0.
 ```
+   Copyright 2021 HyperDevs
+   
    Copyright 2016 BQ
 
    Licensed under the Apache License, Version 2.0 (the "License");

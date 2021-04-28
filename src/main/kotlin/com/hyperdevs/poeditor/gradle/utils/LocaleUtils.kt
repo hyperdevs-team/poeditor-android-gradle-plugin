@@ -16,4 +16,18 @@
  * limitations under the License.
  */
 
-rootProject.name = "poeditor"
+package com.hyperdevs.poeditor.gradle.utils
+
+/**
+ * Creates values file modifier taking into account specializations (i.e values-es-rMX for Mexican).
+ * @param langCode
+ * @return proper values file modifier (i.e. es-rMX)
+ */
+fun createValuesModifierFromLangCode(langCode: String): String {
+    return if (!langCode.contains("-")) {
+        langCode
+    } else {
+        val langParts = langCode.split("-")
+        "${langParts[0]}-r${langParts[1].toUpperCase()}"
+    }
+}
