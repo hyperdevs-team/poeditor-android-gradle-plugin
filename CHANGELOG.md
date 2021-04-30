@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add support for PoEditor tags with the `tags` parameter.
+- No new features!
 ### Changed
 - No changed features!
 ### Deprecated
@@ -34,10 +34,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [2.1.0] - 2021-05-01
+### Added
+- Add `tags` parameter to `poEditorConfig` block to add PoEditor tags:
+```groovy
+poEditor {
+  apiToken = "your_api_token"
+  projectId = 12345
+  defaultLang = "en"
+  tags = ["tag1", "tag2"] // Download strings with the specified tags
+}
+```
+
 ## [2.0.0] - 2021-04-28
 ### Changed
-- Changed repo ownership to [hyperdevs-team](https://github.com/hyperdevs-team). Thanks [bq](https://github.com/bq) for all the work!
-- Changed package names from `com.bq.*` to `com.hyperdevs.*`
+- Change repo ownership to [hyperdevs-team](https://github.com/hyperdevs-team). Thanks [bq](https://github.com/bq) for all the work!
+- Change package names from `com.bq.*` to `com.hyperdevs.*`
 
 ## [1.4.2] - 2020-12-29
 ### Added
@@ -248,7 +260,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/1.4.2...2.0.0
 [1.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/1.4.0...1.4.1

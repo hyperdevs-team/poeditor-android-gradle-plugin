@@ -97,8 +97,71 @@ This task will:
 * Create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
 region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
 
-## Handling multiple flavors and build types
+## Enhanced syntax
+The plug-in enhances your PoEditor experience by adding useful features over your project by adding useful syntax for certain tasks.
 
+### Variables
+The plug-in does not parse string placeholders, instead it uses variables with a specific markup to use in PoEditor's string definition: it uses a double braces syntax to declare them.
+This allows more clarity for translators that use the platform, since it allows them to know what the placeholders really mean and better reuse them in translations.
+
+For example, the PoEditor string:
+
+```
+welcome_message: Hey {{user_name}} how are you
+``` 
+
+will become, in `strings.xml`
+
+```xml
+<string name="welcome_message">Hey %1$s how are you</string>
+```
+
+If you need more than one variable in the same string, you can also use ordinals. The string:
+
+```
+welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer}}
+``` 
+
+will become, `in strings.xml`
+
+```xml
+<string name="welcome_message">Hey %1$s how are you, today offer is %2$s</string>
+```
+
+This way you can change the order of the placeholders depending on the language:
+
+The same string, with the following Spanish translation:
+
+```
+welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}}
+``` 
+
+will become, in `values-es/strings.xml`
+
+```xml
+<string name="welcome_message">La oferta del día es %2$s para ti, %1$s</string>
+```
+
+### Tablet specific strings
+You can mark some strings as tablet specific strings by adding ```_tablet```suffix to the string key in PoEditor. 
+The plug-in will extract tablet strings to its own XML and save it in ```values-<lang>-sw600dp```.
+
+If you define the following string in PoEditor:
+```welcome_message: Hey friend``` and ```welcome_message_tablet: Hey friend how are you doing today, you look great!```
+
+The plug-in will create two `strings.xml` files:
+
+`/values/strings.xml`
+```xml
+<string name="welcome_message">Hey friend</string>
+```
+
+`/values-sw600dp/strings.xml`
+```xml
+<string name="welcome_message">Hey friend how are you doing today, you look great!</string>
+```
+
+## Handling multiple flavors and build types
 Sometimes we might want to import different strings for a given flavor (for example, in white label apps, we could have
 different string definitions depending on the brand where they're used). The plugin supports this kind of apps by providing
 specific configurations via the `poEditorConfig` block.
@@ -177,21 +240,61 @@ android {
 </details>
 
 Each flavor (`free` and `paid`) and build type (`debug` and `release`) will have its own task to import strings for said
-configuration: `importFreePoEditorStrings`, `importPaidPoEditorStrings`, `importDebugPoEditorStrings` and 
+configuration: `importFreePoEditorStrings`, `importPaidPoEditorStrings`, `importDebugPoEditorStrings` and
 `importReleasePoEditorStrings`.
 
 Now the `importPoEditorStrings` task will import the main strings configured in the `poEditor` block and also the
 strings for each defined flavor or build type.`
 
+## Handling library modules
+> Requires version 1.3.0 of the plug-in
+
+You can also apply the plug-in to library modules. Here's an example:
+Apply and configure the plug-in in your library's `build.gradle` file:
+<details open><summary>Groovy</summary>
+
+```groovy
+apply plugin: "com.android.library"
+apply plugin: "com.hyperdevs.poeditor"
+
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+plugins {
+    id "com.android.library"
+    id "com.hyperdevs.poeditor"
+}
+
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+}
+```
+
+</details>
+
+You can also apply flavor and build type-specific configurations as you would do when setting them up with application modules.
+The plug-in will generate the proper tasks needed to import the strings under your module: `:<your_module>:import<your_flavor_or_build_type_if_any>PoEditorStrings`
+
 ## Disabling task generation for specific configurations
 > Requires version 1.4.0 of the plug-in
 
-There may be some cases where you only want certain configurations to have a related task. 
+There may be some cases where you only want certain configurations to have a related task.
 One of these examples may be to only have tasks for the configured flavors or build types, but you don't want to have the
 main `poEditor` block to download any strings. For these cases you have the `enabled` variable that you can set to false
 when you want to disable a configuration.
 
-Keep in mind that, if you disable the main `poEditor` block, you'll need to enable each specific configuration separately 
+Keep in mind that, if you disable the main `poEditor` block, you'll need to enable each specific configuration separately
 since they inherit the main block configuration. Let's see how this works:
 
 <details open><summary>Groovy</summary>
@@ -264,110 +367,19 @@ android {
 
 </details>
 
+## Handling tags
+> Requires version 2.1.0 of the plug-in
 
-## Handling library modules
-> Requires version 1.3.0 of the plug-in
-
-You can also apply the plug-in to library modules. Here's an example:
-Apply and configure the plug-in in your library's `build.gradle` file:
-<details open><summary>Groovy</summary>
+You can also select the tags that you want strings to be downloaded from PoEditor, based on the tags that you defined in
+your PoEditor project.
 
 ```groovy
-apply plugin: "com.android.library"
-apply plugin: "com.hyperdevs.poeditor"
-
 poEditor {
     apiToken = "your_api_token"
     projectId = 12345
     defaultLang = "en"
+    tags = ["tag1", "tag2"] // Download strings with the specified tags
 }
-```
-
-</details>
-
-<details><summary>Kotlin</summary>
-
-```kotlin
-plugins {
-    id "com.android.library"
-    id "com.hyperdevs.poeditor"
-}
-
-poEditor {
-    apiToken = "your_api_token"
-    projectId = 12345
-    defaultLang = "en"
-}
-```
-
-</details>
-
-You can also apply flavor and build type-specific configurations as you would do when setting them up with application modules.
-The plug-in will generate the proper tasks needed to import the strings under your module: `:<your_module>:import<your_flavor_or_build_type_if_any>PoEditorStrings`
-
-## Enhanced syntax
-The plug-in enhances your PoEditor experience by adding useful features over your project by adding useful syntax for certain tasks.
-
-### Variables
-The plug-in does not parse string placeholders, instead it uses variables with a specific markup to use in PoEditor's string definition: it uses a double braces syntax to declare them.
-This allows more clarity for translators that use the platform, since it allows them to know what the placeholders really mean and better reuse them in translations.
-
-For example, the PoEditor string:
-
-```
-welcome_message: Hey {{user_name}} how are you
-``` 
-
-will become, in `strings.xml`
-
-```xml
-<string name="welcome_message">Hey %1$s how are you</string>
-```
-
-If you need more than one variable in the same string, you can also use ordinals. The string:
-
-```
-welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer}}
-``` 
-
-will become, `in strings.xml`
-
-```xml
-<string name="welcome_message">Hey %1$s how are you, today offer is %2$s</string>
-```
-
-This way you can change the order of the placeholders depending on the language:
-
-The same string, with the following Spanish translation:
-
-```
-welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}}
-``` 
-
-will become, in `values-es/strings.xml`
-
-```xml
-<string name="welcome_message">La oferta del día es %2$s para ti, %1$s</string>
-```
-
-### Tablet specific strings
-
-You can mark some strings as tablet specific strings by adding ```_tablet```suffix to the string key in PoEditor. 
-The plug-in will extract tablet strings to its own XML and save it in ```values-<lang>-sw600dp```.
-
-If you define the following string in PoEditor:
-```welcome_message: Hey friend``` and ```welcome_message_tablet: Hey friend how are you doing today, you look great!```
-
-The plug-in will create two `strings.xml` files:
-
-`/values/strings.xml`
-```xml
-<string name="welcome_message">Hey friend</string>
-```
-
-`/values-sw600dp/strings.xml`
-```xml
-<string name="welcome_message">Hey friend how are you doing today, you look great!</string>
 ```
 
 ## iOS alternative
