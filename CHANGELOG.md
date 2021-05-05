@@ -22,7 +22,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add `tags` parameter to `poEditorConfig` block to add PoEditor tags:
+```groovy
+poEditor {
+  apiToken = "your_api_token"
+  projectId = 12345
+  defaultLang = "en"
+  tags = ["tag1", "tag2"] // Download strings with the specified tags
+}
+```
 ### Changed
 - No changed features!
 ### Deprecated
@@ -36,8 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2021-04-28
 ### Changed
-- Changed repo ownership to [hyperdevs-team](https://github.com/hyperdevs-team). Thanks [bq](https://github.com/bq) for all the work!
-- Changed package names from `com.bq.*` to `com.hyperdevs.*`
+- Change repo ownership to [hyperdevs-team](https://github.com/hyperdevs-team). Thanks [bq](https://github.com/bq) for all the work!
+- Change package names from `com.bq.*` to `com.hyperdevs.*`
 
 ## [1.4.2] - 2020-12-29
 ### Added

@@ -44,5 +44,6 @@ interface PoEditorApi {
                           @Field("id") id: Int,
                           @Field("action") action: String = "export",
                           @Field("type") type: String,
-                          @Field("language") language: String): Call<ExportResponse>
+                          @Field("language") language: String,
+                          @Field("tags") tags: String?): Call<ExportResponse>
 }

@@ -45,12 +45,14 @@ abstract class ImportPoEditorStringsTask
         val projectId: Int
         val defaultLang: String
         val defaultResPath: String
+        val tags : List<String>
 
         try {
             apiToken = extension.apiToken.get()
             projectId = extension.projectId.get()
             defaultLang = extension.defaultLang.get()
             defaultResPath = extension.defaultResPath.get()
+            tags = extension.tags.get()
         } catch (e: Exception) {
             throw IllegalArgumentException(
                 "You don't have the config '${extension.name}' properly set-up in your '$POEDITOR_CONFIG_NAME' block " +
@@ -59,6 +61,6 @@ abstract class ImportPoEditorStringsTask
         }
 
         PoEditorStringsImporter.importPoEditorStrings(
-            apiToken, projectId, defaultLang, defaultResPath)
+            apiToken, projectId, defaultLang, defaultResPath, tags)
     }
 }

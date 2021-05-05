@@ -33,6 +33,7 @@ fun main() {
     val projectId = dotenv.get("PROJECT_ID", "-1").toInt()
     val resDirPath = dotenv.get("RES_DIR_PATH", "")
     val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
+    val tags = dotenv.get("TAGS", "").takeIf { it.isNotBlank() }?.split(",")?.map { it.trim() }
 
-    PoEditorStringsImporter.importPoEditorStrings(apiToken, projectId, defaultLanguage, resDirPath)
+    PoEditorStringsImporter.importPoEditorStrings(apiToken, projectId, defaultLanguage, resDirPath, tags)
 }
