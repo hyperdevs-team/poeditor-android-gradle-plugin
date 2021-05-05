@@ -98,7 +98,7 @@ This task will:
 region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
 
 ## Enhanced syntax
-The plug-in enhances your PoEditor experience by adding useful features over your project by adding useful syntax for certain tasks.
+The plug-in enhances your PoEditor experience by adding useful features over your project by adding some custom syntax for certain tasks.
 
 ### Variables
 The plug-in does not parse string placeholders, instead it uses variables with a specific markup to use in PoEditor's string definition: it uses a double braces syntax to declare them.
