@@ -54,6 +54,8 @@ abstract class ImportPoEditorStringsTask
             defaultResPath = extension.defaultResPath.get()
             tags = extension.tags.get()
         } catch (e: Exception) {
+            logger.error("Import configuration failed", e)
+
             throw IllegalArgumentException(
                 "You don't have the config '${extension.name}' properly set-up in your '$POEDITOR_CONFIG_NAME' block " +
                 "or you don't have your main '$DEFAULT_PLUGIN_NAME' config properly set-up.\n" +

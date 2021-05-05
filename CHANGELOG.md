@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [2.1.1] - 2021-05-06
+### Fixed
+- Fix undefined tags crashing the plugin
+
 ## [2.1.0] - 2021-05-05
 ### Added
 - Add `tags` parameter to `poEditorConfig` block to add PoEditor tags:
@@ -264,7 +268,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/1.4.2...2.0.0
 [1.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/1.4.1...1.4.2

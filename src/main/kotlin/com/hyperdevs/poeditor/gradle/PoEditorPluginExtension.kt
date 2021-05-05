@@ -142,7 +142,7 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
      * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
      *
-     * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
+     * Gradle Kotlin DSL users must use `tags.set(value)`.
      */
     fun setTags(value: List<String>) = tags.set(value)
 }
