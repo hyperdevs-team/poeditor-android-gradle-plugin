@@ -57,7 +57,7 @@ repositories {
 dependencies {
     implementation(localGroovy())
 
-    compileOnly("com.android.tools.build:gradle:4.2.0-alpha01")
+    compileOnly("com.android.tools.build:gradle:4.2.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
 
