@@ -15,6 +15,7 @@
 
 # Generated files
 .idea/**/contentModel.xml
+.idea/**/libraries-with-intellij-classes.xml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -129,5 +130,5 @@ gradle-app.setting
 # Output directory for tests
 /output
 
-# Donenv configuration file
+# Dotenv configuration file
 .env

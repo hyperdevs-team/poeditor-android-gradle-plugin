@@ -32,11 +32,11 @@ poEditor {
 }
 ```
 ### Changed
-- No changed features!
+- Add support for Android Gradle Plugin version 4.2.0
 ### Deprecated
 - No deprecated features!
 ### Removed
-- No removed features!
+- Remove support for Android Gradle Plugin versions lower than 4.2.0
 ### Fixed
 - No fixed issues!
 ### Security

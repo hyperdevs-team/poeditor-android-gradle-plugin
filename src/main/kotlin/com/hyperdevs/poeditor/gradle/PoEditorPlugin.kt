@@ -18,6 +18,8 @@
 
 package com.hyperdevs.poeditor.gradle
 
+import com.android.build.api.extension.ApplicationAndroidComponentsExtension
+import com.android.build.api.extension.LibraryAndroidComponentsExtension
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
@@ -83,16 +85,15 @@ class PoEditorPlugin : Plugin<Project> {
         // configurations with Android app modules.
         val configsExtensionContainer = project.container<PoEditorPluginExtension>()
         val androidExtension = project.the<BaseAppModuleExtension>()
+        val androidComponentsExtension = project.the<ApplicationAndroidComponentsExtension>()
         (androidExtension as ExtensionAware).extensions.add(POEDITOR_CONFIG_NAME, configsExtensionContainer)
 
         val configPoEditorTaskProvidersMap: MutableMap<ConfigName, TaskProvider<*>> = mutableMapOf()
 
         // Add tasks for every flavor or build type
-        androidExtension.onVariants {
-            // Add main extension since we have the main extension evaluated here
+        androidComponentsExtension.beforeVariants {
             addMainPoEditorTask(project, mainExtension)
-
-            val configs = getConfigs(this.productFlavors.map { it.second }, this.buildType)
+            val configs = getConfigs(it.productFlavors.map { it.second }, it.buildType)
 
             generatePoEditorTasks(configs,
                 project,
@@ -121,16 +122,17 @@ class PoEditorPlugin : Plugin<Project> {
         // configurations with Android library modules.
         val configsExtensionContainer = project.container<PoEditorPluginExtension>()
         val androidExtension = project.the<LibraryExtension>()
+        val androidComponentsExtension = project.the<LibraryAndroidComponentsExtension>()
         (androidExtension as ExtensionAware).extensions.add(POEDITOR_CONFIG_NAME, configsExtensionContainer)
 
         val configPoEditorTaskProvidersMap: MutableMap<ConfigName, TaskProvider<*>> = mutableMapOf()
 
         // Add tasks for every flavor or build type
-        androidExtension.onVariants {
+        androidComponentsExtension.beforeVariants {
             // Add main extension since we have the main extension evaluated here
             addMainPoEditorTask(project, mainExtension)
 
-            val configs = getConfigs(this.productFlavors.map { it.second }, this.buildType)
+            val configs = getConfigs(it.productFlavors.map { it.second }, it.buildType)
 
             generatePoEditorTasks(configs,
                 project,
