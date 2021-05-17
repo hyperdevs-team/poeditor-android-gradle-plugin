@@ -50,4 +50,4 @@ data class ResponseStatus(val status: String,
 data class ProjectLanguage(val name: String,
                            val code: String,
                            val percentage: Double,
-                           val updated: Date)
+                           val updated: Date?)
