@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- No fixed issues!
+- Fix parse date for empty language. _Thanks to [@wojciechkryg](https://github.com/wojciechkryg) and [@rafid059](https://github.com/rafid059) for the contribution!_
 ### Security
 - No security issues fixed!
 
