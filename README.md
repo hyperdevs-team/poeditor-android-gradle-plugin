@@ -389,6 +389,7 @@ If you want a similar solution for your iOS projects, check this out: [poeditor-
 * **[Iván Martínez](https://github.com/imartinez)** - *Initial work*
 * **[Adrián García](https://github.com/adriangl)** - *Maintainer*
 * **[sonnet](https://github.com/rafid059)** - *Contributor*
+* **[Wojciech Kryg](https://github.com/wojciechkryg)** - *Contributor*
 
 ## Acknowledgements
 The work in this repository up to April 28th, 2021 was done by [bq](https://github.com/bq).
