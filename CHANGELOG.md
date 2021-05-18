@@ -30,9 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fix parse date for empty language. _Thanks to [@wojciechkryg](https://github.com/wojciechkryg) and [@rafid059](https://github.com/rafid059) for the contribution!_
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [2.1.2] - 2021-05-18
+### Fixed
+- Fix parse date for empty language. _Thanks to [@wojciechkryg](https://github.com/wojciechkryg) and [@rafid059](https://github.com/rafid059) for the contribution!_
 
 ## [2.1.1] - 2021-05-06
 ### Fixed
@@ -268,7 +272,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.1...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.2...HEAD
+[2.1.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/1.4.2...2.0.0
