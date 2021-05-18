@@ -36,8 +36,9 @@ class DateJsonAdapter : JsonAdapter<Date>() {
 
     @Synchronized
     @Throws(IOException::class)
-    override fun fromJson(reader: JsonReader): Date {
+    override fun fromJson(reader: JsonReader): Date? {
         val string = reader.nextString()
+        if (string == null || string.isBlank()) return null
         return sdf.parse(string)
     }
 
