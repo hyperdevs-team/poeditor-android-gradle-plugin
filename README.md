@@ -374,6 +374,8 @@ android {
 You can also select the tags that you want strings to be downloaded from PoEditor, based on the tags that you defined in
 your PoEditor project.
 
+<details open><summary>Groovy</summary>
+
 ```groovy
 poEditor {
     apiToken = "your_api_token"
@@ -383,6 +385,10 @@ poEditor {
 }
 ```
 
+</details>
+
+<details><summary>Kotlin</summary>    
+    
 ```kotlin
 poEditor {
     apiToken = "your_api_token"
@@ -391,6 +397,8 @@ poEditor {
     tags = listOf("tag1", "tag2")
 }
 ```
+    
+</details>
 
 ## Overriding default values folder for specific languages
 > Requires version 2.2.0 of the plug-in
@@ -404,6 +412,8 @@ flavors.
 You can add the parameter `languageValuesOverridePathMap` to your `poEditor` or `poEditorConfig` block to change the 
 path of the `values` folder where the strings file will be stored for a given language code:
 
+<details open><summary>Groovy</summary>
+
 ```groovy
 poEditor {
     apiToken = "your_api_token"
@@ -415,6 +425,10 @@ poEditor {
     ]
 }
 ```
+    
+</details>
+
+<details><summary>Kotlin</summary>
 
 ```kotlin
 poEditor {
@@ -427,6 +441,8 @@ poEditor {
     )
 }
 ```
+    
+</details>
 
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)
