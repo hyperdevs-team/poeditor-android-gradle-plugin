@@ -22,7 +22,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add `languageValuesOverridePathMap` to override `values` folder for specific languages.
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+  apiToken = "your_api_token"
+  projectId = 12345
+  defaultLang = "en"
+  languageValuesOverridePathMap = [
+          "free" : "${rootDir}/app/src/free/res/values",
+          "paid" : "${rootDir}/app/src/paid/res/values"
+  ]
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+  apiToken = "your_api_token"
+  projectId = 12345
+  defaultLang = "en"
+  languageValuesOverridePathMap = mapOf(
+          "free" to "${rootDir}/app/src/free/res/values",
+          "paid" to "${rootDir}/app/src/paid/res/values"
+  )
+}
+```
 ### Changed
 - No changed features!
 ### Deprecated
@@ -45,6 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0] - 2021-05-05
 ### Added
 - Add `tags` parameter to `poEditorConfig` block to add PoEditor tags:
+<details open><summary>Groovy</summary>
+
 ```groovy
 poEditor {
   apiToken = "your_api_token"
@@ -53,6 +84,20 @@ poEditor {
   tags = ["tag1", "tag2"] // Download strings with the specified tags
 }
 ```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+  apiToken = "your_api_token"
+  projectId = 12345
+  defaultLang = "en"
+  tags = listOf("tag1", "tag2")
+}
+```
+
 ### Changed
 - Add support for Android Gradle Plugin version 4.2.0
 ### Removed

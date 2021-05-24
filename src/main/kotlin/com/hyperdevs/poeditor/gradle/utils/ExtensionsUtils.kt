@@ -22,6 +22,7 @@ import com.hyperdevs.poeditor.gradle.PoEditorPluginExtension
 import com.hyperdevs.poeditor.gradle.TAG
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.newInstance
 import java.util.*
@@ -78,6 +79,17 @@ private fun <T> Collection<KProperty1<T, *>>.linkProperties(parent: T, child: T,
         } else if (value is ListProperty<*>) {
             val originalProperty = property.get(child) as ListProperty<Nothing>
             val parentFallback = property.get(parent) as ListProperty<Nothing>
+            if (value !== parentFallback) {
+                value.set(originalProperty.map {
+                    it.takeUnless { it.isEmpty() }.sneakyNull()
+                }.orElse(parentFallback))
+            } else {
+                value.set(originalProperty)
+            }
+        } else if (value is MapProperty<*, *>) {
+            val originalProperty = property.get(child) as MapProperty<Nothing, Nothing>
+            val parentFallback = property.get(parent) as MapProperty<Nothing, Nothing>
+
             if (value !== parentFallback) {
                 value.set(originalProperty.map {
                     it.takeUnless { it.isEmpty() }.sneakyNull()
