@@ -22,6 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- No new features!
+### Changed
+- No changed features!
+### Deprecated
+- No deprecated features!
+### Removed
+- No removed features!
+### Fixed
+- No fixed issues!
+### Security
+- No security issues fixed!
+
+## [2.2.0] - 2021-05-25
+### Added
 - Add `languageValuesOverridePathMap` to override `values` folder for specific languages.
 <details open><summary>Groovy</summary>
 
@@ -52,16 +66,8 @@ poEditor {
   )
 }
 ```
-### Changed
-- No changed features!
-### Deprecated
-- No deprecated features!
-### Removed
-- No removed features!
-### Fixed
-- No fixed issues!
-### Security
-- No security issues fixed!
+
+</details>
 
 ## [2.1.2] - 2021-05-18
 ### Fixed
@@ -97,6 +103,8 @@ poEditor {
   tags = listOf("tag1", "tag2")
 }
 ```
+  
+</details>
 
 ### Changed
 - Add support for Android Gradle Plugin version 4.2.0
@@ -317,7 +325,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.2...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.2...2.2.0
 [2.1.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.0.0...2.1.0
