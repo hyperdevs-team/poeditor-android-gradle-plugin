@@ -23,7 +23,7 @@ import io.github.cdimascio.dotenv.Dotenv
 /**
  * Only for testing purposes.
  *
- * Declare the variables API_TOKEN, PROJECT_ID, RES_DIR_PATH and DEFAULT_LANGUAGE in /.env
+ * Declare the variables API_TOKEN, PROJECT_ID, RES_DIR_PATH, DEFAULT_LANGUAGE in /.env
  */
 @Suppress("MagicNumber")
 fun main() {
@@ -33,7 +33,24 @@ fun main() {
     val projectId = dotenv.get("PROJECT_ID", "-1").toInt()
     val resDirPath = dotenv.get("RES_DIR_PATH", "")
     val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
-    val tags = dotenv.get("TAGS", "").takeIf { it.isNotBlank() }?.split(",")?.map { it.trim() }
+    val tags = dotenv.get("TAGS", "")
+        .takeIf { it.isNotBlank() }
+        ?.split(",")
+        ?.map { it.trim() }
+    val languageValuesOverridePathMap = dotenv.get("LANGUAGE_VALUES_OVERRIDE_PATH_MAP", "")
+        .takeIf { it.isNotBlank() }
+        ?.split(",")
+        ?.associate {
+            val (key, value) = it.split(":")
+            key to value
+        }
 
-    PoEditorStringsImporter.importPoEditorStrings(apiToken, projectId, defaultLanguage, resDirPath, tags)
+    PoEditorStringsImporter.importPoEditorStrings(
+        apiToken,
+        projectId,
+        defaultLanguage,
+        resDirPath,
+        tags,
+        languageValuesOverridePathMap
+    )
 }

@@ -76,14 +76,15 @@ poEditor {
 
 The complete attribute list is the following:
 
-Attribute                     | Description
-------------------------------|-----------------------------------------
-```apiToken```                | PoEditor API Token.
-```projectId```               | PoEditor project ID.
-```defaultLang```             | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
-```defaultResPath```          | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
-```enabled```                 | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
-```tags```                    | (Since 2.1.0) (Optional) List of PoEditor tags to download.
+Attribute                       | Description
+--------------------------------|-----------------------------------------
+```apiToken```                  | PoEditor API Token.
+```projectId```                 | PoEditor project ID.
+```defaultLang```               | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
+```defaultResPath```            | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
+```enabled```                   | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
+```tags```                      | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
+```languageValuesOverrideMap``` | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -373,6 +374,8 @@ android {
 You can also select the tags that you want strings to be downloaded from PoEditor, based on the tags that you defined in
 your PoEditor project.
 
+<details open><summary>Groovy</summary>
+
 ```groovy
 poEditor {
     apiToken = "your_api_token"
@@ -381,6 +384,65 @@ poEditor {
     tags = ["tag1", "tag2"] // Download strings with the specified tags
 }
 ```
+
+</details>
+
+<details><summary>Kotlin</summary>    
+    
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    tags = listOf("tag1", "tag2")
+}
+```
+    
+</details>
+
+## Overriding default values folder for specific languages
+> Requires version 2.2.0 of the plug-in
+
+Sometimes you may want to override the default `values` path where the plug-in stores the downloaded strings.
+For example, you may have a project where you have custom languages suited to your app flavors in PoEditor
+(let's say `free` and `paid`). The plug-in would create two folders in your app's `res` folder 
+(`values-free` and `values-paid`) by default; this would not be ideal if you want the string values to their respective
+flavors.
+
+You can add the parameter `languageValuesOverridePathMap` to your `poEditor` or `poEditorConfig` block to change the 
+path of the `values` folder where the strings file will be stored for a given language code:
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    languageValuesOverridePathMap = [
+            "free" : "${rootDir}/app/src/free/res/values", 
+            "paid" : "${rootDir}/app/src/paid/res/values"
+    ]
+}
+```
+    
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    languageValuesOverridePathMap = mapOf(
+        "free" to "${rootDir}/app/src/free/res/values",
+        "paid" to "${rootDir}/app/src/paid/res/values"
+    )
+}
+```
+    
+</details>
 
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)

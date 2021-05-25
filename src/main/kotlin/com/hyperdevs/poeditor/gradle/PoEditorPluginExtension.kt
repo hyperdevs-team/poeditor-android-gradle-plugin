@@ -21,6 +21,7 @@ package com.hyperdevs.poeditor.gradle
 import org.gradle.api.Named
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
@@ -87,6 +88,16 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val tags: ListProperty<String> = objects.listProperty(String::class.java)
 
     /**
+     * Map of languages to override their default values folder.
+     *
+     * Defaults to an empty map of language overrides map.
+     */
+    @get:Optional
+    @get:Input
+    val languageValuesOverridePathMap: MapProperty<String, String> =
+        objects.mapProperty(String::class.java, String::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -145,4 +156,14 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `tags.set(value)`.
      */
     fun setTags(value: List<String>) = tags.set(value)
+
+    /**
+     * Sets the map of languages to override their default values folder.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `languageOverridePathMap.set(value)`.
+     */
+    fun setLanguageValuesOverridePathMap(value: Map<String, String>) = languageValuesOverridePathMap.set(value)
 }

@@ -66,6 +66,7 @@ class MergeExtensionsTest {
         val testProjectId0 = 1234
         val testProjectId1 = 2345
         val testDefaultLang = "es"
+        val testLanguageValuesOverridePathMap = mapOf("es" to "test/folder")
 
         val child = Extension().apply {
             apiToken.set(testApiToken)
@@ -74,6 +75,7 @@ class MergeExtensionsTest {
         val parent = Extension().apply {
             projectId.set(testProjectId1)
             defaultLang.set(testDefaultLang)
+            languageValuesOverridePathMap.set(testLanguageValuesOverridePathMap)
         }
         val exts = listOf(child, parent).mapToExtensionMergeHolder(project)
 
@@ -82,6 +84,7 @@ class MergeExtensionsTest {
         assertEquals(testApiToken, merged.apiToken.get())
         assertEquals(testProjectId0, merged.projectId.get())
         assertEquals(testDefaultLang, merged.defaultLang.get())
+        assertEquals(testLanguageValuesOverridePathMap, merged.languageValuesOverridePathMap.get())
     }
 
     @Test
@@ -89,10 +92,14 @@ class MergeExtensionsTest {
         val testApiToken = "test"
         val testProjectId = 1234
         val testDefaultLang = "es"
+        val testLanguageValuesOverridePathMap = mapOf("es" to "test/folder")
 
         val grandchild = Extension().apply { apiToken.set(testApiToken) }
         val child = Extension().apply { projectId.set(testProjectId) }
-        val parent = Extension().apply { defaultLang.set(testDefaultLang) }
+        val parent = Extension().apply {
+            defaultLang.set(testDefaultLang)
+            languageValuesOverridePathMap.set(testLanguageValuesOverridePathMap)
+        }
         val exts = listOf(grandchild, child, parent).mapToExtensionMergeHolder(project)
 
         val merged = mergeExtensions(exts)

@@ -46,6 +46,7 @@ abstract class ImportPoEditorStringsTask
         val defaultLang: String
         val defaultResPath: String
         val tags : List<String>
+        val languageOverridePathMap: Map<String, String>
 
         try {
             apiToken = extension.apiToken.get()
@@ -53,6 +54,7 @@ abstract class ImportPoEditorStringsTask
             defaultLang = extension.defaultLang.get()
             defaultResPath = extension.defaultResPath.get()
             tags = extension.tags.get()
+            languageOverridePathMap = extension.languageValuesOverridePathMap.get()
         } catch (e: Exception) {
             logger.error("Import configuration failed", e)
 
@@ -63,6 +65,11 @@ abstract class ImportPoEditorStringsTask
         }
 
         PoEditorStringsImporter.importPoEditorStrings(
-            apiToken, projectId, defaultLang, defaultResPath, tags)
+            apiToken,
+            projectId,
+            defaultLang,
+            defaultResPath,
+            tags,
+            languageOverridePathMap)
     }
 }

@@ -71,7 +71,8 @@ object PoEditorStringsImporter {
                               projectId: Int,
                               defaultLang: String,
                               resDirPath: String,
-                              tags: List<String>?) {
+                              tags: List<String>?,
+                              languageValuesOverridePathMap: Map<String, String>?) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
 
@@ -103,7 +104,12 @@ object PoEditorStringsImporter {
                         translationFile, listOf(TABLET_REGEX_STRING))
 
                 xmlWriter.saveXml(
-                    resDirPath, postProcessedXmlDocumentMap, defaultLang, languageCode)
+                    resDirPath,
+                    postProcessedXmlDocumentMap,
+                    defaultLang,
+                    languageCode,
+                    languageValuesOverridePathMap
+                )
             }
         } catch (e: Exception) {
             logger.error("An error happened when retrieving strings from project. " +
