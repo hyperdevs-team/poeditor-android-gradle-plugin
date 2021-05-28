@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - No new features!
 ### Changed
-- No changed features!
+- Increase connect, read and write timeouts to 30 seconds
 ### Deprecated
 - No deprecated features!
 ### Removed
