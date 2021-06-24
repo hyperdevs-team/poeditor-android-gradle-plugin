@@ -31,7 +31,7 @@ buildscript {
     }
 
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.3.72"))
+        classpath(kotlin("gradle-plugin", version = "1.5.20"))
     }
 }
 
@@ -59,22 +59,22 @@ dependencies {
 
     compileOnly("com.android.tools.build:gradle:4.2.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.20")
 
-    implementation("com.squareup.moshi:moshi:1.9.2")
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    implementation("com.squareup.moshi:moshi:1.12.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
-    implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
-    implementation("com.squareup.okhttp3:okhttp:4.7.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
 
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test"))
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.2")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.9.1")
 }
