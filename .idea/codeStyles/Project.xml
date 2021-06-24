@@ -2,11 +2,6 @@
   <code_scheme name="Project" version="173">
     <JavaCodeStyleSettings>
       <option name="ALIGN_MULTILINE_ANNOTATION_PARAMETERS" value="true" />
-      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
-      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
-      <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
-        <value />
-      </option>
       <option name="IMPORT_LAYOUT_TABLE">
         <value>
           <package name="android" withSubpackages="true" static="false" />
@@ -30,11 +25,6 @@
         </value>
       </option>
     </JavaCodeStyleSettings>
-    <XML>
-      <option name="XML_KEEP_LINE_BREAKS" value="false" />
-      <option name="XML_ALIGN_ATTRIBUTES" value="false" />
-      <option name="XML_SPACE_INSIDE_EMPTY_TAG" value="true" />
-    </XML>
     <codeStyleSettings language="JAVA">
       <option name="METHOD_ANNOTATION_WRAP" value="1" />
       <option name="FIELD_ANNOTATION_WRAP" value="1" />
