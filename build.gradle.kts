@@ -113,14 +113,14 @@ tasks {
 
     val sourcesJar by creating(Jar::class) {
         dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-        classifier = "sources"
+        archiveClassifier.set("sources")
         from(sourceSets["main"].allSource)
     }
 
     val javadocJar by creating(Jar::class) {
         val javadoc by tasks
         from(javadoc)
-        classifier = "javadoc"
+        archiveClassifier.set("javadoc")
     }
 
     artifacts {
