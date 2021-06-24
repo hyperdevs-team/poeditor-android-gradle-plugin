@@ -52,6 +52,7 @@ class PoEditorPlugin : Plugin<Project> {
                 enabled.convention(true)
                 defaultLang.convention("en")
                 defaultResPath.convention(mainResourceDirectory.asFile.absolutePath)
+                filters.convention(emptyList())
                 tags.convention(emptyList())
                 languageValuesOverridePathMap.convention(emptyMap())
                 minimumTranslationPercentage.convention(-1)

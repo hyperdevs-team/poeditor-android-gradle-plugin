@@ -33,6 +33,11 @@ fun main() {
     val projectId = dotenv.get("PROJECT_ID", "-1").toInt()
     val resDirPath = dotenv.get("RES_DIR_PATH", "")
     val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
+    val filters = dotenv.get("FILTERS", "")
+        .takeIf { it.isNotBlank() }
+        ?.split(",")
+        ?.map { it.trim() }
+        ?: emptyList()
     val tags = dotenv.get("TAGS", "")
         .takeIf { it.isNotBlank() }
         ?.split(",")
@@ -53,6 +58,7 @@ fun main() {
         projectId,
         defaultLanguage,
         resDirPath,
+        filters,
         tags,
         languageValuesOverridePathMap,
         minimumTranslationPercentage
