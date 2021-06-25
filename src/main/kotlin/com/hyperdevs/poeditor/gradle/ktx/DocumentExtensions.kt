@@ -29,11 +29,17 @@ private val DEFAULT_ENCODING = Charsets.UTF_8
 
 /**
  * Converts an XML string to a proper [Document].
+ * If the string is an empty string, it generates a basic <resources> XML.
  */
-fun String.toDocument(): Document =
-    DocumentBuilderFactory.newInstance()
+fun String.toStringsXmlDocument(): Document {
+    val xmlString = this.ifBlank {
+        "<resources></resources>"
+    }
+
+    return DocumentBuilderFactory.newInstance()
         .newDocumentBuilder()
-        .parse(this.byteInputStream(DEFAULT_ENCODING))
+        .parse(xmlString.byteInputStream(DEFAULT_ENCODING))
+}
 
 /**
  * Converts a [Document] into a formatted [String].
