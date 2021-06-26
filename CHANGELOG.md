@@ -24,7 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - No new features!
 ### Changed
-- No changed features!
+- Update some dependencies (gradle 6.9, kotlin 1.5.20, moshi 1.12.0, okhttp 4.9.1, junit 4.13.2)
+- Update deprecated gradle property classifier to archiveClassifier
+- Update Project.xml (matching Android Studio 4.2.1)
 ### Deprecated
 - No deprecated features!
 ### Removed
