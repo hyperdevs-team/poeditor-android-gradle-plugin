@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - No new features!
 ### Changed
-- No changed features!
+- The xml attribute "encoding" in the generated string resource files is now lowercase "utf-8"
 ### Deprecated
 - No deprecated features!
 ### Removed
