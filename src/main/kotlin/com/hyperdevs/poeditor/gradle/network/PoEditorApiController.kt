@@ -18,6 +18,7 @@
 
 package com.hyperdevs.poeditor.gradle.network
 
+import com.hyperdevs.poeditor.gradle.network.api.ExportType
 import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
 import com.hyperdevs.poeditor.gradle.network.api.PoEditorResponse
 import com.hyperdevs.poeditor.gradle.network.api.ProjectLanguage
@@ -38,7 +39,7 @@ interface PoEditorApiController {
      */
     fun getTranslationFileUrl(projectId: Int,
                               code: String,
-                              type: String,
+                              type: ExportType,
                               tags: List<String>?): String
 }
 
@@ -51,26 +52,19 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         val response = poEditorApi.getProjectLanguages(
             apiToken = apiToken,
             id = projectId).execute()
-        return response.onSuccessful { it.list }
+        return response.onSuccessful { it.result.languages }
     }
 
-    override fun getTranslationFileUrl(projectId: Int, code: String, type: String, tags: List<String>?): String {
+    override fun getTranslationFileUrl(projectId: Int, code: String, type: ExportType, tags: List<String>?): String {
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
             id = projectId,
-            type = type,
+            type = type.toString().toLowerCase(),
             language = code,
-            tags = processTags(tags))
+            tags = tags)
             .execute()
-        return response.onSuccessful { it.item }
+        return response.onSuccessful { it.result.url }
     }
-
-    /**
-     * Tags must be in the format: ["tag1", "tag2", ... , "tagN"]
-     * Check the documentation for details: https://poeditor.com/api_reference/#export
-     */
-    private fun processTags(tags: List<String>?): String? =
-        tags?.takeIf { it.isNotEmpty() }?.joinToString { "\"$it\"" }?.let { "[$it]" }
 
     private inline fun <T : PoEditorResponse, U> Response<T>.onSuccessful(func: (T) -> U): U {
         if (isSuccessful && body()?.response?.code == "200") {

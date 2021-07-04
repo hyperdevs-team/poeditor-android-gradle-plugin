@@ -30,20 +30,21 @@ interface PoEditorApi {
      * Returns a list of languages that the current PoEditor project contains.
      */
     @FormUrlEncoded
-    @POST("/api/")
+    @POST("languages/list")
     fun getProjectLanguages(@Field("api_token") apiToken: String,
-                            @Field("action") action: String = "list_languages",
-                            @Field("id") id: Int): Call<ListProjectLanguagesResponse>
+                            @Field("id") id: Int): Call<ListLanguagesResponse>
 
     /**
      * Returns the exportables ready to retrieve from the current PoEditor project.
      */
     @FormUrlEncoded
-    @POST("/api/")
+    @POST("projects/export")
     fun getExportFileInfo(@Field("api_token") apiToken: String,
                           @Field("id") id: Int,
-                          @Field("action") action: String = "export",
-                          @Field("type") type: String,
                           @Field("language") language: String,
-                          @Field("tags") tags: String?): Call<ExportResponse>
+                          @Field("type") type: String,
+                          @Field("filters") filters: List<String>? = null,
+                          @Field("order") order: String? = null,
+                          @Field("tags") tags: List<String>? = null,
+                          @Field("options") options: Map<String, String>? = null): Call<ExportResponse>
 }

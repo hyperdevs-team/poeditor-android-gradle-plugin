@@ -26,18 +26,6 @@ import java.util.Date
 open class PoEditorResponse(open val response: ResponseStatus)
 
 /**
- * PoEditor response to "list languages" call.
- */
-data class ListProjectLanguagesResponse(override val response: ResponseStatus,
-                                        val list: List<ProjectLanguage>) : PoEditorResponse(response)
-
-/**
- * PoEditor response to "export languages" call.
- */
-data class ExportResponse(override val response: ResponseStatus,
-                          val item: String) : PoEditorResponse(response)
-
-/**
  * Basic response data.
  */
 data class ResponseStatus(val status: String,
@@ -45,9 +33,83 @@ data class ResponseStatus(val status: String,
                           val message: String)
 
 /**
+ * PoEditor response to "list languages" call.
+ */
+data class ListLanguagesResponse(override val response: ResponseStatus,
+                                 val result: ListLanguagesResult) : PoEditorResponse(response)
+
+/**
+ * Result of a "list language" call.
+ */
+data class ListLanguagesResult(val languages: List<ProjectLanguage>)
+
+/**
+ * PoEditor response to "export languages" call.
+ */
+data class ExportResponse(override val response: ResponseStatus,
+                          val result: ExportResult) : PoEditorResponse(response)
+
+/**
+ * Result of a "list language" call.
+ */
+data class ExportResult(val url: String)
+
+/**
  * Information about a language in PoEditor.
  */
 data class ProjectLanguage(val name: String,
                            val code: String,
+                           val translations: Int,
                            val percentage: Double,
                            val updated: Date?)
+
+/**
+ * Types of file export allowed in PoEditor.
+ */
+enum class ExportType {
+    PO,
+    POT,
+    MO,
+    XLS,
+    XLSX,
+    CSV,
+    INI,
+    RESW,
+    RESX,
+    ANDROID_STRINGS,
+    APPLE_STRINGS,
+    XLIFF,
+    PROPERTIES,
+    KEY_VALUE_JSON,
+    JSON,
+    YML,
+    XLF,
+    XMB,
+    XTB,
+    ARB,
+    RISE_360_XLIFF;
+
+    companion object {
+        /** Returns the enum value associated to a string value. */
+        fun from(filterString: String) = valueOf(filterString.toUpperCase())
+    }
+}
+
+/**
+ * Filter types to use in file exports.
+ */
+enum class FilterType {
+    TRANSLATED,
+    UNTRANSLATED,
+    FUZZY,
+    NOT_FUZZY,
+    AUTOMATIC,
+    NOT_AUTOMATIC,
+    PROOFREAD,
+    NOT_PROOFREAD;
+
+    companion object {
+        /** Returns the enum value associated to a string value. */
+        fun from(filterString: String) = valueOf(filterString.toUpperCase())
+    }
+}

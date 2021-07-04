@@ -19,14 +19,15 @@
 package com.hyperdevs.poeditor.gradle
 
 import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
-import com.hyperdevs.poeditor.gradle.utils.DateJsonAdapter
 import com.hyperdevs.poeditor.gradle.network.PoEditorApiControllerImpl
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.hyperdevs.poeditor.gradle.ktx.downloadUrlToString
+import com.hyperdevs.poeditor.gradle.network.api.ExportType
 import com.hyperdevs.poeditor.gradle.utils.logger
 import com.hyperdevs.poeditor.gradle.xml.AndroidXmlWriter
 import com.hyperdevs.poeditor.gradle.xml.XmlPostProcessor
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PoEditorDateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -40,11 +41,11 @@ import java.util.concurrent.TimeUnit
  * Main class that does the XML download, parsing and saving from PoEditor files.
  */
 object PoEditorStringsImporter {
-    private const val POEDITOR_API_URL = "https://poeditor.com/api/"
+    private const val POEDITOR_API_URL = "https://api.poeditor.com/v2/"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
-        .add(Date::class.java, DateJsonAdapter())
+        .add(Date::class.java, PoEditorDateJsonAdapter())
         .build()
 
     private const val CONNECT_TIMEOUT_SECONDS = 30L
@@ -98,7 +99,7 @@ object PoEditorStringsImporter {
                 val translationFileUrl = poEditorApiController.getTranslationFileUrl(
                     projectId = projectId,
                     code = languageCode,
-                    type = "android_strings",
+                    type = ExportType.ANDROID_STRINGS,
                     tags = tags)
 
                 // Download translation File to in-memory string
