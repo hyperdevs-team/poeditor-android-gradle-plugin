@@ -132,3 +132,6 @@ gradle-app.setting
 
 # Dotenv configuration file
 .env
+
+# Local properties file
+/local.properties

@@ -19,14 +19,13 @@
 package com.hyperdevs.poeditor.gradle.xml
 
 import com.hyperdevs.poeditor.gradle.ktx.toAndroidXmlString
-import com.hyperdevs.poeditor.gradle.ktx.toDocument
+import com.hyperdevs.poeditor.gradle.ktx.toStringsXmlDocument
 import com.hyperdevs.poeditor.gradle.ktx.unescapeHtmlTags
 import com.hyperdevs.poeditor.gradle.utils.ALL_REGEX_STRING
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Class that handles XML transformation.
@@ -61,7 +60,7 @@ class XmlPostProcessor {
      */
     fun formatTranslationXml(translationFileXmlString: String): String {
         // Parse line by line by traversing the original file using DOM
-        val translationFileXmlDocument = translationFileXmlString.toDocument()
+        val translationFileXmlDocument = translationFileXmlString.toStringsXmlDocument()
 
         formatTranslationXmlDocument(translationFileXmlDocument, translationFileXmlDocument.childNodes)
 
@@ -101,9 +100,7 @@ class XmlPostProcessor {
      */
     fun splitTranslationXml(translationXmlString: String,
                             fileSplitRegexStringList: List<String>): Map<String, Document> {
-        val translationFileRecords = DocumentBuilderFactory.newInstance()
-            .newDocumentBuilder()
-            .parse(translationXmlString.byteInputStream(DEFAULT_ENCODING))
+        val translationFileRecords = translationXmlString.toStringsXmlDocument()
 
         return fileSplitRegexStringList
             .map { regex ->
@@ -115,9 +112,7 @@ class XmlPostProcessor {
             .mapValues { (regexString, nodes) ->
                 val regex = Regex(regexString)
                 val xmlString = "<resources></resources>"
-                val xmlRecords = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder()
-                    .parse(xmlString.byteInputStream(DEFAULT_ENCODING))
+                val xmlRecords = xmlString.toStringsXmlDocument()
                 nodes.forEach { node ->
                     node.parentNode.removeChild(node)
                     val copiedNode = (node.cloneNode(true) as Element).apply {

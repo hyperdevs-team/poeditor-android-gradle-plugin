@@ -29,11 +29,17 @@ private val DEFAULT_ENCODING = Charsets.UTF_8
 
 /**
  * Converts an XML string to a proper [Document].
+ * If the string is an empty string, it generates a basic <resources> XML.
  */
-fun String.toDocument(): Document =
-    DocumentBuilderFactory.newInstance()
+fun String.toStringsXmlDocument(): Document {
+    val xmlString = this.ifBlank {
+        "<resources></resources>"
+    }
+
+    return DocumentBuilderFactory.newInstance()
         .newDocumentBuilder()
-        .parse(this.byteInputStream(DEFAULT_ENCODING))
+        .parse(xmlString.byteInputStream(DEFAULT_ENCODING))
+}
 
 /**
  * Converts a [Document] into a formatted [String].
@@ -41,7 +47,7 @@ fun String.toDocument(): Document =
 fun Document.toAndroidXmlString(): String {
     val registry = DOMImplementationRegistry.newInstance()
     val impl = registry.getDOMImplementation("LS") as DOMImplementationLS
-    val output = impl.createLSOutput().apply { encoding = "UTF-8" }
+    val output = impl.createLSOutput().apply { encoding = "utf-8" }
     val serializer = impl.createLSSerializer()
 
     val writer = StringWriter()
