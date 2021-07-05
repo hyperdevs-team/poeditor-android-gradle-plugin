@@ -31,7 +31,7 @@ buildscript {
     }
 
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.5.20"))
+        classpath(kotlin("gradle-plugin", version = "1.4.20"))
     }
 }
 
@@ -59,7 +59,7 @@ dependencies {
 
     compileOnly("com.android.tools.build:gradle:4.2.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.20")
 
     implementation("com.squareup.moshi:moshi:1.12.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
