@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add some code style rules to be shared via editorconfig (insert_final_newline=false)
 ### Changed
 - The xml attribute "encoding" in the generated string resource files is now lowercase "utf-8"
 - Migrate to PoEditor API v2
