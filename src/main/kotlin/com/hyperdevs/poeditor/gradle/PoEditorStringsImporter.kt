@@ -22,6 +22,7 @@ import com.hyperdevs.poeditor.gradle.ktx.downloadUrlToString
 import com.hyperdevs.poeditor.gradle.network.PoEditorApiControllerImpl
 import com.hyperdevs.poeditor.gradle.network.api.ExportType
 import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
+import com.hyperdevs.poeditor.gradle.network.api.ProjectLanguage
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.hyperdevs.poeditor.gradle.utils.logger
 import com.hyperdevs.poeditor.gradle.xml.AndroidXmlWriter
@@ -83,27 +84,37 @@ object PoEditorStringsImporter {
                               tags: List<String>?,
                               languageValuesOverridePathMap: Map<String, String>?,
                               minimumTranslationPercentage: Int?) {
+        fun isPercentageTooLow(percentage: Double) = percentage < minimumTranslationPercentage ?: -1
+        fun List<ProjectLanguage>.joinAndFormat(transform: ((ProjectLanguage) -> CharSequence)) =
+            joinToString(separator = ", ", prefix = "[", postfix = "]", transform = transform)
+
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
 
             // Retrieve available languages from PoEditor
             logger.lifecycle("Retrieving project languages...")
             val projectLanguages = poEditorApiController.getProjectLanguages(projectId)
-            val skippedLanguages = mutableListOf<String>()
+            val skippedLanguages = projectLanguages.filter { language -> isPercentageTooLow(language.percentage) }
 
             // Iterate over every available language
-            logger.lifecycle("Available languages: [${projectLanguages.joinToString(", ") { it.code }}]")
-            minimumTranslationPercentage?.let {
-                logger.lifecycle("Will skip languages translated under $it%")
+            logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
+
+            minimumTranslationPercentage?.run {
+                val skippedLanguagesMessage = if (skippedLanguages.isEmpty()) {
+                    "All languages are translated above the minimum of $minimumTranslationPercentage%"
+                } else {
+                    val formattedLanguages = skippedLanguages.joinAndFormat { "${it.code} (${it.percentage}%)" }
+                    "Skipping languages translated under $minimumTranslationPercentage%: $formattedLanguages"
+                }
+
+                logger.lifecycle(skippedLanguagesMessage)
             }
 
             projectLanguages.forEach { languageData ->
                 val languageCode = languageData.code
                 val percentage = languageData.percentage
-                val isPercentageTooLow = percentage < minimumTranslationPercentage ?: -1
 
-                if (isPercentageTooLow) {
-                    skippedLanguages.add("$languageCode ($percentage%)")
+                if (isPercentageTooLow(percentage)) {
                     return@forEach
                 }
 
@@ -132,11 +143,6 @@ object PoEditorStringsImporter {
                     languageCode,
                     languageValuesOverridePathMap
                 )
-            }
-
-            if (skippedLanguages.isNotEmpty()) {
-                logger.lifecycle("Skipped the following languages due to low terms translation percentage " +
-                    "(threshold: $minimumTranslationPercentage%):\n${skippedLanguages.joinToString()}")
             }
         } catch (e: Exception) {
             logger.error("An error happened when retrieving strings from project. " +
