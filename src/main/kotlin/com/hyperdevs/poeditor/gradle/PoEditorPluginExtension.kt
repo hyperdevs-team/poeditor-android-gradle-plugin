@@ -42,7 +42,7 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      */
     @get:Optional
     @get:Input
-    val enabled : Property<Boolean> = objects.property(Boolean::class.java)
+    val enabled: Property<Boolean> = objects.property(Boolean::class.java)
 
     /**
      * PoEditor API token.
@@ -98,12 +98,21 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
         objects.mapProperty(String::class.java, String::class.java)
 
     /**
+     * The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched.
+     *
+     * Defaults to no minimum if not present, meaning that all languages will be fetched.
+     */
+    @get:Optional
+    @get:Input
+    val minimumTranslationPercentage: Property<Int> = objects.property(Int::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
      * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
      *
-     * Gradle Kotlin DSL users must use `apiToken.set(value)`.
+     * Gradle Kotlin DSL users must use `enabled.set(value)`.
      */
     fun setEnabled(value: Boolean) = enabled.set(value)
 
@@ -163,7 +172,17 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
      * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
      *
-     * Gradle Kotlin DSL users must use `languageOverridePathMap.set(value)`.
+     * Gradle Kotlin DSL users must use `languageValuesOverridePathMap.set(value)`.
      */
     fun setLanguageValuesOverridePathMap(value: Map<String, String>) = languageValuesOverridePathMap.set(value)
+
+    /**
+     * Sets the minimum accepted percentage of translated strings per language.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `minimumTranslationPercentage.set(value)`.
+     */
+    fun setMinimumTranslationPercentage(value: Int) = minimumTranslationPercentage.set(value)
 }

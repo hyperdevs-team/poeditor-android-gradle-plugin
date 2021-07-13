@@ -44,6 +44,7 @@ fun main() {
             val (key, value) = it.split(":")
             key to value
         }
+    val minimumTranslationPercentage = dotenv.get("MINIMUM_TRANSLATION_PERCENTAGE", "85").toInt()
 
     PoEditorStringsImporter.importPoEditorStrings(
         apiToken,
@@ -51,6 +52,7 @@ fun main() {
         defaultLanguage,
         resDirPath,
         tags,
-        languageValuesOverridePathMap
+        languageValuesOverridePathMap,
+        minimumTranslationPercentage
     )
 }

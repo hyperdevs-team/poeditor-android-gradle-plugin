@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add some code style rules to be shared via editorconfig (insert_final_newline=false)
+- Add `minimumTranslationPercentage` parameter to `poEditorConfig` block to specify the minimum accepted percentage of translated strings per language
 ### Changed
 - The xml attribute "encoding" in the generated string resource files is now lowercase "utf-8"
 - Migrate to PoEditor API v2
