@@ -184,6 +184,7 @@ class PoEditorPlugin : Plugin<Project> {
     private fun getConfigs(productFlavors: List<String>,
                            buildType: String?): Set<String> = (productFlavors + buildType).filterNotNull().toSet()
 
+    @Suppress("NestedBlockDepth")
     private fun generatePoEditorTasks(configs: Set<String>,
                                       project: Project,
                                       configsExtensionContainer: NamedDomainObjectContainer<PoEditorPluginExtension>,
