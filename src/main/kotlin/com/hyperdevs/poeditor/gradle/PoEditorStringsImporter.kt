@@ -81,8 +81,8 @@ object PoEditorStringsImporter {
                               projectId: Int,
                               defaultLang: String,
                               resDirPath: String,
-                              tags: List<String>?,
-                              languageValuesOverridePathMap: Map<String, String>?,
+                              tags: List<String>,
+                              languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)

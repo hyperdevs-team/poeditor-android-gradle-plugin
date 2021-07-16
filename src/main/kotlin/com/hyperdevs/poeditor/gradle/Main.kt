@@ -37,6 +37,7 @@ fun main() {
         .takeIf { it.isNotBlank() }
         ?.split(",")
         ?.map { it.trim() }
+        ?: emptyList()
     val languageValuesOverridePathMap = dotenv.get("LANGUAGE_VALUES_OVERRIDE_PATH_MAP", "")
         .takeIf { it.isNotBlank() }
         ?.split(",")
@@ -44,6 +45,7 @@ fun main() {
             val (key, value) = it.split(":")
             key to value
         }
+        ?: emptyMap()
     val minimumTranslationPercentage = dotenv.get("MINIMUM_TRANSLATION_PERCENTAGE", "85").toInt()
 
     PoEditorStringsImporter.importPoEditorStrings(

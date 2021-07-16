@@ -167,6 +167,7 @@ class XmlPostProcessor {
         rootNode?.replaceChild(copiedNodeElement, nodeElement)
     }
 
+    @Suppress("NestedBlockDepth")
     private fun extractMatchingNodes(nodeList: NodeList, regexString: String): List<Node> {
         val matchedNodes = mutableListOf<Node>()
         val regex = Regex(regexString)
