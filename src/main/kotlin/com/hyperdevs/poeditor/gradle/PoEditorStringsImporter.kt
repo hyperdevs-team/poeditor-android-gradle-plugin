@@ -84,17 +84,13 @@ object PoEditorStringsImporter {
                               tags: List<String>?,
                               languageValuesOverridePathMap: Map<String, String>?,
                               minimumTranslationPercentage: Int) {
-        fun isPercentageTooLow(percentage: Double) = percentage < minimumTranslationPercentage
-        fun List<ProjectLanguage>.joinAndFormat(transform: ((ProjectLanguage) -> CharSequence)) =
-            joinToString(separator = ", ", prefix = "[", postfix = "]", transform = transform)
-
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
 
             // Retrieve available languages from PoEditor
             logger.lifecycle("Retrieving project languages...")
             val projectLanguages = poEditorApiController.getProjectLanguages(projectId)
-            val skippedLanguages = projectLanguages.filter { language -> isPercentageTooLow(language.percentage) }
+            val skippedLanguages = projectLanguages.filter { language -> language.percentage < minimumTranslationPercentage }
 
             // Iterate over every available language
             logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
@@ -114,7 +110,7 @@ object PoEditorStringsImporter {
                 val languageCode = languageData.code
                 val percentage = languageData.percentage
 
-                if (isPercentageTooLow(percentage)) {
+                if (percentage < minimumTranslationPercentage) {
                     return@forEach
                 }
 
@@ -150,4 +146,7 @@ object PoEditorStringsImporter {
             throw e
         }
     }
+
+    private fun List<ProjectLanguage>.joinAndFormat(transform: ((ProjectLanguage) -> CharSequence)) =
+        joinToString(separator = ", ", prefix = "[", postfix = "]", transform = transform)
 }
