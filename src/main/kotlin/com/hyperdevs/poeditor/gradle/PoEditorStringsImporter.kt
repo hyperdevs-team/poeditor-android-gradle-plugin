@@ -83,8 +83,8 @@ object PoEditorStringsImporter {
                               resDirPath: String,
                               tags: List<String>?,
                               languageValuesOverridePathMap: Map<String, String>?,
-                              minimumTranslationPercentage: Int?) {
-        fun isPercentageTooLow(percentage: Double) = percentage < minimumTranslationPercentage ?: -1
+                              minimumTranslationPercentage: Int) {
+        fun isPercentageTooLow(percentage: Double) = percentage < minimumTranslationPercentage
         fun List<ProjectLanguage>.joinAndFormat(transform: ((ProjectLanguage) -> CharSequence)) =
             joinToString(separator = ", ", prefix = "[", postfix = "]", transform = transform)
 
@@ -99,7 +99,7 @@ object PoEditorStringsImporter {
             // Iterate over every available language
             logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
 
-            minimumTranslationPercentage?.run {
+            if (minimumTranslationPercentage > -1) {
                 val skippedLanguagesMessage = if (skippedLanguages.isEmpty()) {
                     "All languages are translated above the minimum of $minimumTranslationPercentage%"
                 } else {
