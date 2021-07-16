@@ -90,7 +90,7 @@ object PoEditorStringsImporter {
             // Retrieve available languages from PoEditor
             logger.lifecycle("Retrieving project languages...")
             val projectLanguages = poEditorApiController.getProjectLanguages(projectId)
-            val skippedLanguages = projectLanguages.filter { language -> language.percentage < minimumTranslationPercentage }
+            val skippedLanguages = projectLanguages.filter { it.percentage < minimumTranslationPercentage }
 
             // Iterate over every available language
             logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
@@ -106,13 +106,8 @@ object PoEditorStringsImporter {
                 logger.lifecycle(skippedLanguagesMessage)
             }
 
-            projectLanguages.forEach { languageData ->
+            projectLanguages.minus(skippedLanguages).forEach { languageData ->
                 val languageCode = languageData.code
-                val percentage = languageData.percentage
-
-                if (percentage < minimumTranslationPercentage) {
-                    return@forEach
-                }
 
                 // Retrieve translation file URL for the given language and for the "android_strings" type,
                 // acknowledging passed tags if present
