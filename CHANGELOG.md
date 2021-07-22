@@ -22,14 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add some code style rules to be shared via editorconfig (insert_final_newline=false)
-- Add `minimumTranslationPercentage` parameter to `poEditorConfig` block to specify the minimum accepted percentage of translated strings per language
+- No new features!
 ### Changed
-- The xml attribute "encoding" in the generated string resource files is now lowercase "utf-8"
-- Migrate to PoEditor API v2
-- Update some dependencies (gradle 6.9, kotlin 1.4.20, moshi 1.12.0, okhttp 4.9.1, junit 4.13.2)
-- Update deprecated gradle property classifier to archiveClassifier
-- Update Project.xml (matching Android Studio 4.2.1)
+- No changed features!
 ### Deprecated
 - No deprecated features!
 ### Removed
@@ -38,6 +33,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [2.3.0] - 2021-07-22
+### Added
+- Add some code style rules to be shared via editorconfig (`insert_final_newline=false`). _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
+- Add `minimumTranslationPercentage` parameter to `poEditorConfig` block to specify the minimum accepted percentage of translated strings per language. _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    minimumTranslationPercentage = 85
+}
+```
+    
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    minimumTranslationPercentage = 85
+}
+```
+    
+</details>
+
+### Changed
+- The XML attribute `encoding` in the generated string resource files is now lowercase `utf-8`. _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
+- Migrate to PoEditor API v2.
+- Update some dependencies (Gradle 6.9, Kotlin 1.4.20, Moshi 1.12.0, OkHttp 4.9.1, Junit 4.13.2). _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
+- Update deprecated Gradle property `classifier` to `archiveClassifier` _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
+- Update `Project.xml` (matching Android Studio 4.2.1) _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
 
 ## [2.2.1] - 2021-05-28
 ### Changed
@@ -334,7 +366,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.1...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.3.0...HEAD
+[2.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.1...2.3.0
 [2.2.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.2...2.2.0
 [2.1.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.1...2.1.2
