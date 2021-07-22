@@ -54,6 +54,7 @@ class PoEditorPlugin : Plugin<Project> {
                 defaultResPath.convention(mainResourceDirectory.asFile.absolutePath)
                 tags.convention(emptyList())
                 languageValuesOverridePathMap.convention(emptyMap())
+                minimumTranslationPercentage.convention(-1)
             }
 
         // Add flavor and build-type configurations if the project has the "com.android.application" plugin
