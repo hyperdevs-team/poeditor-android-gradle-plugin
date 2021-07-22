@@ -18,7 +18,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.2.1"
+        classpath "com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.3.0"
     }
 }
 ```
@@ -33,7 +33,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.2.1")
+        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.3.0")
     }
 }
 ```
@@ -85,7 +85,7 @@ Attribute                          | Description
 ```enabled```                      | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
 ```tags```                         | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
 ```languageValuesOverrideMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
-```minimumTranslationPercentage``` | (TBD) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
+```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -445,6 +445,38 @@ poEditor {
     
 </details>
 
+## Tweaking minimum translation percentages
+> Requires version 2.3.0 of the plug-in
+
+The plug-in also allows setting a minimum percentage of translated strings to download languages. This is set-up with the `minimumTranslationPercentage` parameter in your `poEditor` or `poEditorConfig` blocks:
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    minimumTranslationPercentage = 85
+}
+```
+    
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    minimumTranslationPercentage = 85
+}
+```
+    
+</details>
+
+
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)
 
@@ -453,6 +485,7 @@ If you want a similar solution for your iOS projects, check this out: [poeditor-
 * **[Adrián García](https://github.com/adriangl)** - *Maintainer*
 * **[sonnet](https://github.com/rafid059)** - *Contributor*
 * **[Wojciech Kryg](https://github.com/wojciechkryg)** - *Contributor*
+* **[Stanislav Dimitrov](https://github.com/nokite)** - *Contributor*
 
 ## Acknowledgements
 The work in this repository up to April 28th, 2021 was done by [bq](https://github.com/bq).
