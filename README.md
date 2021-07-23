@@ -86,6 +86,7 @@ Attribute                          | Description
 ```tags```                         | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
 ```languageValuesOverrideMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
 ```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
+```filters```                      | (Since TBD) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -471,6 +472,41 @@ poEditor {
     projectId = 12345
     defaultLang = "en"
     minimumTranslationPercentage = 85
+}
+```
+    
+</details>
+
+
+## Handling filters
+> Requires version TBD of the plug-in
+
+The plug-in also allows setting filters for narrowing down the type of terms to be downloaded. 
+Supported filters are defined by the POEditor API and currently include: 'translated', 'untranslated', 'fuzzy', 'not_fuzzy', 'automatic', 'not_automatic', 'proofread', 'not_proofread'. 
+At the moment it's not possible to set different filters per language.  
+This is set-up with the optional `filters` parameter in your `poEditor` or `poEditorConfig` blocks:
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    filters = ["translated", "not_fuzzy"]
+}
+```
+    
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    filters = listOf("translated", "not_fuzzy")
 }
 ```
     
