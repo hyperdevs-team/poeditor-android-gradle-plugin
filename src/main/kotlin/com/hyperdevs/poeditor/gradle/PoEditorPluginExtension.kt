@@ -79,6 +79,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val defaultResPath: Property<String> = objects.property(String::class.java)
 
     /**
+     * Filters to limit downloaded strings with, from the officially supported list in PoEditor.
+     *
+     * Defaults to an empty list of filters if not present.
+     */
+    @get:Optional
+    @get:Input
+    val filters: ListProperty<String> = objects.listProperty(String::class.java)
+
+    /**
      * Tags to filter downloaded strings with, previously declared in PoEditor.
      *
      * Defaults to an empty list of tags if not present.
@@ -155,6 +164,16 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
      */
     fun setDefaultResPath(value: String) = defaultResPath.set(value)
+
+    /**
+     * Sets the filters to limit downloaded strings with, from the officially supported list in PoEditor.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `filters.set(value)`.
+     */
+    fun setFilters(value: List<String>) = filters.set(value)
 
     /**
      * Sets the tags to filter downloaded strings with, previously declared in PoEditor.

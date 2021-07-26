@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add `filters` parameter to `poEditorConfig` block to specify the POEditor filters to use for all languages.
 ### Changed
 - No changed features!
 ### Deprecated

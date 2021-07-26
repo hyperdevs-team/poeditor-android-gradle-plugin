@@ -81,6 +81,7 @@ object PoEditorStringsImporter {
                               projectId: Int,
                               defaultLang: String,
                               resDirPath: String,
+                              filters: List<String>,
                               tags: List<String>,
                               languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int) {
@@ -106,6 +107,10 @@ object PoEditorStringsImporter {
                 logger.lifecycle(skippedLanguagesMessage)
             }
 
+            if (filters.isNotEmpty()) {
+                logger.lifecycle("Using the following filters for all languages: $filters")
+            }
+
             projectLanguages.minus(skippedLanguages).forEach { languageData ->
                 val languageCode = languageData.code
 
@@ -116,6 +121,7 @@ object PoEditorStringsImporter {
                     projectId = projectId,
                     code = languageCode,
                     type = ExportType.ANDROID_STRINGS,
+                    filters = filters,
                     tags = tags)
 
                 // Download translation File to in-memory string

@@ -40,6 +40,7 @@ interface PoEditorApiController {
     fun getTranslationFileUrl(projectId: Int,
                               code: String,
                               type: ExportType,
+                              filters: List<String>?,
                               tags: List<String>?): String
 }
 
@@ -55,11 +56,16 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         return response.onSuccessful { it.result.languages }
     }
 
-    override fun getTranslationFileUrl(projectId: Int, code: String, type: ExportType, tags: List<String>?): String {
+    override fun getTranslationFileUrl(projectId: Int,
+                                       code: String,
+                                       type: ExportType,
+                                       filters: List<String>?,
+                                       tags: List<String>?): String {
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
             id = projectId,
             type = type.toString().toLowerCase(),
+            filters = filters,
             language = code,
             tags = tags)
             .execute()
