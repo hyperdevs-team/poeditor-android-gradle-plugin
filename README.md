@@ -479,10 +479,10 @@ poEditor {
 
 
 ## Handling filters
-> Requires version TBD of the plug-in
+> Requires version 2.4.0 of the plug-in
 
 The plug-in also allows setting filters for narrowing down the type of terms to be downloaded. 
-Supported filters are defined by the POEditor API and currently include: 'translated', 'untranslated', 'fuzzy', 'not_fuzzy', 'automatic', 'not_automatic', 'proofread', 'not_proofread'. 
+Supported filters are defined by the POEditor API and currently include:  `translated`, `untranslated`, `fuzzy`, `not_fuzzy`, `automatic`, `not_automatic`, `proofread`, `not_proofread`. 
 At the moment it's not possible to set different filters per language.  
 This is set-up with the optional `filters` parameter in your `poEditor` or `poEditorConfig` blocks:
 
