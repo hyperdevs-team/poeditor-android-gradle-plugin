@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add `filters` parameter to `poEditorConfig` block to specify the POEditor filters to use for all languages.
+- No new features!
 ### Changed
 - No changed features!
 ### Deprecated
@@ -33,6 +33,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [2.4.0] - 2021-07-26
+### Added
+- Add `filters` parameter to `poEditorConfig` block to specify the POEditor filters to use for all languages. _Thanks to [@nokite](https://github.com/nokite) for the contribution!_
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    filters = ["translated", "not_fuzzy"]
+}
+```
+    
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    filters = listOf("translated", "not_fuzzy")
+}
+```
+    
+</details>
 
 ## [2.3.0] - 2021-07-22
 ### Added
@@ -366,7 +395,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.3.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.0...HEAD
+[2.4.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.3.0...2.4.0
 [2.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.1...2.3.0
 [2.2.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.1.2...2.2.0
