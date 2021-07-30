@@ -86,7 +86,7 @@ Attribute                          | Description
 ```tags```                         | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
 ```languageValuesOverrideMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
 ```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
-```filters```                      | (Since TBD) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
+```filters```                      | (Since 2.4.0) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
