@@ -84,7 +84,7 @@ Attribute                          | Description
 ```defaultResPath```               | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
 ```enabled```                      | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
 ```tags```                         | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
-```languageValuesOverrideMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
+```languageValuesOverridePathMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
 ```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
 ```filters```                      | (Since 2.4.0) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
 
