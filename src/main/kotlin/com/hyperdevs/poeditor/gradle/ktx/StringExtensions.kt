@@ -18,9 +18,7 @@
 
 package com.hyperdevs.poeditor.gradle.ktx
 
-private val UNESCAPED_HTML_TAGS_REGEX = Regex("""&lt;([^.]*?)&gt;""")
-
 /**
  * Unescapes HTML tags from string.
  */
-fun String.unescapeHtmlTags() = this.replace(UNESCAPED_HTML_TAGS_REGEX, "<$1>")
+fun String.unescapeHtmlTags() = this.replace("&lt;", "<").replace("&gt;", ">")

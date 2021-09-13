@@ -318,6 +318,56 @@ class XmlPostProcessorTest {
     }
 
     @Test
+    fun `Postprocessing XML with CDATA works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="cdata">
+                                <![CDATA[Some text<a href="{{link}}">Link</a> text text]]>
+                              </string>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <string name="cdata">
+                                <![CDATA[Some text<a href="%1${'$'}s">Link</a> text text]]>
+                              </string>
+                            </resources>
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
+    fun `Postprocessing XML with multiline CDATA works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="cdata">
+                                <![CDATA[
+                                  <br />
+                                  <p><a href="mailto:{{email}}">ABC Email</a></p>
+                                ]]>
+                              </string>
+                            </resources>
+                             """
+
+        val expectedResult = """
+                            <resources>
+                              <string name="cdata">
+                                <![CDATA[
+                                  <br />
+                                  <p><a href="mailto:%1${'$'}s">ABC Email</a></p>
+                                ]]>
+                              </string>
+                            </resources>
+                             """.formatXml()
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+    }
+
+    @Test
     fun `Splitting tablet translation strings works`() {
         // Test complete Xml
         val expectedKey = "general_button_goTop"
