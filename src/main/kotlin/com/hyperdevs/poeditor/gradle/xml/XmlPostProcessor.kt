@@ -155,7 +155,7 @@ class XmlPostProcessor {
     }
 
     private fun processTextAndReplaceNodeContent(document: Document, nodeElement: Element, rootNode: Node?) {
-        // First check if we have a CDATA node as the first child of the element. if we have it, we have to
+        // First check if we have a CDATA node as the a child of the element. If we have it, we have to
         // preserve the CDATA node but process the text. Else, we handle the node as a usual text node
         val copiedNodeElement: Element
         val (cDataNode, cDataPosition) = getCDataChildForNode(nodeElement)

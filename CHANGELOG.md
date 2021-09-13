@@ -30,7 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- No fixed issues!
+- Fix CDATA strings not parsed correctly
+- Fix `<` and `>` not getting properly unescaped in CDATA strings
 ### Security
 - No security issues fixed!
 
