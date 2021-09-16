@@ -30,10 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fix CDATA strings not parsed correctly
-- Fix `<` and `>` not getting properly unescaped in CDATA strings
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [2.4.1] - 2021-09-16
+### Fixed
+- Fix CDATA strings not parsed correctly
+- Fix `<` and `>` not getting properly unescaped in CDATA strings
 
 ## [2.4.0] - 2021-07-26
 ### Added
@@ -396,7 +400,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.1...HEAD
+[2.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.0...2.4.1
 [2.4.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.3.0...2.4.0
 [2.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.1...2.3.0
 [2.2.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.2.0...2.2.1
