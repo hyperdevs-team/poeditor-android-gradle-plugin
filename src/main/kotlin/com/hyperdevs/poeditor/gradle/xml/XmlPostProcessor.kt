@@ -22,10 +22,7 @@ import com.hyperdevs.poeditor.gradle.ktx.toAndroidXmlString
 import com.hyperdevs.poeditor.gradle.ktx.toStringsXmlDocument
 import com.hyperdevs.poeditor.gradle.ktx.unescapeHtmlTags
 import com.hyperdevs.poeditor.gradle.utils.ALL_REGEX_STRING
-import org.w3c.dom.Document
-import org.w3c.dom.Element
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
+import org.w3c.dom.*
 
 /**
  * Class that handles XML transformation.
@@ -158,13 +155,40 @@ class XmlPostProcessor {
     }
 
     private fun processTextAndReplaceNodeContent(document: Document, nodeElement: Element, rootNode: Node?) {
-        val content = nodeElement.textContent
-        val processedContent = formatTranslationString(content)
-        val copiedNodeElement = (nodeElement.cloneNode(true) as Element).apply {
-            textContent = processedContent
+        // First check if we have a CDATA node as the a child of the element. If we have it, we have to
+        // preserve the CDATA node but process the text. Else, we handle the node as a usual text node
+        val copiedNodeElement: Element
+        val (cDataNode, cDataPosition) = getCDataChildForNode(nodeElement)
+        if (cDataNode != null) {
+            val cDataContent = cDataNode.textContent
+            val processedCDataContent = formatTranslationString(cDataContent)
+            val copiedCDataNode = (cDataNode.cloneNode(true) as CDATASection).apply {
+                this.data = processedCDataContent
+            }
+            copiedNodeElement = (nodeElement.cloneNode(true) as Element).apply {
+                replaceChild(copiedCDataNode, this.childNodes.item(cDataPosition))
+            }
+        } else {
+            val content = nodeElement.textContent
+            val processedContent = formatTranslationString(content)
+            copiedNodeElement = (nodeElement.cloneNode(true) as Element).apply {
+                textContent = processedContent
+            }
         }
+
         document.adoptNode(copiedNodeElement)
         rootNode?.replaceChild(copiedNodeElement, nodeElement)
+    }
+
+    private fun getCDataChildForNode(nodeElement: Element): Pair<Node?, Int> {
+        val childrenList = nodeElement.childNodes
+        for (i in 0..childrenList.length) {
+            val childNode = childrenList.item(i)
+            if (childNode is CDATASection) {
+                return Pair(childNode, i)
+            }
+        }
+        return Pair(null, -1)
     }
 
     @Suppress("NestedBlockDepth")
