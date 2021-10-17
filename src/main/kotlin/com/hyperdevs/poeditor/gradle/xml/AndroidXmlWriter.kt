@@ -21,11 +21,10 @@ package com.hyperdevs.poeditor.gradle.xml
 import com.hyperdevs.poeditor.gradle.ktx.toAndroidXmlString
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.hyperdevs.poeditor.gradle.utils.TABLET_RES_FOLDER_SUFFIX
-import com.hyperdevs.poeditor.gradle.utils.logger
 import com.hyperdevs.poeditor.gradle.utils.createValuesModifierFromLangCode
+import com.hyperdevs.poeditor.gradle.utils.logger
 import org.w3c.dom.Document
 import java.io.File
-import java.lang.IllegalStateException
 
 /**
  * Class that converts XML data into Android XML files.
@@ -73,10 +72,7 @@ class AndroidXmlWriter {
             logger.debug("Creating strings folder for new language")
             val folderCreated = stringsFolderFile.mkdirs()
             logger.debug("Folder created?: $folderCreated")
-            if (!folderCreated) {
-                throw IllegalStateException(
-                    "Strings folder could not be created: ${stringsFolderFile.absolutePath}")
-            }
+            check(folderCreated) { "Strings folder could not be created: ${stringsFolderFile.absolutePath}" }
         }
 
         logger.lifecycle("Saving strings to ${stringsFolderFile.absolutePath}")

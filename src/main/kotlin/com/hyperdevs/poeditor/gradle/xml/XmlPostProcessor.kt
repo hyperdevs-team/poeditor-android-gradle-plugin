@@ -73,8 +73,9 @@ class XmlPostProcessor {
         val containsVariables = translationString.contains(VARIABLE_REGEX)
 
         val placeholderTransform: (MatchResult) -> CharSequence = { matchResult ->
-            // TODO: if the string has multiple variables but any of them has no order number,
+            // Pending: if the string has multiple variables but any of them has no order number,
             //  throw an exception
+
             // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2$s
             val match = matchResult.groupValues[0]
             if (Character.isDigit(match[1])) {

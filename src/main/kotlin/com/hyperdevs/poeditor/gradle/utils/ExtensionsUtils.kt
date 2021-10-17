@@ -115,6 +115,6 @@ internal fun List<PoEditorPluginExtension>.mapToExtensionMergeHolder(project: Pr
 }
 
 // Extracted from gradle-play-publisher: https://github.com/Triple-T/gradle-play-publisher/blob/bffc26cb41efc79babdb3ac7dbefcb1d9816f928/play/plugin/src/main/kotlin/com/github/triplet/gradle/play/internal/Extensions.kt#L125
-// TODO: remove after https://github.com/gradle/gradle/issues/12388
+// Remove after https://github.com/gradle/gradle/issues/12388
 @Suppress("UNCHECKED_CAST")
 private fun <T> T?.sneakyNull() = this as T

@@ -39,6 +39,7 @@ interface PoEditorApi {
     /**
      * Returns the exportables ready to retrieve from the current PoEditor project.
      */
+    @Suppress("LongParameterList")
     @FormUrlEncoded
     @POST("projects/export")
     fun getExportFileInfo(@Field("api_token") apiToken: String,

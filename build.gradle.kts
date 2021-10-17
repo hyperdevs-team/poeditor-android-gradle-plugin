@@ -21,7 +21,6 @@ group = "com.github.hyperdevs-team"
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         google().content {
             includeGroup("com.android")
             includeGroupByRegex("com\\.android\\..*")
@@ -40,12 +39,11 @@ plugins {
     `kotlin-dsl`
     groovy
     maven
-    id("io.gitlab.arturbosch.detekt").version("1.9.1")
+    id("io.gitlab.arturbosch.detekt").version("1.18.1")
 }
 
 repositories {
     mavenCentral()
-    jcenter()
     google().content {
         includeGroup("com.android")
         includeGroupByRegex("com\\.android\\..*")
@@ -77,7 +75,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("junit:junit:4.13.2")
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.9.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1")
 }
 
 java {
@@ -86,8 +84,9 @@ java {
 }
 
 detekt {
-    toolVersion = "1.9.1"
+    toolVersion = "1.18.1"
     config = files("${project.rootDir}/config/detekt.yml")
+    autoCorrect = true
 }
 
 tasks {

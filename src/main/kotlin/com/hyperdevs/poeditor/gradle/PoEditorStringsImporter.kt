@@ -77,6 +77,10 @@ object PoEditorStringsImporter {
 
     private val xmlWriter = AndroidXmlWriter()
 
+    /**
+     * Imports PoEditor strings.
+     */
+    @Suppress("LongParameterList")
     fun importPoEditorStrings(apiToken: String,
                               projectId: Int,
                               defaultLang: String,

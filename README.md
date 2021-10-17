@@ -18,7 +18,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.4.1"
+        classpath "com.github.hyperdevs-team:poeditor-android-gradle-plugin:<latest_version>"
     }
 }
 ```
@@ -33,7 +33,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:2.4.1")
+        classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:<latest_version>")
     }
 }
 ```

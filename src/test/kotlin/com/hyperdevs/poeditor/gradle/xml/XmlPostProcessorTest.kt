@@ -404,7 +404,6 @@ class XmlPostProcessorTest {
         Assert.assertEquals(
             "\"${expectedKey}_tablet\"",
             xp.evaluate(xpTextPath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
-
     }
 
     @Test
