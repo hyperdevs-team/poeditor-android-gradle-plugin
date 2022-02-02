@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-group = "com.github.hyperdevs-team"
-
 buildscript {
     repositories {
         mavenCentral()
@@ -30,7 +28,7 @@ buildscript {
     }
 
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.4.20"))
+        classpath(libs.kotlin.gradle)
     }
 }
 
@@ -38,8 +36,9 @@ plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
     groovy
-    maven
-    id("io.gitlab.arturbosch.detekt").version("1.18.1")
+    `maven-publish`
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.gitVersionGradle)
 }
 
 repositories {
@@ -55,38 +54,44 @@ repositories {
 dependencies {
     implementation(localGroovy())
 
-    compileOnly("com.android.tools.build:gradle:4.2.0")
+    compileOnly(libs.android.buildTools)
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.20")
-
-    implementation("com.squareup.moshi:moshi:1.12.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
-    implementation("com.squareup.moshi:moshi-adapters:1.12.0")
-
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
-
-    implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.bundles.moshi)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.okhttp3)
+    implementation(libs.dotenvKotlin)
 
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test"))
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1")
+    detektPlugins(libs.detekt.formatting)
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.javadoc {
+    if (JavaVersion.current().isJava9Compatible) {
+        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+    }
 }
 
 detekt {
-    toolVersion = "1.18.1"
+    toolVersion = libs.versions.detekt.get()
     config = files("${project.rootDir}/config/detekt.yml")
     autoCorrect = true
+}
+
+androidGitVersion {
+    codeFormat = "MMNNPP"
+    format = "%tag%"
 }
 
 tasks {
@@ -110,21 +115,56 @@ tasks {
     // Install hooks automatically before building a new compilation
     // Idea from: https://gist.github.com/KenVanHoeylandt/c7a928426bce83ffab400ab1fd99054a
     getByPath("compileKotlin").dependsOn(installGitHooks)
+}
 
-    val sourcesJar by creating(Jar::class) {
-        dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-        archiveClassifier.set("sources")
-        from(sourceSets["main"].allSource)
-    }
+group = "com.github.hyperdevs-team"
+version = androidGitVersion.name()
 
-    val javadocJar by creating(Jar::class) {
-        val javadoc by tasks
-        from(javadoc)
-        archiveClassifier.set("javadoc")
-    }
+publishing {
+    publications {
+        // Edit the `pluginMaven` publication, which is the name for the default publication task of the `java-gradle-plugin`
+        register<MavenPublication>("pluginMaven") {
+            groupId = "com.github.hyperdevs-team"
+            artifactId = "poeditor-android-gradle-plugin"
 
-    artifacts {
-        add("archives", sourcesJar)
-        add("archives", javadocJar)
+            //from(components["java"])
+
+            pom {
+                name.set("PoEditor Android Gradle Plug-in")
+                description.set("Gradle plug-in that enables importing PoEditor localized strings directly to an Android project")
+                url.set("https://github.com/hyperdevs-team/poeditor-android-gradle-plugin")
+                version = androidGitVersion.name()
+                inceptionYear.set("2016")
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        name.set("Iván Martínez")
+                        id.set("imartinez")
+                        url.set("https://github.com/imartinez")
+                        roles.set(listOf("Initial work"))
+                    }
+
+                    developer {
+                        name.set("Adrián García")
+                        id.set("adriangl")
+                        url.set("https://github.com/adriangl")
+                        roles.set(listOf("Maintainer"))
+
+                        organization {
+                            name.set("HyperDevs")
+                            id.set("hyperdevs-team")
+                            url.set("https://github.com/hyperdevs-team")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
