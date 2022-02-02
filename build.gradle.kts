@@ -127,8 +127,6 @@ publishing {
             groupId = "com.github.hyperdevs-team"
             artifactId = "poeditor-android-gradle-plugin"
 
-            //from(components["java"])
-
             pom {
                 name.set("PoEditor Android Gradle Plug-in")
                 description.set("Gradle plug-in that enables importing PoEditor localized strings directly to an Android project")
