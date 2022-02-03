@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
-## [3.0.0] - 2022-02-02
+## [3.0.0] - 2022-02-03
 ### Changed
 - BREAKING: Update dependencies to work with Android Gradle Plugin 7.+. This will break compatibility with
 projects that use versions lower than 7.0
