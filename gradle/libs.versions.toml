@@ -1,0 +1,37 @@
+[versions]
+kotlin = "1.6.10"
+detekt = "1.19.0"
+moshi = "1.12.0"
+retrofit = "2.9.0"
+okhttp = "4.9.3"
+
+[libraries]
+android-buildTools = "com.android.tools.build:gradle:7.1.0"
+
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+
+moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi"}
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi"}
+moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi"}
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
+retrofit-converterMoshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit"}
+
+okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
+okhttp3-loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp"}
+
+dotenvKotlin = "io.github.cdimascio:dotenv-kotlin:6.2.2"
+
+junit = "junit:junit:4.13.2"
+
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt"}
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+gitVersionGradle = { id = "com.gladed.androidgitversion", version = "0.4.14"}
+
+[bundles]
+moshi = ["moshi", "moshi-kotlin", "moshi-adapters"]
+retrofit = ["retrofit", "retrofit-converterMoshi"]
+okhttp3 = ["okhttp3", "okhttp3-loggingInterceptor"]

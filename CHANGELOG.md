@@ -34,11 +34,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [3.0.0] - 2022-02-03
+### Changed
+- BREAKING: Update dependencies to work with Android Gradle Plugin 7.+. This will break compatibility with
+projects that use versions lower than 7.0
+
 ## [2.4.2] - 2021-10-17
 ### Changed
 - Change detekt rules according to library update to version 1.18.1
 ### Removed
-- Remove `jcenter()` from project.
+- Remove `jcenter()` from project
 
 ## [2.4.1] - 2021-09-16
 ### Fixed
@@ -406,7 +411,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.2...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.2...3.0.0
 [2.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.0...2.4.1
 [2.4.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.3.0...2.4.0
