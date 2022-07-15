@@ -93,14 +93,15 @@ object PoEditorStringsImporter {
                               languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int,
                               resFileName: String,
-                              unquoted: Boolean) {
+                              unquoted: Boolean,
+                              unescapeHtmlTags: Boolean) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, moshi, poEditorApi)
 
             // Retrieve available languages from PoEditor
             logger.lifecycle("Retrieving project languages...")
             val projectLanguages = poEditorApiController.getProjectLanguages(projectId)
-            val skippedLanguages = projectLanguages.filter { it.percentage < minimumTranslationPercentage }
+            val skippedLanguages = projectLanguages.filter { it.percentage < minimumTranslationPercentage }.toSet()
 
             // Iterate over every available language
             logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
@@ -141,9 +142,11 @@ object PoEditorStringsImporter {
                 val translationFile = okHttpClient.downloadUrlToString(translationFileUrl)
 
                 // Extract final files from downloaded translation XML
-                val postProcessedXmlDocumentMap =
-                    xmlPostProcessor.postProcessTranslationXml(
-                        translationFile, listOf(TABLET_REGEX_STRING))
+                val postProcessedXmlDocumentMap = xmlPostProcessor.postProcessTranslationXml(
+                    translationFile,
+                    listOf(TABLET_REGEX_STRING),
+                    unescapeHtmlTags
+                )
 
                 xmlWriter.saveXml(
                     resDirPath,
@@ -151,7 +154,8 @@ object PoEditorStringsImporter {
                     postProcessedXmlDocumentMap,
                     defaultLang,
                     languageCode,
-                    languageValuesOverridePathMap
+                    languageValuesOverridePathMap,
+                    unescapeHtmlTags
                 )
             }
         } catch (e: Exception) {
@@ -161,6 +165,6 @@ object PoEditorStringsImporter {
         }
     }
 
-    private fun List<ProjectLanguage>.joinAndFormat(transform: ((ProjectLanguage) -> CharSequence)) =
+    private fun Collection<ProjectLanguage>.joinAndFormat(transform: ((ProjectLanguage) -> CharSequence)) =
         joinToString(separator = ", ", prefix = "[", postfix = "]", transform = transform)
 }

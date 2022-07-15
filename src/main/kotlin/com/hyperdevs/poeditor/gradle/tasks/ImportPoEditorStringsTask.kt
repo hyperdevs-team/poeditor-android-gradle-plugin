@@ -54,6 +54,7 @@ abstract class ImportPoEditorStringsTask
         val minimumTranslationPercentage: Int
         val resFileName: String
         val unquoted: Boolean
+        val unescapeHtmlTags: Boolean
 
         try {
             apiToken = extension.apiToken.get()
@@ -67,6 +68,7 @@ abstract class ImportPoEditorStringsTask
             minimumTranslationPercentage = extension.minimumTranslationPercentage.get()
             resFileName = extension.resFileName.get()
             unquoted = extension.unquoted.get()
+            unescapeHtmlTags = extension.unescapeHtmlTags.get()
         } catch (e: Exception) {
             logger.error("Import configuration failed", e)
 
@@ -87,6 +89,8 @@ abstract class ImportPoEditorStringsTask
             languageOverridePathMap,
             minimumTranslationPercentage,
             resFileName,
-            unquoted)
+            unquoted,
+            unescapeHtmlTags
+        )
     }
 }

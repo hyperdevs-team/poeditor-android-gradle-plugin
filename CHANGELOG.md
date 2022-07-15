@@ -22,7 +22,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add new `unescapeHtmlTags` flag to enable or disable HTML unescaping from strings.
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    unescapeHtmlTags = false
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    unescapeHtmlTags = false
+}
+```
+
+</details>
+
 ### Changed
 - No changed features!
 ### Deprecated

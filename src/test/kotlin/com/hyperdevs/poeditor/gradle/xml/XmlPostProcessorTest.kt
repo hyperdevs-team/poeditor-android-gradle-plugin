@@ -91,13 +91,6 @@ class XmlPostProcessorTest {
     }
 
     @Test
-    fun `Postprocessing string HTML escapes sequences`() {
-        // Test Html tags are fixed
-        Assert.assertEquals("Hello <b>%1\$s</b>.",
-            xmlPostProcessor.formatTranslationString("Hello &lt;b&gt;{{name}}&lt;/b&gt;."))
-    }
-
-    @Test
     fun `Postprocessing complex XML works`() {
         // Test complete Xml
         val inputXmlString = """
@@ -132,9 +125,9 @@ class XmlPostProcessorTest {
                                 "Ir${'\n'}abajo"
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -166,9 +159,9 @@ class XmlPostProcessorTest {
                                 "Hello. I love you 100%"
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -190,9 +183,9 @@ class XmlPostProcessorTest {
                                 100%"
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -214,9 +207,9 @@ class XmlPostProcessorTest {
                                 I love you 100%%"
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -250,9 +243,9 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"%1${'$'}s elementos seleccionados"</item>
                               </plurals>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -290,9 +283,9 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"Hello friends. I love you 100%"</item>
                               </plurals>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -312,9 +305,75 @@ class XmlPostProcessorTest {
                                 "Hello <b>%1${'$'}s</b>"
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
+    }
+
+    @Test
+    fun `Postprocessing XML with string HTML symbols works 2`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "&amp;lt;b&amp;gt;Hello world&amp;lt;/b&amp;gt;"
+                              </string>
+                            </resources>
+                             """.trimIndent()
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "&lt;b&gt;Hello world&lt;/b&gt;"
+                              </string>
+                            </resources>
+                             """.trimIndent().formatXml(false)
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
+    }
+
+    @Test
+    fun `Postprocessing XML with string HTML symbols and unescape set to false works`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "Hello &lt;b&gt;{{name}}&lt;/b&gt;"
+                              </string>
+                            </resources>
+                             """.trimIndent()
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "Hello &lt;b&gt;%1${'$'}s&lt;/b&gt;"
+                              </string>
+                            </resources>
+                             """.trimIndent().formatXml(false)
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, false))
+    }
+
+    @Test
+    fun `Postprocessing XML with string HTML symbols and unescape set to false works 2`() {
+        // Test complete Xml
+        val inputXmlString = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "&amp;lt;b&amp;gt;Hello world&amp;lt;/b&amp;gt;"
+                              </string>
+                            </resources>
+                             """.trimIndent()
+
+        val expectedResult = """
+                            <resources>
+                              <string name="hello_friend_bold">
+                                "&amp;lt;b&amp;gt;Hello world&amp;lt;/b&amp;gt;"
+                              </string>
+                            </resources>
+                             """.trimIndent().formatXml(false)
+
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, false))
     }
 
     @Test
@@ -334,9 +393,9 @@ class XmlPostProcessorTest {
                                 <![CDATA[Some text<a href="%1${'$'}s">Link</a> text text]]>
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -362,9 +421,9 @@ class XmlPostProcessorTest {
                                 ]]>
                               </string>
                             </resources>
-                             """.trimIndent().formatXml()
+                             """.trimIndent().formatXml(true)
 
-        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
+        Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString, true))
     }
 
     @Test
@@ -439,9 +498,9 @@ class XmlPostProcessorTest {
             xp.evaluate(xpNamePath, splitTranslationXmlMap.getValue(tabletRegexString)).trim())
     }
 
-    private fun String.formatXml(): String =
+    private fun String.formatXml(unescapeHtmlTags: Boolean): String =
         DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(this.byteInputStream(Charsets.UTF_8))
-            .toAndroidXmlString()
+            .toAndroidXmlString(unescapeHtmlTags)
 }

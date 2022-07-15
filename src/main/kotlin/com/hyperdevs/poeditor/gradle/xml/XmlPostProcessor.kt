@@ -49,19 +49,24 @@ class XmlPostProcessor {
      * - Split to multiple XML files depending on regex matching
      */
     fun postProcessTranslationXml(translationFileXmlString: String,
-                                  fileSplitRegexStringList: List<String>): Map<String, Document> =
-        splitTranslationXml(formatTranslationXml(translationFileXmlString), fileSplitRegexStringList)
+                                  fileSplitRegexStringList: List<String>,
+                                  unescapeHtmlTags: Boolean): Map<String, Document> =
+        splitTranslationXml(formatTranslationXml(translationFileXmlString, unescapeHtmlTags), fileSplitRegexStringList)
 
     /**
      * Formats a given translations XML string to conform to Android strings.xml format.
      */
-    fun formatTranslationXml(translationFileXmlString: String): String {
+    fun formatTranslationXml(translationFileXmlString: String, unescapeHtmlTags: Boolean): String {
         // Parse line by line by traversing the original file using DOM
         val translationFileXmlDocument = translationFileXmlString.toStringsXmlDocument()
 
-        formatTranslationXmlDocument(translationFileXmlDocument, translationFileXmlDocument.childNodes)
+        formatTranslationXmlDocument(
+            translationFileXmlDocument,
+            translationFileXmlDocument.childNodes,
+            null
+        )
 
-        return translationFileXmlDocument.toAndroidXmlString()
+        return translationFileXmlDocument.toAndroidXmlString(unescapeHtmlTags)
     }
 
     /**
@@ -88,7 +93,6 @@ class XmlPostProcessor {
         return translationString
             // Replace % with %% if variables are found
             .let { if (containsVariables) it.replace("%", "%%") else it }
-            .unescapeHtmlTags()
             // Replace placeholders from {{variable}} to %1$s format.
             .replace(VARIABLE_REGEX, placeholderTransform)
     }
@@ -129,7 +133,9 @@ class XmlPostProcessor {
             .plus(ALL_REGEX_STRING to translationFileRecords)
     }
 
-    private fun formatTranslationXmlDocument(document: Document, nodeList: NodeList, rootNode: Node? = null) {
+    private fun formatTranslationXmlDocument(document: Document,
+                                             nodeList: NodeList,
+                                             rootNode: Node? = null) {
         for (i in 0 until nodeList.length) {
             if (nodeList.item(i).nodeType == Node.ELEMENT_NODE) {
                 val nodeElement = nodeList.item(i) as Element
@@ -155,8 +161,10 @@ class XmlPostProcessor {
         }
     }
 
-    private fun processTextAndReplaceNodeContent(document: Document, nodeElement: Element, rootNode: Node?) {
-        // First check if we have a CDATA node as the a child of the element. If we have it, we have to
+    private fun processTextAndReplaceNodeContent(document: Document,
+                                                 nodeElement: Element,
+                                                 rootNode: Node?) {
+        // First check if we have a CDATA node as the child of the element. If we have it, we have to
         // preserve the CDATA node but process the text. Else, we handle the node as a usual text node
         val copiedNodeElement: Element
         val (cDataNode, cDataPosition) = getCDataChildForNode(nodeElement)

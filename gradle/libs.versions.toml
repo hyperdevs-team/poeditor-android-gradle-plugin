@@ -32,7 +32,6 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 gitVersionGradle = { id = "com.gladed.androidgitversion", version = "0.4.14"}
 versionsUpdate = { id = "com.github.ben-manes.versions", version = "0.46.0" }
 
-
 [bundles]
 moshi = ["moshi", "moshi-kotlin", "moshi-adapters"]
 retrofit = ["retrofit", "retrofit-converterMoshi"]
