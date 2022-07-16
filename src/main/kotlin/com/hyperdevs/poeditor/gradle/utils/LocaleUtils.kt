@@ -28,6 +28,46 @@ fun createValuesModifierFromLangCode(langCode: String): String {
         langCode
     } else {
         val langParts = langCode.split("-")
-        "${langParts[0]}-r${langParts[1].toUpperCase()}"
+        val language = langParts[0]
+        val region = langParts[1].toLowerCase()
+
+        return when (language) {
+            "zh" -> {
+                // Chinese support
+                handleChineseVariants(language, region)
+            }
+            else -> {
+                "$language-r${region.toUpperCase()}"
+            }
+        }
+    }
+}
+
+/**
+ * Handle Chinese variants supported by PoEditor.
+ *
+ * PoEditor handles the following Chinese variants:
+ * - Chinese
+ * - Chinese (HK)
+ * - Chinese (MO)
+ * - Chinese (SG)
+ * - Chinese (simplified)
+ * - Chinese (traditional)
+ *
+ * They will be handled the following way:
+ * - Chinese will be set as values-zh.
+ * - Chinese (simplified) will be set as values-b+zh+Hans.
+ * - Chinese (traditional) will be set as values-b+zh+Hant.
+ * - Regional Chinese variants will be set as values-zh-r<REGION>
+ */
+private fun handleChineseVariants(language: String, region: String) = when (region) {
+    "cn" -> {
+        language
+    }
+    "hans", "hant" -> {
+        "b+$language+${region.toLowerCase().capitalize()}"
+    }
+    else -> {
+        "$language-r${region.toUpperCase()}"
     }
 }
