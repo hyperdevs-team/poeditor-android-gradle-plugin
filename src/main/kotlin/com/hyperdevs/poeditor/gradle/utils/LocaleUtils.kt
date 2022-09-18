@@ -24,21 +24,26 @@ package com.hyperdevs.poeditor.gradle.utils
  * @return proper values file modifier (i.e. es-rMX)
  */
 fun createValuesModifierFromLangCode(langCode: String): String {
-    return if (!langCode.contains("-")) {
-        langCode
-    } else {
-        val langParts = langCode.split("-")
-        val language = langParts[0]
-        val region = langParts[1].toLowerCase()
+    val langParts = langCode.split("-")
+    val language = langParts[0]
+    val region = langParts.getOrNull(1)?.toLowerCase()
 
-        return when (language) {
-            "zh" -> {
-                // Chinese support
-                handleChineseVariants(language, region)
+    return when (language) {
+        "zh" -> {
+            // Chinese support
+            handleChineseVariants(language, region).apply {
+                logger.lifecycle("INFO: Converted $langCode to $this")
             }
-            else -> {
-                "$language-r${region.toUpperCase()}"
+        }
+
+        "he", "yi", "id" -> {
+            handleOldLocaleVariants(language, region).apply {
+                logger.lifecycle("INFO: Converted $langCode to $this")
             }
+        }
+
+        else -> {
+            "$language${region?.let { "-r${it.toUpperCase()}" } ?: ""}"
         }
     }
 }
@@ -60,14 +65,48 @@ fun createValuesModifierFromLangCode(langCode: String): String {
  * - Chinese (traditional) will be set as values-b+zh+Hant.
  * - Regional Chinese variants will be set as values-zh-r<REGION>
  */
-private fun handleChineseVariants(language: String, region: String) = when (region) {
+private fun handleChineseVariants(language: String, region: String?) = when (region) {
     "cn" -> {
         language
     }
+
     "hans", "hant" -> {
-        "b+$language+${region.toLowerCase().capitalize()}"
+        "b+$language${region.let { "+${it.toLowerCase().capitalize()}" }}"
     }
+
     else -> {
-        "$language-r${region.toUpperCase()}"
+        "$language${region?.let { "-r${it.toUpperCase()}" } ?: ""}"
     }
+}
+
+/**
+ * Handle locales that need translation to ISO-639 old locales, so Android devices can pick them up properly.
+ *
+ * According to [java.util.Locale] constructor docs in Android documentation:
+ * ISO 639 is not a stable standard; some of the language codes it defines (specifically "iw", "ji", and "in")
+ * have changed. This constructor accepts both the old codes ("iw", "ji", and "in") and the new codes
+ * ("he", "yi", and "id"), but all other API on Locale will return only the OLD codes.
+ *
+ * We keep this in mind to convert new locale codes received from PoEditor to the old codes handled by Android.
+ *
+ * NOTE: this will most likely change if Android ever supports Java 17, where new codes are used for locales. There may
+ * be a way to user the "-Djava.locale.useOldISOCodes=true" system property, though.
+ *
+ * References:
+ * - Locale documentation: https://developer.android.com/reference/java/util/Locale.html#Locale(java.lang.String)
+ * - List of supported languages up to Android 5.1: https://stackoverflow.com/a/7989085/9288365
+ * - List of supported languages from Android 7 to Android 9: https://stackoverflow.com/a/52329560/9288365
+ * - Android Issue Tracker issue regarding Indonesian locale: https://issuetracker.google.com/issues/36911507
+ * - Android Issue Tracker issue regarding Hebrew locale: https://issuetracker.google.com/issues/36908826
+ * - Java 17 locale changes: https://bugs.openjdk.org/browse/JDK-8267069
+ */
+private fun handleOldLocaleVariants(language: String, region: String?): String {
+    val oldLanguageCode = when (language) {
+        "he" -> "iw"
+        "yi" -> "ji"
+        "id" -> "in"
+        else -> language
+    }
+
+    return "$oldLanguageCode${region?.let { "-r${it.toUpperCase()}" } ?: ""}"
 }
