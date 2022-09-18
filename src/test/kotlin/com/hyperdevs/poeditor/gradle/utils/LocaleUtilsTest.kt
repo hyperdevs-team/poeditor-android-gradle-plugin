@@ -18,17 +18,35 @@
 
 package com.hyperdevs.poeditor.gradle.utils
 
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class LocaleUtilsTest {
     @Test
     fun `Creating values modifier from standard lang code works`() {
-        Assert.assertEquals("es", createValuesModifierFromLangCode("es"))
+        assertEquals("es", createValuesModifierFromLangCode("es"))
     }
 
     @Test
     fun `Creating values modifier from specialized lang code works`() {
-        Assert.assertEquals("es-rMX", createValuesModifierFromLangCode("es-mx"))
+        assertEquals("es-rMX", createValuesModifierFromLangCode("es-mx"))
+    }
+
+    @Test
+    fun `Creating values modifier from Chinese lang codes work`() {
+        assertEquals("zh", createValuesModifierFromLangCode("zh-CN"))
+        assertEquals("zh-rHK", createValuesModifierFromLangCode("zh-hk"))
+        assertEquals("zh-rMO", createValuesModifierFromLangCode("zh-mo"))
+        assertEquals("zh-rSG", createValuesModifierFromLangCode("zh-sg"))
+        assertEquals("b+zh+Hans", createValuesModifierFromLangCode("zh-Hans"))
+        assertEquals("b+zh+Hant", createValuesModifierFromLangCode("zh-Hant"))
+    }
+
+    @Test
+    fun `Creating values modifier from old lang codes works`() {
+        assertEquals("in", createValuesModifierFromLangCode("id"))
+        assertEquals("iw", createValuesModifierFromLangCode("he"))
+        assertEquals("iw-rIL", createValuesModifierFromLangCode("he-IL"))
+        assertEquals("ji", createValuesModifierFromLangCode("yi"))
     }
 }
