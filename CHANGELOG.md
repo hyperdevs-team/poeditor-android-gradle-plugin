@@ -30,10 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fix Chinese variants support
-- Fix Indonesian, Hebrew and Yiddish support
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [3.0.1] - 2022-09-18
+### Fixed
+- Fix Chinese variants support
+- Fix Indonesian, Hebrew and Yiddish support
 
 ## [3.0.0] - 2022-02-03
 ### Changed
@@ -412,7 +416,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...HEAD
+[3.0.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...3.0.1
 [3.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.2...3.0.0
 [2.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.0...2.4.1
