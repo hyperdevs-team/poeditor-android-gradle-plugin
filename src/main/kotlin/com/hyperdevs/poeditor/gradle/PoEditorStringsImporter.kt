@@ -87,6 +87,7 @@ object PoEditorStringsImporter {
                               defaultLang: String,
                               resDirPath: String,
                               filters: List<FilterType>,
+                              order: String?,
                               tags: List<String>,
                               languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int,
@@ -128,6 +129,7 @@ object PoEditorStringsImporter {
                     code = languageCode,
                     type = ExportType.ANDROID_STRINGS,
                     filters = filters,
+                    order = order,
                     tags = tags)
 
                 // Download translation File to in-memory string

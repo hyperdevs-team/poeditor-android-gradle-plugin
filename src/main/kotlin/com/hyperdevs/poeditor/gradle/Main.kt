@@ -41,6 +41,7 @@ fun main() {
         ?.map { it.trim() }
         ?.map { FilterType.from(it) }
         ?: emptyList()
+    val order = dotenv.get("ORDER", "terms")
     val tags = dotenv.get("TAGS", "")
         .takeIf { it.isNotBlank() }
         ?.split(",")
@@ -62,6 +63,7 @@ fun main() {
         defaultLanguage,
         resDirPath,
         filters,
+        order,
         tags,
         languageValuesOverridePathMap,
         minimumTranslationPercentage,

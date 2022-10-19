@@ -34,10 +34,12 @@ interface PoEditorApiController {
      * Retrieves the translation file URL for a given project, language code, and export type.
      * Also supports a list of tags to filter.
      */
+    @Suppress("LongParameterList")
     fun getTranslationFileUrl(projectId: Int,
                               code: String,
                               type: ExportType,
                               filters: List<FilterType>?,
+                              order: String?,
                               tags: List<String>?): String
 }
 
@@ -53,10 +55,12 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         return response.onSuccessful { it.result.languages }
     }
 
+    @Suppress("LongParameterList")
     override fun getTranslationFileUrl(projectId: Int,
                                        code: String,
                                        type: ExportType,
                                        filters: List<FilterType>?,
+                                       order: String?,
                                        tags: List<String>?): String {
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
@@ -64,6 +68,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
             type = type.toString().toLowerCase(),
             filters = filters?.map { it.name.toLowerCase() },
             language = code,
+            order = order,
             tags = tags)
             .execute()
         return response.onSuccessful { it.result.url }

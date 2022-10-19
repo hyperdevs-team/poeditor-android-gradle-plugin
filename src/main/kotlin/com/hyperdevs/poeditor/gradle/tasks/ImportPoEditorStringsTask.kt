@@ -47,6 +47,7 @@ abstract class ImportPoEditorStringsTask
         val defaultLang: String
         val defaultResPath: String
         val filters: List<FilterType>
+        val order: String?
         val tags: List<String>
         val languageOverridePathMap: Map<String, String>
         val minimumTranslationPercentage: Int
@@ -58,6 +59,7 @@ abstract class ImportPoEditorStringsTask
             defaultLang = extension.defaultLang.get()
             defaultResPath = extension.defaultResPath.get()
             filters = extension.filters.get().map { FilterType.from(it) }
+            order = extension.order.get()
             tags = extension.tags.get()
             languageOverridePathMap = extension.languageValuesOverridePathMap.get()
             minimumTranslationPercentage = extension.minimumTranslationPercentage.get()
@@ -77,6 +79,7 @@ abstract class ImportPoEditorStringsTask
             defaultLang,
             defaultResPath,
             filters,
+            order,
             tags,
             languageOverridePathMap,
             minimumTranslationPercentage,
