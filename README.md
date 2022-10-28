@@ -90,7 +90,7 @@ Attribute                          | Description
 ```languageValuesOverridePathMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
 ```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
 ```filters```                      | (Since 2.4.0) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
-
+```resFileName``` | (Since 3.1.0) (Optional) Sets the file name for the imported string resource xml files. Defaults to `strings`
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
 ```
@@ -100,7 +100,7 @@ After the configuration is done, just run the new ```importPoEditorStrings``` ta
 This task will:
 * Download all strings files (every available lang) from PoEditor given the api token and project id.
 * Process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
-* Create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
+* Create and save strings.xml (or whatever file name you desire by using the `resFileName` attribute) files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
 region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
 
 ## Enhanced syntax
