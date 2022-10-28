@@ -35,7 +35,9 @@ class AndroidXmlWriter {
      * Saves a given map of XML files related to a language that the project contains to the
      * project's strings folder.
      */
+    @Suppress("LongParameterList")
     fun saveXml(resDirPath: String,
+                resFileName: String,
                 postProcessedXmlDocumentMap: Map<String, Document>,
                 defaultLang: String,
                 languageCode: String,
@@ -61,13 +63,14 @@ class AndroidXmlWriter {
                 baseValuesDir
             }
         }
+        val resourceFileName = resFileName.ifEmpty { "strings" }
 
         folderToXmlMap.forEach { (valuesFolderFile, document) ->
-            saveXmlToFolder(valuesFolderFile, document)
+            saveXmlToFolder(valuesFolderFile, document, resourceFileName)
         }
     }
 
-    private fun saveXmlToFolder(stringsFolderFile: File, document: Document) {
+    private fun saveXmlToFolder(stringsFolderFile: File, document: Document, resFileName: String) {
         if (!stringsFolderFile.exists()) {
             logger.debug("Creating strings folder for new language")
             val folderCreated = stringsFolderFile.mkdirs()
@@ -76,6 +79,6 @@ class AndroidXmlWriter {
         }
 
         logger.lifecycle("Saving strings to ${stringsFolderFile.absolutePath}")
-        File(stringsFolderFile, "strings.xml").writeText(document.toAndroidXmlString())
+        File(stringsFolderFile, "$resFileName.xml").writeText(document.toAndroidXmlString())
     }
 }

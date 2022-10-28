@@ -88,7 +88,8 @@ object PoEditorStringsImporter {
                               filters: List<String>,
                               tags: List<String>,
                               languageValuesOverridePathMap: Map<String, String>,
-                              minimumTranslationPercentage: Int) {
+                              minimumTranslationPercentage: Int,
+                              resFileName: String) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
 
@@ -139,15 +140,16 @@ object PoEditorStringsImporter {
 
                 xmlWriter.saveXml(
                     resDirPath,
+                    resFileName,
                     postProcessedXmlDocumentMap,
                     defaultLang,
                     languageCode,
-                    languageValuesOverridePathMap
+                    languageValuesOverridePathMap,
                 )
             }
         } catch (e: Exception) {
             logger.error("An error happened when retrieving strings from project. " +
-                "Please review the plug-in's input parameters and try again")
+                         "Please review the plug-in's input parameters and try again")
             throw e
         }
     }

@@ -79,6 +79,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val defaultResPath: Property<String> = objects.property(String::class.java)
 
     /**
+     * File name of the string resource files.
+     *
+     * Defaults to "strings" if not defined.
+     */
+    @get:Optional
+    @get:Input
+    val resFileName: Property<String> = objects.property(String::class.java)
+
+    /**
      * Filters to limit downloaded strings with, from the officially supported list in PoEditor.
      *
      * Defaults to an empty list of filters if not present.
@@ -164,6 +173,16 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `defaultResPath.set(value)`.
      */
     fun setDefaultResPath(value: String) = defaultResPath.set(value)
+
+    /**
+     * Sets the file name for the resource files.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `resFileName.set(value)`.
+     */
+    fun setResFileName(value: String) = resFileName.set(value)
 
     /**
      * Sets the filters to limit downloaded strings with, from the officially supported list in PoEditor.
