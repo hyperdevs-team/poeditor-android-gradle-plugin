@@ -20,6 +20,7 @@ package com.hyperdevs.poeditor.gradle.tasks
 
 import com.hyperdevs.poeditor.gradle.PoEditorPluginExtension
 import com.hyperdevs.poeditor.gradle.PoEditorStringsImporter
+import com.hyperdevs.poeditor.gradle.network.api.FilterType
 import com.hyperdevs.poeditor.gradle.utils.DEFAULT_PLUGIN_NAME
 import com.hyperdevs.poeditor.gradle.utils.POEDITOR_CONFIG_NAME
 import org.gradle.api.DefaultTask
@@ -45,7 +46,7 @@ abstract class ImportPoEditorStringsTask
         val projectId: Int
         val defaultLang: String
         val defaultResPath: String
-        val filters: List<String>
+        val filters: List<FilterType>
         val tags: List<String>
         val languageOverridePathMap: Map<String, String>
         val minimumTranslationPercentage: Int
@@ -55,7 +56,7 @@ abstract class ImportPoEditorStringsTask
             projectId = extension.projectId.get()
             defaultLang = extension.defaultLang.get()
             defaultResPath = extension.defaultResPath.get()
-            filters = extension.filters.get()
+            filters = extension.filters.get().map { FilterType.from(it) }
             tags = extension.tags.get()
             languageOverridePathMap = extension.languageValuesOverridePathMap.get()
             minimumTranslationPercentage = extension.minimumTranslationPercentage.get()

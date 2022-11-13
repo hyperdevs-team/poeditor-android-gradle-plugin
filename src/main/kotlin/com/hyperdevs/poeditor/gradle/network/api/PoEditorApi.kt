@@ -41,6 +41,7 @@ interface PoEditorApi {
      */
     @Suppress("LongParameterList")
     @FormUrlEncoded
+    @JvmSuppressWildcards
     @POST("projects/export")
     fun getExportFileInfo(@Field("api_token") apiToken: String,
                           @Field("id") id: Int,

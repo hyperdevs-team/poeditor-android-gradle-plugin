@@ -18,6 +18,8 @@
 
 package com.hyperdevs.poeditor.gradle.network.api
 
+import com.squareup.moshi.Json
+import java.lang.IllegalArgumentException
 import java.util.Date
 
 /**
@@ -91,7 +93,14 @@ enum class ExportType {
 
     companion object {
         /** Returns the enum value associated to a string value. */
-        fun from(filterString: String) = valueOf(filterString.toUpperCase())
+        fun from(value: String) =
+            try {
+                valueOf(value.toUpperCase())
+            } catch (e: Exception) {
+                val message = "Value \"$value\" is not a valid ${this::class.java.declaringClass.simpleName}; " +
+                              "allowed values are: ${values().joinToString(", ") { "\"${it.name.toLowerCase()}\"" }}"
+                throw IllegalArgumentException(message)
+            }
     }
 }
 
@@ -99,17 +108,32 @@ enum class ExportType {
  * Filter types to use in file exports.
  */
 enum class FilterType {
+    @Json(name = "translated")
     TRANSLATED,
+    @Json(name = "untranslated")
     UNTRANSLATED,
+    @Json(name = "fuzzy")
     FUZZY,
+    @Json(name = "not_fuzzy")
     NOT_FUZZY,
+    @Json(name = "automatic")
     AUTOMATIC,
+    @Json(name = "not_automatic")
     NOT_AUTOMATIC,
+    @Json(name = "proofread")
     PROOFREAD,
+    @Json(name = "not_proofread")
     NOT_PROOFREAD;
 
     companion object {
         /** Returns the enum value associated to a string value. */
-        fun from(filterString: String) = valueOf(filterString.toUpperCase())
+        fun from(value: String) =
+            try {
+                valueOf(value.toUpperCase())
+            } catch (e: Exception) {
+                val message = "Value \"$value\" is not a valid ${this::class.java.declaringClass.simpleName}; " +
+                              "allowed values are: ${values().joinToString(", ") { "\"${it.name.toLowerCase()}\"" }}"
+                throw IllegalArgumentException(message)
+            }
     }
 }

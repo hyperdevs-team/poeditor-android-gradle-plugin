@@ -18,6 +18,7 @@
 
 package com.hyperdevs.poeditor.gradle
 
+import com.hyperdevs.poeditor.gradle.network.api.FilterType
 import io.github.cdimascio.dotenv.Dotenv
 
 /**
@@ -37,6 +38,7 @@ fun main() {
         .takeIf { it.isNotBlank() }
         ?.split(",")
         ?.map { it.trim() }
+        ?.map { FilterType.from(it) }
         ?: emptyList()
     val tags = dotenv.get("TAGS", "")
         .takeIf { it.isNotBlank() }

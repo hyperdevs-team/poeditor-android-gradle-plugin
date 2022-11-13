@@ -21,6 +21,7 @@ package com.hyperdevs.poeditor.gradle
 import com.hyperdevs.poeditor.gradle.ktx.downloadUrlToString
 import com.hyperdevs.poeditor.gradle.network.PoEditorApiControllerImpl
 import com.hyperdevs.poeditor.gradle.network.api.ExportType
+import com.hyperdevs.poeditor.gradle.network.api.FilterType
 import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
 import com.hyperdevs.poeditor.gradle.network.api.ProjectLanguage
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
@@ -62,7 +63,7 @@ object PoEditorStringsImporter {
                 logger.debug(message)
             }
         })
-            .setLevel(HttpLoggingInterceptor.Level.HEADERS))
+            .setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
     private val retrofit = Retrofit.Builder()
@@ -85,7 +86,7 @@ object PoEditorStringsImporter {
                               projectId: Int,
                               defaultLang: String,
                               resDirPath: String,
-                              filters: List<String>,
+                              filters: List<FilterType>,
                               tags: List<String>,
                               languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int) {
@@ -100,7 +101,7 @@ object PoEditorStringsImporter {
             // Iterate over every available language
             logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
 
-            if (minimumTranslationPercentage > -1) {
+            if (minimumTranslationPercentage >= 0) {
                 val skippedLanguagesMessage = if (skippedLanguages.isEmpty()) {
                     "All languages are translated above the minimum of $minimumTranslationPercentage%"
                 } else {
@@ -147,7 +148,7 @@ object PoEditorStringsImporter {
             }
         } catch (e: Exception) {
             logger.error("An error happened when retrieving strings from project. " +
-                "Please review the plug-in's input parameters and try again")
+                         "Please review the plug-in's input parameters and try again")
             throw e
         }
     }

@@ -18,10 +18,7 @@
 
 package com.hyperdevs.poeditor.gradle.network
 
-import com.hyperdevs.poeditor.gradle.network.api.ExportType
-import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
-import com.hyperdevs.poeditor.gradle.network.api.PoEditorResponse
-import com.hyperdevs.poeditor.gradle.network.api.ProjectLanguage
+import com.hyperdevs.poeditor.gradle.network.api.*
 import retrofit2.Response
 
 /**
@@ -40,7 +37,7 @@ interface PoEditorApiController {
     fun getTranslationFileUrl(projectId: Int,
                               code: String,
                               type: ExportType,
-                              filters: List<String>?,
+                              filters: List<FilterType>?,
                               tags: List<String>?): String
 }
 
@@ -59,13 +56,13 @@ class PoEditorApiControllerImpl(private val apiToken: String,
     override fun getTranslationFileUrl(projectId: Int,
                                        code: String,
                                        type: ExportType,
-                                       filters: List<String>?,
+                                       filters: List<FilterType>?,
                                        tags: List<String>?): String {
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
             id = projectId,
             type = type.toString().toLowerCase(),
-            filters = filters,
+            filters = filters?.map { it.name.toLowerCase() },
             language = code,
             tags = tags)
             .execute()
