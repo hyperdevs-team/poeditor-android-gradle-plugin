@@ -18,7 +18,6 @@
 
 package com.hyperdevs.poeditor.gradle.network.api
 
-import com.squareup.moshi.Json
 import java.lang.IllegalArgumentException
 import java.util.Date
 
@@ -108,21 +107,13 @@ enum class ExportType {
  * Filter types to use in file exports.
  */
 enum class FilterType {
-    @Json(name = "translated")
     TRANSLATED,
-    @Json(name = "untranslated")
     UNTRANSLATED,
-    @Json(name = "fuzzy")
     FUZZY,
-    @Json(name = "not_fuzzy")
     NOT_FUZZY,
-    @Json(name = "automatic")
     AUTOMATIC,
-    @Json(name = "not_automatic")
     NOT_AUTOMATIC,
-    @Json(name = "proofread")
     PROOFREAD,
-    @Json(name = "not_proofread")
     NOT_PROOFREAD;
 
     companion object {
