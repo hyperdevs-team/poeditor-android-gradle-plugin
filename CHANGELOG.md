@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Added configuration support to define custom resource file names.
+- Add configuration support to define custom resource file names.
 ### Changed
 - No changed features!
 ### Deprecated
