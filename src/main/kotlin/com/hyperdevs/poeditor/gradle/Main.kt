@@ -31,7 +31,7 @@ fun main() {
 
     val apiToken = dotenv.get("API_TOKEN", "")
     val projectId = dotenv.get("PROJECT_ID", "-1").toInt()
-    val resFileName = dotenv.get("RES_FILE_NAME", "")
+    val resFileName = dotenv.get("RES_FILE_NAME", "strings")
     val resDirPath = dotenv.get("RES_DIR_PATH", "")
     val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
     val filters = dotenv.get("FILTERS", "")

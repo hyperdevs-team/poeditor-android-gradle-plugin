@@ -63,10 +63,9 @@ class AndroidXmlWriter {
                 baseValuesDir
             }
         }
-        val resourceFileName = resFileName.ifEmpty { "strings" }
 
         folderToXmlMap.forEach { (valuesFolderFile, document) ->
-            saveXmlToFolder(valuesFolderFile, document, resourceFileName)
+            saveXmlToFolder(valuesFolderFile, document, resFileName)
         }
     }
 
