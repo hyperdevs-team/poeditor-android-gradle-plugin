@@ -19,6 +19,7 @@
 package com.hyperdevs.poeditor.gradle
 
 import com.hyperdevs.poeditor.gradle.network.api.FilterType
+import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import io.github.cdimascio.dotenv.Dotenv
 
 /**
@@ -41,7 +42,7 @@ fun main() {
         ?.map { it.trim() }
         ?.map { FilterType.from(it) }
         ?: emptyList()
-    val order = dotenv.get("ORDER", "terms")
+    val order = OrderType.from(dotenv.get("ORDER", OrderType.NONE.name))
     val tags = dotenv.get("TAGS", "")
         .takeIf { it.isNotBlank() }
         ?.split(",")

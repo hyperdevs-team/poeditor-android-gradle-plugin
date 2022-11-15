@@ -39,7 +39,7 @@ interface PoEditorApiController {
                               code: String,
                               type: ExportType,
                               filters: List<FilterType>?,
-                              order: String?,
+                              order: OrderType,
                               tags: List<String>?): String
 }
 
@@ -60,7 +60,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
                                        code: String,
                                        type: ExportType,
                                        filters: List<FilterType>?,
-                                       order: String?,
+                                       order: OrderType,
                                        tags: List<String>?): String {
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
@@ -68,7 +68,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
             type = type.toString().toLowerCase(),
             filters = filters?.map { it.name.toLowerCase() },
             language = code,
-            order = order,
+            order = order.name.toLowerCase(),
             tags = tags)
             .execute()
         return response.onSuccessful { it.result.url }

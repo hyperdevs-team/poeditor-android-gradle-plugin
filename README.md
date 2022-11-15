@@ -91,7 +91,7 @@ Attribute                          | Description
 ```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
 ```filters```                      | (Since 2.4.0) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
 ```resFileName``` | (Since 3.1.0) (Optional) Sets the file name for the imported string resource XML files. Defaults to `strings`.
-```order```                        | (Since 2.4.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
+```order```                        | (Since 3.1.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 

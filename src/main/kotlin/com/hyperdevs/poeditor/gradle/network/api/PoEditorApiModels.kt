@@ -128,3 +128,23 @@ enum class FilterType {
             }
     }
 }
+
+/**
+ * Order types to use in file exports.
+ */
+enum class OrderType {
+    NONE,
+    TERMS;
+
+    companion object {
+        /** Returns the enum value associated to a string value. */
+        fun from(value: String) =
+            try {
+                valueOf(value.toUpperCase())
+            } catch (e: Exception) {
+                val message = "Value \"$value\" is not a valid ${this::class.java.declaringClass.simpleName}; " +
+                              "allowed values are: ${values().joinToString(", ") { "\"${it.name.toLowerCase()}\"" }}"
+                throw IllegalArgumentException(message)
+            }
+    }
+}

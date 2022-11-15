@@ -99,11 +99,11 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     /**
      * Defines the order for the export. If set to "terms" it will be ordered alphabetically by the terms.
      *
-     * Defaults to null meaning no order will be applied.
+     * Defaults to "none" meaning no order will be applied.
      */
     @get:Optional
     @get:Input
-    val order: Property<String?> = objects.property(String::class.java)
+    val order: Property<String> = objects.property(String::class.java)
 
     /**
      * Tags to filter downloaded strings with, previously declared in PoEditor.
