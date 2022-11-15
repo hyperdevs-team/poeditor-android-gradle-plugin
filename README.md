@@ -520,12 +520,15 @@ poEditor {
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)
 
-## Authors & Collaborators
+## Authors & contributors
 * **[Iván Martínez](https://github.com/imartinez)** - *Initial work*
 * **[Adrián García](https://github.com/adriangl)** - *Maintainer*
-* **[sonnet](https://github.com/rafid059)** - *Contributor*
-* **[Wojciech Kryg](https://github.com/wojciechkryg)** - *Contributor*
-* **[Stanislav Dimitrov](https://github.com/nokite)** - *Contributor*
+
+Thanks to all the people who contributed to making the plug-in better!
+
+<a href="https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hyperdevs-team/poeditor-android-gradle-plugin" />
+</a>
 
 ## Acknowledgements
 The work in this repository up to April 28th, 2021 was done by [bq](https://github.com/bq).
