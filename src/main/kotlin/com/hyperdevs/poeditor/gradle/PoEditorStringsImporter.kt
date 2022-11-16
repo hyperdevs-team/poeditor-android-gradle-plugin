@@ -22,6 +22,7 @@ import com.hyperdevs.poeditor.gradle.ktx.downloadUrlToString
 import com.hyperdevs.poeditor.gradle.network.PoEditorApiControllerImpl
 import com.hyperdevs.poeditor.gradle.network.api.ExportType
 import com.hyperdevs.poeditor.gradle.network.api.FilterType
+import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
 import com.hyperdevs.poeditor.gradle.network.api.ProjectLanguage
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
@@ -87,6 +88,7 @@ object PoEditorStringsImporter {
                               defaultLang: String,
                               resDirPath: String,
                               filters: List<FilterType>,
+                              order: OrderType,
                               tags: List<String>,
                               languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int,
@@ -128,6 +130,7 @@ object PoEditorStringsImporter {
                     code = languageCode,
                     type = ExportType.ANDROID_STRINGS,
                     filters = filters,
+                    order = order,
                     tags = tags)
 
                 // Download translation File to in-memory string

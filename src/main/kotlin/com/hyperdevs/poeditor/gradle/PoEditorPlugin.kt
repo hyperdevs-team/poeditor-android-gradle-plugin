@@ -25,6 +25,7 @@ import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.hyperdevs.poeditor.gradle.ktx.registerNewTask
+import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.tasks.ImportPoEditorStringsTask
 import com.hyperdevs.poeditor.gradle.utils.*
 import org.gradle.api.NamedDomainObjectContainer
@@ -53,6 +54,7 @@ class PoEditorPlugin : Plugin<Project> {
                 defaultLang.convention("en")
                 defaultResPath.convention(mainResourceDirectory.asFile.absolutePath)
                 filters.convention(emptyList())
+                order.convention(OrderType.NONE.name.toLowerCase())
                 tags.convention(emptyList())
                 languageValuesOverridePathMap.convention(emptyMap())
                 minimumTranslationPercentage.convention(-1)
