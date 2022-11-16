@@ -22,8 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add configuration support to define custom resource file names. _Thanks to [@gustavaa](https://github.com/gustavaa) for the contribution!_
-- Add configuration support to define how to order the export.
+- No new features!
 ### Changed
 - No changed features!
 ### Deprecated
@@ -34,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [3.1.0] - 2022-11-16
+### Added
+- Add configuration support to define custom resource file names. _Thanks to [@gustavaa](https://github.com/gustavaa) for the contribution!_
+- Add configuration support to define how to order the export. _Thanks to [@WarrenFaith](https://github.com/WarrenFaith) for the contribution!_
 
 ## [3.0.1] - 2022-09-18
 ### Fixed
@@ -417,8 +421,9 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...HEAD
-[3.0.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...3.0.1
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...3.1.0
+[3.0.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.2...3.0.0
 [2.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.0...2.4.1
