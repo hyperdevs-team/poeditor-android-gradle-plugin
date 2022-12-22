@@ -204,6 +204,16 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     fun setFilters(value: List<String>) = filters.set(value)
 
     /**
+     * Sets the order in which to sort the strings from the officially supported list in PoEditor.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `order.set(value)`.
+     */
+    fun setOrder(value: String) = order.set(value)
+
+    /**
      * Sets the tags to filter downloaded strings with, previously declared in PoEditor.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
