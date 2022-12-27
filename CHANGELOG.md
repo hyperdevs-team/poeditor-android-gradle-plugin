@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- No fixed issues!
+- Fix `order` setter not added to `PoEditorPluginExtension`
 ### Security
 - No security issues fixed!
 
