@@ -134,6 +134,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val minimumTranslationPercentage: Property<Int> = objects.property(Int::class.java)
 
     /**
+     * Defines if the output strings exported from PoEditor should be unquoted.
+     *
+     * Defaults to "false" meaning that all texts will be quoted.
+     */
+    @get:Optional
+    @get:Input
+    val unquoted: Property<Boolean> = objects.property(Boolean::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -242,4 +251,14 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `minimumTranslationPercentage.set(value)`.
      */
     fun setMinimumTranslationPercentage(value: Int) = minimumTranslationPercentage.set(value)
+
+    /**
+     * Sets if the exported strings should be unquoted or not.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `unquoted.set(value)`.
+     */
+    fun setUnquoted(value: Boolean) = unquoted.set(value)
 }

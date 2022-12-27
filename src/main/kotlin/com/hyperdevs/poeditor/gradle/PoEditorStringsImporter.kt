@@ -92,9 +92,10 @@ object PoEditorStringsImporter {
                               tags: List<String>,
                               languageValuesOverridePathMap: Map<String, String>,
                               minimumTranslationPercentage: Int,
-                              resFileName: String) {
+                              resFileName: String,
+                              unquoted: Boolean) {
         try {
-            val poEditorApiController = PoEditorApiControllerImpl(apiToken, poEditorApi)
+            val poEditorApiController = PoEditorApiControllerImpl(apiToken, moshi, poEditorApi)
 
             // Retrieve available languages from PoEditor
             logger.lifecycle("Retrieving project languages...")
@@ -131,7 +132,9 @@ object PoEditorStringsImporter {
                     type = ExportType.ANDROID_STRINGS,
                     filters = filters,
                     order = order,
-                    tags = tags)
+                    tags = tags,
+                    unquoted = unquoted
+                )
 
                 // Download translation File to in-memory string
                 logger.lifecycle("Downloading file from URL: $translationFileUrl")

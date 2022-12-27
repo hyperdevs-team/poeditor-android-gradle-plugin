@@ -53,6 +53,7 @@ abstract class ImportPoEditorStringsTask
         val languageOverridePathMap: Map<String, String>
         val minimumTranslationPercentage: Int
         val resFileName: String
+        val unquoted: Boolean
 
         try {
             apiToken = extension.apiToken.get()
@@ -65,6 +66,7 @@ abstract class ImportPoEditorStringsTask
             languageOverridePathMap = extension.languageValuesOverridePathMap.get()
             minimumTranslationPercentage = extension.minimumTranslationPercentage.get()
             resFileName = extension.resFileName.get()
+            unquoted = extension.unquoted.get()
         } catch (e: Exception) {
             logger.error("Import configuration failed", e)
 
@@ -84,6 +86,7 @@ abstract class ImportPoEditorStringsTask
             tags,
             languageOverridePathMap,
             minimumTranslationPercentage,
-            resFileName)
+            resFileName,
+            unquoted)
     }
 }

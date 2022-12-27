@@ -57,6 +57,7 @@ fun main() {
         }
         ?: emptyMap()
     val minimumTranslationPercentage = dotenv.get("MINIMUM_TRANSLATION_PERCENTAGE", "85").toInt()
+    val unquoted = dotenv.get("UNQUOTED", "false").toBoolean()
 
     PoEditorStringsImporter.importPoEditorStrings(
         apiToken,
@@ -68,6 +69,7 @@ fun main() {
         tags,
         languageValuesOverridePathMap,
         minimumTranslationPercentage,
-        resFileName
+        resFileName,
+        unquoted
     )
 }

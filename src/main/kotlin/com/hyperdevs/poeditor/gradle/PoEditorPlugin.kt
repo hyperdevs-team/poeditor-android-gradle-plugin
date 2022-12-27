@@ -59,6 +59,7 @@ class PoEditorPlugin : Plugin<Project> {
                 languageValuesOverridePathMap.convention(emptyMap())
                 minimumTranslationPercentage.convention(-1)
                 resFileName.convention("strings")
+                unquoted.convention(false)
             }
 
         // Add flavor and build-type configurations if the project has the "com.android.application" plugin

@@ -148,3 +148,12 @@ enum class OrderType {
             }
     }
 }
+
+/**
+ * Object passed as export options.
+ */
+data class Options(val unquoted: Int) {
+    init {
+        require(unquoted in 0..1) { "unquoted value must be 0 or 1" }
+    }
+}

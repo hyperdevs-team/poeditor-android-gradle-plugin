@@ -19,6 +19,9 @@
 package com.hyperdevs.poeditor.gradle.network
 
 import com.hyperdevs.poeditor.gradle.network.api.*
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import retrofit2.Response
 
 /**
@@ -32,7 +35,7 @@ interface PoEditorApiController {
 
     /**
      * Retrieves the translation file URL for a given project, language code, and export type.
-     * Also supports a list of tags to filter.
+     * Also supports a series of options.
      */
     @Suppress("LongParameterList")
     fun getTranslationFileUrl(projectId: Int,
@@ -40,14 +43,20 @@ interface PoEditorApiController {
                               type: ExportType,
                               filters: List<FilterType>?,
                               order: OrderType,
-                              tags: List<String>?): String
+                              tags: List<String>?,
+                              unquoted: Boolean): String
 }
 
 /**
  * Implementation of [PoEditorApiController] using Retrofit.
  */
 class PoEditorApiControllerImpl(private val apiToken: String,
+                                private val moshi: Moshi,
                                 private val poEditorApi: PoEditorApi) : PoEditorApiController {
+
+    private val optionsAdapter: JsonAdapter<List<Options>> =
+        moshi.adapter(Types.newParameterizedType(List::class.java, Options::class.java))
+
     override fun getProjectLanguages(projectId: Int): List<ProjectLanguage> {
         val response = poEditorApi.getProjectLanguages(
             apiToken = apiToken,
@@ -61,7 +70,14 @@ class PoEditorApiControllerImpl(private val apiToken: String,
                                        type: ExportType,
                                        filters: List<FilterType>?,
                                        order: OrderType,
-                                       tags: List<String>?): String {
+                                       tags: List<String>?,
+                                       unquoted: Boolean): String {
+        val options = listOf(
+            Options(unquoted = if (unquoted) 1 else 0)
+        ).let {
+            optionsAdapter.toJson(it)
+        }
+
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
             id = projectId,
@@ -69,8 +85,10 @@ class PoEditorApiControllerImpl(private val apiToken: String,
             filters = filters?.map { it.name.toLowerCase() },
             language = code,
             order = order.name.toLowerCase(),
-            tags = tags)
-            .execute()
+            tags = tags,
+            options = options
+        ).execute()
+
         return response.onSuccessful { it.result.url }
     }
 
