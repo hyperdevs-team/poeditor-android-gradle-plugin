@@ -30,9 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fix `order` setter not added to `PoEditorPluginExtension`
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [3.1.1] - 2022-12-27
+### Fixed
+- Fix `order` setter not added to `PoEditorPluginExtension`
 
 ## [3.1.0] - 2022-11-16
 ### Added
@@ -421,7 +425,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.1...HEAD
+[3.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...3.1.0
 [3.0.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/2.4.2...3.0.0
