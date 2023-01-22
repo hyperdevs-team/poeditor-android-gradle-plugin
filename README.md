@@ -79,19 +79,20 @@ poEditor {
 
 The complete attribute list is the following:
 
-Attribute                          | Description
------------------------------------|-----------------------------------------
-```apiToken```                     | PoEditor API Token.
-```projectId```                    | PoEditor project ID.
-```defaultLang```                  | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
-```defaultResPath```               | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
-```enabled```                      | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
-```tags```                         | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
+Attribute                              | Description
+---------------------------------------|-----------------------------------------
+```apiToken```                         | PoEditor API Token.
+```projectId```                        | PoEditor project ID.
+```defaultLang```                      | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
+```defaultResPath```                   | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
+```enabled```                          | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
+```tags```                             | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
 ```languageValuesOverridePathMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
-```minimumTranslationPercentage``` | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
-```filters```                      | (Since 2.4.0) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
-```resFileName``` | (Since 3.1.0) (Optional) Sets the file name for the imported string resource XML files. Defaults to `strings`.
-```order```                        | (Since 3.1.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
+```minimumTranslationPercentage```     | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
+```filters```                          | (Since 2.4.0) (Optional) List of PoEditor filters to use during download. Defaults to empty list. Accepted values are defined by the POEditor API.
+```resFileName```                      | (Since 3.1.0) (Optional) Sets the file name for the imported string resource XML files. Defaults to `strings`.
+```order```                            | (Since 3.1.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
+```unquoted```                         | (Since 3.2.0) (Optional) Defines if the strings should be unquoted, overriding default PoEditor configuration. Defaults to `false`.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
