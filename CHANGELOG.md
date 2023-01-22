@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add option to unquote strings via export API
+- No new features!
 ### Changed
 - No changed features!
 ### Deprecated
@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [3.2.0] - 2023-01-22
+### Added
+- Add option to unquote strings via export API
 
 ## [3.1.1] - 2022-12-27
 ### Fixed
@@ -425,7 +429,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.2.0...HEAD
+[3.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...3.2.0
 [3.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...3.1.0
 [3.0.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.0...3.0.1
