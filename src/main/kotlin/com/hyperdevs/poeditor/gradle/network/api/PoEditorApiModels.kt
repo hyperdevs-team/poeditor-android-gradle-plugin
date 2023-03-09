@@ -37,7 +37,7 @@ data class ResponseStatus(val status: String,
  * PoEditor response to "list languages" call.
  */
 data class ListLanguagesResponse(override val response: ResponseStatus,
-                                 val result: ListLanguagesResult) : PoEditorResponse(response)
+                                 val result: ListLanguagesResult?) : PoEditorResponse(response)
 
 /**
  * Result of a "list language" call.
