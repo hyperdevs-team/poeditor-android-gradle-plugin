@@ -61,7 +61,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         val response = poEditorApi.getProjectLanguages(
             apiToken = apiToken,
             id = projectId).execute()
-        return response.onSuccessful { it.result.languages }
+        return response.onSuccessful { it.result?.languages ?: emptyList() }
     }
 
     @Suppress("LongParameterList")
