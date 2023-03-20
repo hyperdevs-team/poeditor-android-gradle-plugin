@@ -36,8 +36,10 @@ console-reports:
     # - 'ProjectStatisticsReport'
     # - 'ComplexityReport'
     # - 'NotificationReport'
-    - 'FindingsReport'
+    # - 'FindingsReport'
     #  - 'FileBasedFindingsReport'
+    - 'LiteFindingsReport'
+
 
 output-reports:
   active: true
@@ -63,20 +65,27 @@ comments:
     endOfSentenceFormat: '([.?!][ \t\n\r\f<])|([.?!:]$)'
   UndocumentedPublicClass:
     active: true
-    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt", "**/ui/components/**", "**/ui/theme/**" ]
+    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt", "**/ui/theme/**" ]
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
     searchInInnerInterface: true
+    ignoreAnnotated: [ 'Composable' ]
   UndocumentedPublicFunction:
     active: true
-    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt", "**/ui/components/**", "**/ui/theme/**" ]
+    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt" ]
+    ignoreAnnotated: [ 'Composable' ]
   UndocumentedPublicProperty:
     active: false
-    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt", "**/ui/components/**", "**/ui/theme/**" ]
+    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt", "**/ui/theme/**" ]
+    ignoreAnnotated: [ 'Composable' ]
 
 complexity:
   active: true
+  CognitiveComplexMethod:
+    active: false
+    threshold: 15
+    ignoreAnnotated: [ 'Composable' ]
   ComplexCondition:
     active: true
     threshold: 5
@@ -85,22 +94,22 @@ complexity:
     threshold: 25
     includeStaticDeclarations: true
     includePrivateDeclarations: false
-  ComplexMethod:
+  CyclomaticComplexMethod:
     active: true
     threshold: 15
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
     nestingFunctions:
-      - 'run'
-      - 'let'
-      - 'apply'
-      - 'with'
       - 'also'
-      - 'use'
+      - 'apply'
       - 'forEach'
       - 'isNotNull'
       - 'ifNull'
+      - 'let'
+      - 'run'
+      - 'use'
+      - 'with'
   LabeledExpression:
     active: false
     ignoredLabels: [ launch ]
@@ -110,6 +119,7 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
+    ignoreAnnotated: [ 'Composable' ]
   LongParameterList:
     active: true
     functionThreshold: 6
@@ -148,9 +158,17 @@ coroutines:
   active: true
   GlobalCoroutineUsage:
     active: true
+  InjectDispatcher:
+    active: false
+    dispatcherNames:
+      - 'IO'
+      - 'Default'
+      - 'Unconfined'
   RedundantSuspendModifier:
     active: true
   SleepInsteadOfDelay:
+    active: true
+  SuspendFunWithCoroutineScopeReceiver:
     active: true
   SuspendFunWithFlowReturnType:
     active: true
@@ -274,10 +292,20 @@ formatting:
     autoCorrect: true
     indentSize: 4
     maxLineLength: 140
+  BlockCommentInitialStarAlignment:
+    active: true
+    autoCorrect: true
   ChainWrapping:
     active: true
     autoCorrect: true
   CommentSpacing:
+    active: true
+    autoCorrect: true
+  CommentWrapping:
+    active: true
+    autoCorrect: true
+    indentSize: 4
+  DiscouragedCommentLocation:
     active: true
     autoCorrect: true
   EnumEntryNameCase:
@@ -289,6 +317,20 @@ formatting:
     active: true
     autoCorrect: true
     insertFinalNewLine: true
+  FunctionReturnTypeSpacing:
+    active: false
+    autoCorrect: true
+  FunctionSignature:
+    active: false
+  FunctionStartOfBodySpacing:
+    active: true
+    autoCorrect: true
+  FunctionTypeReferenceSpacing:
+    active: false
+    autoCorrect: true
+  FunKeywordSpacing:
+    active: true
+    autoCorrect: true
   ImportOrdering:
     active: true
     autoCorrect: true
@@ -296,11 +338,17 @@ formatting:
     active: false
     autoCorrect: true
     indentSize: 4
-    continuationIndentSize: 4
+  KdocWrapping:
+    active: true
+    autoCorrect: true
+    indentSize: 4
   MaximumLineLength:
     active: false # We use MaxLineLength instead
     maxLineLength: 140
     ignoreBackTickedIdentifier: false
+  ModifierListSpacing:
+    active: true
+    autoCorrect: true
   ModifierOrdering:
     active: true
     autoCorrect: true
@@ -342,13 +390,18 @@ formatting:
     autoCorrect: true
   NoWildcardImports:
     active: false
+  NullableTypeSpacing:
+    active: true
+    autoCorrect: true
   PackageName:
+    active: true
+    autoCorrect: true
+  ParameterListSpacing:
     active: true
     autoCorrect: true
   ParameterListWrapping:
     active: false
     autoCorrect: true
-    indentSize: 4
     maxLineLength: 140
   SpacingAroundAngleBrackets:
     active: true
@@ -389,8 +442,31 @@ formatting:
   SpacingBetweenDeclarationsWithComments:
     active: false
     autoCorrect: true
+  SpacingBetweenFunctionNameAndOpeningParenthesis:
+    active: true
+    autoCorrect: true
   StringTemplate:
     active: true
+    autoCorrect: true
+  TrailingCommaOnCallSite:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnCallSite: false
+  TrailingCommaOnDeclarationSite:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnDeclarationSite: false
+  TypeArgumentListSpacing:
+    active: true
+    autoCorrect: true
+  TypeParameterListSpacing:
+    active: true
+    autoCorrect: true
+  UnnecessaryParenthesesBeforeTrailingLambda:
+    active: true
+    autoCorrect: true
+  Wrapping:
+    active: false
     autoCorrect: true
 
 naming:
@@ -440,6 +516,10 @@ naming:
     active: true
     excludes: [ '**/*.kts' ]
     rootPackage: ''
+  LambdaParameterNaming:
+    active: false
+    excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt" ]
+    parameterPattern: '[a-z][A-Za-z0-9]*|_'
   MatchingDeclarationName:
     active: false
     mustBeFirst: true
@@ -493,6 +573,8 @@ performance:
   SpreadOperator:
     active: true
     excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt" ]
+  UnnecessaryPartOfBinaryExpression:
+    active: true
   UnnecessaryTemporaryInstantiation:
     active: true
 
@@ -502,6 +584,8 @@ potential-bugs:
   #    active: true
   #    forbiddenTypePatterns:
   #      - 'kotlin.String'
+  AvoidReferentialEquality:
+    active: true
   CastToNullableType:
     active: false
   Deprecation:
@@ -510,8 +594,8 @@ potential-bugs:
     active: true
   DoubleMutabilityForCollection:
     active: true
-  DuplicateCaseInWhenExpression:
-    active: true
+  ElseCaseInsteadOfExhaustiveWhen:
+    active: false
   EqualsAlwaysReturnsTrueOrFalse:
     active: true
   EqualsWithHashCodeExist:
@@ -524,12 +608,20 @@ potential-bugs:
     active: false
   IgnoredReturnValue:
     active: true
-    restrictToAnnotatedMethods: true
+    restrictToConfig: true
     returnValueAnnotations:
-      - '*.CheckReturnValue'
+      - 'CheckResult'
       - '*.CheckResult'
-  #    ignoreReturnValueAnnotations:
-  #      - '*.CanIgnoreReturnValue'
+      - 'CheckReturnValue'
+      - '*.CheckReturnValue'
+    ignoreReturnValueAnnotations:
+      - 'CanIgnoreReturnValue'
+      - '*.CanIgnoreReturnValue'
+    returnValueTypes:
+      - 'kotlin.sequences.Sequence'
+      - 'kotlinx.coroutines.flow.*Flow'
+      - 'java.util.stream.*Stream'
+    ignoreFunctionCall: []
   ImplicitDefaultLocale:
     active: true
   ImplicitUnitReturnType:
@@ -544,17 +636,20 @@ potential-bugs:
   LateinitUsage:
     active: false
     excludes: [ "**/test/**", "**/androidTest/**", "**/test/**", "**/*Test.kt", "**/*Spec.kt", "**/*Spek.kt", "**/*Screen.kt" ]
-    excludeAnnotatedProperties: [ ]
+    ignoreAnnotated: [ ]
     ignoreOnClassesPattern: ''
   MapGetWithNotNullAssertionOperator:
     active: false
-  MissingWhenCase:
+  MissingPackageDeclaration:
+    active: true
+    excludes: [ '**/*.kts' ]
+  NullCheckOnMutableProperty:
     active: true
   NullableToStringCall:
     active: true
-  RedundantElseInWhen:
-    active: true
   UnconditionalJumpStatementInLoop:
+    active: true
+  UnnecessaryNotNullCheck:
     active: true
   UnnecessaryNotNullOperator:
     active: true
@@ -577,13 +672,17 @@ potential-bugs:
 
 style:
   active: true
+  AlsoCouldBeApply:
+    active: true
+  CanBeNonNullable:
+    active: true
   ClassOrdering:
     active: false
   CollapsibleIfStatements:
     active: false
   DataClassContainsFunctions:
     active: false
-    conversionFunctionPrefix: 'to, from'
+    conversionFunctionPrefix: ["to", "from"]
   DataClassShouldBeImmutable:
     active: true
   DestructuringDeclarationWithTooManyEntries:
@@ -614,14 +713,10 @@ style:
   ForbiddenMethodCall:
     active: true
     methods:
-      - 'kotlin.io.println'
-      - 'kotlin.io.print'
-  ForbiddenPublicDataClass:
-    active: true
-    excludes: [ '**' ]
-    ignorePackages:
-      - '*.internal'
-      - '*.internal.*'
+      - reason: 'print does not allow you to configure the output stream. Use a logger instead.'
+        value: 'kotlin.io.print'
+      - reason: 'println does not allow you to configure the output stream. Use a logger instead.'
+        value: 'kotlin.io.println'
   ForbiddenVoid:
     active: true
     ignoreOverridden: false
@@ -629,15 +724,10 @@ style:
   FunctionOnlyReturningConstant:
     active: true
     ignoreOverridableFunction: true
-    excludedFunctions: 'describeContents'
-    excludeAnnotatedFunction:
+    excludedFunctions:
+      - 'describeContents'
+    ignoreAnnotated:
       - 'dagger.Provides'
-  LibraryCodeMustSpecifyReturnType:
-    active: true
-    excludes: [ '**' ]
-  LibraryEntitiesShouldNotBePublic:
-    active: true
-    excludes: [ '**' ]
   LoopWithTooManyJumpStatements:
     active: true
     maxJumpCount: 1
@@ -669,6 +759,8 @@ style:
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: true
+  MultilineRawStringIndentation:
+    active: false
   MayBeConst:
     active: true
   ModifierOrder:
@@ -702,7 +794,8 @@ style:
   ReturnCount:
     active: true
     max: 5
-    excludedFunctions: 'equals'
+    excludedFunctions:
+      - 'equals'
     excludeLabeled: false
     excludeReturnFromLambda: true
     excludeGuardClauses: true
@@ -717,12 +810,14 @@ style:
     max: 5
   TrailingWhitespace:
     active: true
+  TrimMultilineRawString:
+    active: true
   UnderscoresInNumericLiterals:
     active: false
-    acceptableDecimalLength: 5
+    acceptableLength: 5
   UnnecessaryAbstractClass:
     active: true
-    excludeAnnotatedClasses:
+    ignoreAnnotated:
       - 'dagger.Module'
   UnnecessaryAnnotationUseSiteTarget:
     active: false
@@ -731,6 +826,8 @@ style:
   UnnecessaryFilter:
     active: false
   UnnecessaryInheritance:
+    active: true
+  UnnecessaryInnerClass:
     active: true
   UnnecessaryLet:
     active: true
@@ -753,7 +850,7 @@ style:
     active: true
   UseDataClass:
     active: true
-    excludeAnnotatedClasses: [ ]
+    ignoreAnnotated: [ ]
     allowVars: true
   UseEmptyCounterpart:
     active: true
@@ -770,6 +867,8 @@ style:
   UseRequireNotNull:
     active: false
   UselessCallOnNotNull:
+    active: true
+  UseSumOfInsteadOfFlatMapSize:
     active: true
   UtilityClassWithPublicConstructor:
     active: false

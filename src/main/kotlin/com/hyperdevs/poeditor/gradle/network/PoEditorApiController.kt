@@ -61,7 +61,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         val response = poEditorApi.getProjectLanguages(
             apiToken = apiToken,
             id = projectId).execute()
-        return response.onSuccessful { it.result?.languages ?: emptyList() }
+        return response.onSuccessful { it.languages }
     }
 
     @Suppress("LongParameterList")
@@ -89,16 +89,16 @@ class PoEditorApiControllerImpl(private val apiToken: String,
             options = options
         ).execute()
 
-        return response.onSuccessful { it.result.url }
+        return response.onSuccessful { it.url }
     }
 
-    private inline fun <T : PoEditorResponse, U> Response<T>.onSuccessful(func: (T) -> U): U {
-        if (isSuccessful && body()?.response?.code == "200") {
-            body()?.let { return func(it) }
+    private inline fun <T, U : PoEditorResponse<T>, V> Response<U>.onSuccessful(func: (T) -> V): V {
+        if (isSuccessful && body()?.response?.status == ResponseStatus.STATUS_SUCCESS) {
+            body()?.let { return func(it.result!!) }
         }
 
         throw IllegalStateException(
-            "An error occurred while trying to retrieve data from PoEditor API: \n\n" +
-            body().toString())
+            "An error occurred while trying to retrieve data from PoEditor API: \n" +
+            body()?.response?.let { "Error code: ${it.code}, error message: ${it.message}" })
     }
 }

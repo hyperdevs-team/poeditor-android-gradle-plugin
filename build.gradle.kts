@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
     repositories {
         mavenCentral()
-        google().content {
-            includeGroup("com.android")
-            includeGroupByRegex("com\\.android\\..*")
-            includeGroupByRegex("com\\.google\\..*")
-            includeGroupByRegex("androidx\\..*")
-        }
+        google()
     }
 
     dependencies {
@@ -39,16 +35,14 @@ plugins {
     `maven-publish`
     alias(libs.plugins.detekt)
     alias(libs.plugins.gitVersionGradle)
+    alias(libs.plugins.versionsUpdate)
 }
+
+apply(plugin = libs.plugins.versionsUpdate.get().pluginId)
 
 repositories {
     mavenCentral()
-    google().content {
-        includeGroup("com.android")
-        includeGroupByRegex("com\\.android\\..*")
-        includeGroupByRegex("com\\.google\\..*")
-        includeGroupByRegex("androidx\\..*")
-    }
+    google()
 }
 
 dependencies {
@@ -70,8 +64,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
     withJavadocJar()
     withSourcesJar()
@@ -164,5 +158,20 @@ publishing {
                 }
             }
         }
+    }
+}
+
+// https://github.com/ben-manes/gradle-versions-plugin
+// Disallow release candidates as upgradable versions from stable versions
+fun String.isNonStable(): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(this)
+    return isStable.not()
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf {
+        candidate.version.isNonStable() && !currentVersion.isNonStable()
     }
 }

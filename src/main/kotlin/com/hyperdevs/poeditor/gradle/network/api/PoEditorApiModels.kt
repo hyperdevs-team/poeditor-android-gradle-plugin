@@ -24,31 +24,24 @@ import java.util.Date
 /**
  * Basic PoEditor response. Contains common fields for all responses in the API.
  */
-open class PoEditorResponse(open val response: ResponseStatus)
+open class PoEditorResponse<T : Any>(open val response: ResponseStatus, open val result: T?)
 
 /**
  * Basic response data.
  */
 data class ResponseStatus(val status: String,
                           val code: String,
-                          val message: String)
-
-/**
- * PoEditor response to "list languages" call.
- */
-data class ListLanguagesResponse(override val response: ResponseStatus,
-                                 val result: ListLanguagesResult?) : PoEditorResponse(response)
+                          val message: String) {
+    companion object {
+        const val STATUS_SUCCESS = "success"
+        const val STATUS_FAIL = "fail"
+    }
+}
 
 /**
  * Result of a "list language" call.
  */
 data class ListLanguagesResult(val languages: List<ProjectLanguage>)
-
-/**
- * PoEditor response to "export languages" call.
- */
-data class ExportResponse(override val response: ResponseStatus,
-                          val result: ExportResult) : PoEditorResponse(response)
 
 /**
  * Result of a "list language" call.

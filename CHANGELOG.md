@@ -34,6 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [3.3.0] - 2023-03-20
+### Changed
+- Bump project dependencies
+- Project is now compiled against Java 11
+### Fixed
+- Fix unexpected plug-in crash when PoEditor responses return no result. _Thanks to [@MartinakDaniel](https://github.com/MartinakDaniel) for the contribution!_
+
 ## [3.2.0] - 2023-01-22
 ### Added
 - Add option to unquote strings via export API
@@ -429,7 +436,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.2.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.3.0...HEAD
+[3.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...3.3.0
 [3.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...3.2.0
 [3.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.0.1...3.1.0

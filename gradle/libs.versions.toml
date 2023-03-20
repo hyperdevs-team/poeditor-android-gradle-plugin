@@ -1,12 +1,12 @@
 [versions]
-kotlin = "1.7.20"
-detekt = "1.19.0"
-moshi = "1.12.0"
+kotlin = "1.8.20-RC"
+detekt = "1.22.0"
+moshi = "1.14.0"
 retrofit = "2.9.0"
-okhttp = "4.9.3"
+okhttp = "4.10.0"
 
 [libraries]
-android-buildTools = "com.android.tools.build:gradle:7.3.0"
+android-buildTools = "com.android.tools.build:gradle:7.4.2"
 
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -21,7 +21,7 @@ retrofit-converterMoshi = { group = "com.squareup.retrofit2", name = "converter-
 okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
 okhttp3-loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp"}
 
-dotenvKotlin = "io.github.cdimascio:dotenv-kotlin:6.2.2"
+dotenvKotlin = "io.github.cdimascio:dotenv-kotlin:6.4.1"
 
 junit = "junit:junit:4.13.2"
 
@@ -30,6 +30,8 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 gitVersionGradle = { id = "com.gladed.androidgitversion", version = "0.4.14"}
+versionsUpdate = { id = "com.github.ben-manes.versions", version = "0.46.0" }
+
 
 [bundles]
 moshi = ["moshi", "moshi-kotlin", "moshi-adapters"]

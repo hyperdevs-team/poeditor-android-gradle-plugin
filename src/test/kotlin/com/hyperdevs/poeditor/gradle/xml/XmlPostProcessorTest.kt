@@ -115,7 +115,7 @@ class XmlPostProcessorTest {
                                 "Ir${'\n'}abajo"
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -132,7 +132,7 @@ class XmlPostProcessorTest {
                                 "Ir${'\n'}abajo"
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -152,7 +152,7 @@ class XmlPostProcessorTest {
                                 "Hello. I love you 100%"
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -166,7 +166,7 @@ class XmlPostProcessorTest {
                                 "Hello. I love you 100%"
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -181,7 +181,7 @@ class XmlPostProcessorTest {
                                 100%"
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -190,7 +190,7 @@ class XmlPostProcessorTest {
                                 100%"
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -205,7 +205,7 @@ class XmlPostProcessorTest {
                                 I love you 100%"
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -214,7 +214,7 @@ class XmlPostProcessorTest {
                                 I love you 100%%"
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -235,7 +235,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"{{element_quantity}} elementos seleccionados"</item>
                               </plurals>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -250,7 +250,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"%1${'$'}s elementos seleccionados"</item>
                               </plurals>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -273,7 +273,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"Hello friends. I love you 100%"</item>
                               </plurals>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -290,7 +290,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"Hello friends. I love you 100%"</item>
                               </plurals>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -304,7 +304,7 @@ class XmlPostProcessorTest {
                                 "Hello &lt;b&gt;{{name}}&lt;/b&gt;"
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -312,7 +312,7 @@ class XmlPostProcessorTest {
                                 "Hello <b>%1${'$'}s</b>"
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -326,7 +326,7 @@ class XmlPostProcessorTest {
                                 <![CDATA[Some text<a href="{{link}}">Link</a> text text]]>
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -334,7 +334,7 @@ class XmlPostProcessorTest {
                                 <![CDATA[Some text<a href="%1${'$'}s">Link</a> text text]]>
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -351,7 +351,7 @@ class XmlPostProcessorTest {
                                 ]]>
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val expectedResult = """
                             <resources>
@@ -362,7 +362,7 @@ class XmlPostProcessorTest {
                                 ]]>
                               </string>
                             </resources>
-                             """.formatXml()
+                             """.trimIndent().formatXml()
 
         Assert.assertEquals(expectedResult, xmlPostProcessor.formatTranslationXml(inputXmlString))
     }
@@ -380,7 +380,7 @@ class XmlPostProcessorTest {
                                 "${expectedKey}_tablet"
                               </string>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val allRegexString = ALL_REGEX_STRING
         val tabletRegexString = TABLET_REGEX_STRING
@@ -421,7 +421,7 @@ class XmlPostProcessorTest {
                                 <item quantity="other">"{{element_quantity}} elementos seleccionados en tablet"</item>
                               </plurals>
                             </resources>
-                             """
+                             """.trimIndent()
 
         val allRegexString = ALL_REGEX_STRING
         val tabletRegexString = TABLET_REGEX_STRING

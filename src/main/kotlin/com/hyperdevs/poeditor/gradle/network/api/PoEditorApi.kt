@@ -34,7 +34,7 @@ interface PoEditorApi {
     @FormUrlEncoded
     @POST("languages/list")
     fun getProjectLanguages(@Field("api_token") apiToken: String,
-                            @Field("id") id: Int): Call<ListLanguagesResponse>
+                            @Field("id") id: Int): Call<PoEditorResponse<ListLanguagesResult>>
 
     /**
      * Returns the exportables ready to retrieve from the current PoEditor project.
@@ -50,5 +50,5 @@ interface PoEditorApi {
                           @Field("filters") filters: List<String>? = null,
                           @Field("order") order: String? = null,
                           @Field("tags") tags: List<String>? = null,
-                          @Field("options") options: String? = null): Call<ExportResponse>
+                          @Field("options") options: String? = null): Call<PoEditorResponse<ExportResult>>
 }
