@@ -6,7 +6,7 @@ retrofit = "2.9.0"
 okhttp = "4.10.0"
 
 [libraries]
-android-buildTools = "com.android.tools.build:gradle:7.4.2"
+android-buildTools = "com.android.tools.build:gradle:7.3.0"
 
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
