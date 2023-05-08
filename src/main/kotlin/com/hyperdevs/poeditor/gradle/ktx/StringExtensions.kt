@@ -21,4 +21,4 @@ package com.hyperdevs.poeditor.gradle.ktx
 /**
  * Unescapes HTML tags from string.
  */
-fun String.unescapeHtmlTags() = this.replace("&lt;", "<").replace("&gt;", ">")
+fun String.unescapeHtmlTags() = this.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")

@@ -93,6 +93,7 @@ Attribute                              | Description
 ```resFileName```                      | (Since 3.1.0) (Optional) Sets the file name for the imported string resource XML files. Defaults to `strings`.
 ```order```                            | (Since 3.1.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
 ```unquoted```                         | (Since 3.2.0) (Optional) Defines if the strings should be unquoted, overriding default PoEditor configuration. Defaults to `false`.
+```unescapeHtmlTags```                 | (Since 3.4.0) (Optional) Whether or not to unescape HTML entitites from strings. Defaults to true.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -516,6 +517,37 @@ poEditor {
 }
 ```
     
+</details>
+
+## Toggling HTML unescaping
+> Requires version 3.4.0 of the plug-in
+
+You can enable or disable HTML tags unescaping with the `unescapeHtmlTags` flag.
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    unescapeHtmlTags = false
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    unescapeHtmlTags = false
+}
+```
+
 </details>
 
 

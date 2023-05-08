@@ -44,7 +44,7 @@ fun String.toStringsXmlDocument(): Document {
 /**
  * Converts a [Document] into a formatted [String].
  */
-fun Document.toAndroidXmlString(): String {
+fun Document.toAndroidXmlString(unescapeHtmlTags: kotlin.Boolean): String {
     val registry = DOMImplementationRegistry.newInstance()
     val impl = registry.getDOMImplementation("LS") as DOMImplementationLS
     val output = impl.createLSOutput().apply { encoding = "utf-8" }
@@ -59,5 +59,5 @@ fun Document.toAndroidXmlString(): String {
 
     serializer.write(this, output)
 
-    return writer.toString().unescapeHtmlTags()
+    return writer.toString().let { if (unescapeHtmlTags) it.unescapeHtmlTags() else it }
 }

@@ -143,6 +143,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val unquoted: Property<Boolean> = objects.property(Boolean::class.java)
 
     /**
+     * Whether or not HTML tags in strings should be unescaped or not.
+     *
+     * Defaults to true.
+     */
+    @get:Optional
+    @get:Input
+    val unescapeHtmlTags: Property<Boolean> = objects.property(Boolean::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -261,4 +270,14 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `unquoted.set(value)`.
      */
     fun setUnquoted(value: Boolean) = unquoted.set(value)
+
+    /**
+     * Sets if strings should have HTML tags unescaped.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `unescapeHtmlTags.set(value)`.
+     */
+    fun setUnescapeHtmlTags(value: Boolean) = unescapeHtmlTags.set(value)
 }

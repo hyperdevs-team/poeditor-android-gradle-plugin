@@ -41,7 +41,8 @@ class AndroidXmlWriter {
                 postProcessedXmlDocumentMap: Map<String, Document>,
                 defaultLang: String,
                 languageCode: String,
-                languageValuesOverridePathMap: Map<String, String>?) {
+                languageValuesOverridePathMap: Map<String, String>?,
+                unescapeHtmlTags: Boolean) {
         // First check if we have passed a default "values" folder for the given language
         var baseValuesDir: File? = languageValuesOverridePathMap?.get(languageCode)?.let { File(it) }
 
@@ -65,11 +66,14 @@ class AndroidXmlWriter {
         }
 
         folderToXmlMap.forEach { (valuesFolderFile, document) ->
-            saveXmlToFolder(valuesFolderFile, document, resFileName)
+            saveXmlToFolder(valuesFolderFile, document, resFileName, unescapeHtmlTags)
         }
     }
 
-    private fun saveXmlToFolder(stringsFolderFile: File, document: Document, resFileName: String) {
+    private fun saveXmlToFolder(stringsFolderFile: File,
+                                document: Document,
+                                resFileName: String,
+                                unescapeHtmlTags: Boolean) {
         if (!stringsFolderFile.exists()) {
             logger.debug("Creating strings folder for new language")
             val folderCreated = stringsFolderFile.mkdirs()
@@ -78,6 +82,6 @@ class AndroidXmlWriter {
         }
 
         logger.lifecycle("Saving strings to ${stringsFolderFile.absolutePath}")
-        File(stringsFolderFile, "$resFileName.xml").writeText(document.toAndroidXmlString())
+        File(stringsFolderFile, "$resFileName.xml").writeText(document.toAndroidXmlString(unescapeHtmlTags))
     }
 }

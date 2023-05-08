@@ -135,6 +135,21 @@ publishing {
                     }
                 }
 
+                organization {
+                    name.set("HyperDevs")
+                    url.set("https://github.com/hyperdevs-team")
+                }
+
+                issueManagement {
+                    system.set("GitHub Issues")
+                    url.set("https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/issues")
+                }
+
+                scm {
+                    connection.set("git@github.com:hyperdevs-team/poeditor-android-gradle-plugin.git")
+                    url.set("https://github.com/hyperdevs-team/poeditor-android-gradle-plugin.git")
+                }
+
                 developers {
                     developer {
                         name.set("Iván Martínez")
@@ -148,12 +163,6 @@ publishing {
                         id.set("adriangl")
                         url.set("https://github.com/adriangl")
                         roles.set(listOf("Maintainer"))
-
-                        organization {
-                            name.set("HyperDevs")
-                            id.set("hyperdevs-team")
-                            url.set("https://github.com/hyperdevs-team")
-                        }
                     }
                 }
             }
