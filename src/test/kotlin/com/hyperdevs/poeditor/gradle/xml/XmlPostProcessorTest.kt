@@ -88,6 +88,13 @@ class XmlPostProcessorTest {
             xmlPostProcessor.formatTranslationString("Hello {{name}}. How are you {{name}}?"))
         Assert.assertEquals("Hello %1\$s. This is your score: %2\$s",
             xmlPostProcessor.formatTranslationString("Hello {1{name}}. This is your score: {2{score}}"))
+
+        Assert.assertEquals("Hello %1\$s %2\$s %3\$s %4\$s %5\$s %6\$s %7\$s %8\$s %9\$s %10\$s %11\$s",
+            xmlPostProcessor.formatTranslationString(
+                "Hello {1{name}} {2{name}} {3{name}} {4{name}} {5{name}} " +
+                "{6{name}} {7{name}} {8{name}} {9{name}} {10{name}} {11{name}}"
+            )
+        )
     }
 
     @Test
