@@ -20,7 +20,6 @@ package com.hyperdevs.poeditor.gradle.xml
 
 import com.hyperdevs.poeditor.gradle.ktx.toAndroidXmlString
 import com.hyperdevs.poeditor.gradle.ktx.toStringsXmlDocument
-import com.hyperdevs.poeditor.gradle.ktx.unescapeHtmlTags
 import com.hyperdevs.poeditor.gradle.utils.ALL_REGEX_STRING
 import org.w3c.dom.*
 
@@ -31,7 +30,7 @@ import org.w3c.dom.*
 class XmlPostProcessor {
     companion object {
         private val DEFAULT_ENCODING = Charsets.UTF_8
-        private val VARIABLE_REGEX = Regex("""\{\d?\{(.*?)\}\}""")
+        private val VARIABLE_REGEX = Regex("""\{(\d*)\{(.*?)\}\}""")
 
         private const val TAG_RESOURCES = "resources"
         private const val TAG_STRING = "string"
@@ -82,9 +81,10 @@ class XmlPostProcessor {
             //  throw an exception
 
             // If the placeholder contains an ordinal, use it: {2{pages_count}} -> %2$s
-            val match = matchResult.groupValues[0]
-            if (Character.isDigit(match[1])) {
-                "%${match[1]}\$s"
+            val fullMatch = matchResult.groupValues[0]
+            val placeholderVaraibleOrder = matchResult.groupValues[1]
+            if (placeholderVaraibleOrder.toIntOrNull() != null) {
+                "%$placeholderVaraibleOrder\$s"
             } else { // If not, use "1" as the ordinal: {{pages_count}} -> %1$s
                 "%1\$s"
             }

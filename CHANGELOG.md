@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [3.4.1] - 2023-07-13
+### Fixed
+- Fix parsing of texts with more than 9 placeholders.
+
 ## [3.4.0] - 2023-05-08
 ### Added
 - Add new `unescapeHtmlTags` flag to enable or disable HTML unescaping from strings.
@@ -470,7 +474,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.1...HEAD
+[3.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.3.0...3.4.0
 [3.3.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.3.0...3.3.1
 [3.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.2.0...3.3.0
