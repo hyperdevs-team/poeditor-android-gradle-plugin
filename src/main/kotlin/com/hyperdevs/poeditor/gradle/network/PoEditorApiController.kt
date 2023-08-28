@@ -57,6 +57,9 @@ class PoEditorApiControllerImpl(private val apiToken: String,
     private val optionsAdapter: JsonAdapter<List<Options>> =
         moshi.adapter(Types.newParameterizedType(List::class.java, Options::class.java))
 
+    private val tagsAdapter: JsonAdapter<List<String>> =
+        moshi.adapter(Types.newParameterizedType(List::class.java, String::class.java))
+
     override fun getProjectLanguages(projectId: Int): List<ProjectLanguage> {
         val response = poEditorApi.getProjectLanguages(
             apiToken = apiToken,
@@ -85,7 +88,7 @@ class PoEditorApiControllerImpl(private val apiToken: String,
             filters = filters?.map { it.name.toLowerCase() },
             language = code,
             order = order.name.toLowerCase(),
-            tags = tags,
+            tags = tagsAdapter.toJson(tags),
             options = options
         ).execute()
 

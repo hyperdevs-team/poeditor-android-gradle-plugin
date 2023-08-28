@@ -49,6 +49,6 @@ interface PoEditorApi {
                           @Field("type") type: String,
                           @Field("filters") filters: List<String>? = null,
                           @Field("order") order: String? = null,
-                          @Field("tags") tags: List<String>? = null,
+                          @Field("tags") tags: String? = null,
                           @Field("options") options: String? = null): Call<PoEditorResponse<ExportResult>>
 }
