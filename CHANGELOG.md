@@ -30,9 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fixed tags not being sent as String JSON array
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [3.4.2] - 2023-08-28
+### Fixed
+- Fixed tags not being sent as String JSON array. _Thanks to [@bogdanzurac](https://github.com/bogdanzurac) for the contribution!_
 
 ## [3.4.1] - 2023-07-13
 ### Fixed
@@ -474,7 +478,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.1...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.2...HEAD
+[3.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.3.0...3.4.0
 [3.3.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.3.0...3.3.1
