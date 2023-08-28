@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.4.2] - 2023-08-28
 ### Fixed
-- Fixed tags not being sent as String JSON array. _Thanks to [@bogdanzurac](https://github.com/bogdanzurac) for the contribution!_
+- Fix tags not being sent as String JSON array. _Thanks to [@bogdanzurac](https://github.com/bogdanzurac) for the contribution!_
 
 ## [3.4.1] - 2023-07-13
 ### Fixed
