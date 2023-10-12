@@ -28,16 +28,45 @@ buildscript {
 
 </details>
 
-<details><summary>Kotlin</summary>
+<details><summary>Kotlin (using classpath)</summary>
 
 ```kotlin
 buildscript {
     repositories { 
-        maven("https://jitpack.io")
+        maven { url = java.net.URI("https://jitpack.io") }
     }
     dependencies {
         classpath("com.github.hyperdevs-team:poeditor-android-gradle-plugin:<latest_version>")
     }
+}
+```
+
+</details>
+
+<details><summary>Kotlin (using the plugins block)</summary>
+
+Top-level `settings.gradle.kts`
+```kotlin
+pluginManagement {
+    repositories {
+        maven { url = java.net.URI("https://jitpack.io") }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            // Add custom plugin ID for the PoEditor plugin.
+            // This is required because the plugin is not published in the Gradle plugin portal.
+            if (requested.id.id == "com.hyperdevs.poeditor") {
+                useModule("com.github.hyperdevs-team:poeditor-android-gradle-plugin:${requested.version}")
+            }
+        }
+    }
+}
+```
+
+Top-level `build.gradle.kts`
+```kotlin
+plugins {
+    id("com.hyperdevs.poeditor") version "<latest_version>" apply false
 }
 ```
 
@@ -64,14 +93,14 @@ poEditor {
 
 ```kotlin
 plugins {
-    id "com.android.application"
-    id "com.hyperdevs.poeditor"
+    id("com.android.application")
+    id("com.hyperdevs.poeditor")
 }
 
 poEditor {
-    apiToken = "your_api_token"
-    projectId = 12345
-    defaultLang = "en"
+    apiToken.set("your_api_token")
+    projectId.set(12345)
+    defaultLang.set("en")
 }
 ```
 
