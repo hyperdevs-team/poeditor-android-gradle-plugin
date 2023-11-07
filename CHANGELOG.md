@@ -34,6 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [4.0.0] - 2023-11-07
+### Changed
+- BREAKING CHANGE: Bump Gradle version to 8 and AGP version to 8.1.2.
+- Update dependencies.
+
 ## [3.4.2] - 2023-08-28
 ### Fixed
 - Fix tags not being sent as String JSON array. _Thanks to [@bogdanzurac](https://github.com/bogdanzurac) for the contribution!_
@@ -478,7 +483,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.2...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.0.0...HEAD
+[4.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.2...4.0.0
 [3.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.3.0...3.4.0

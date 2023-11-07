@@ -16,6 +16,4 @@
  * limitations under the License.
  */
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 rootProject.name = "poeditor-android-gradle-plugin"

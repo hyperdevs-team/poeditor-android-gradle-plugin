@@ -1,12 +1,14 @@
 [versions]
-kotlin = "1.8.20-RC"
-detekt = "1.22.0"
-moshi = "1.14.0"
+java-sdk = "17"
+
+kotlin = "1.9.10"
+detekt = "1.23.3"
+moshi = "1.15.0"
 retrofit = "2.9.0"
-okhttp = "4.10.0"
+okhttp = "4.12.0"
 
 [libraries]
-android-buildTools = "com.android.tools.build:gradle:7.3.0"
+android-buildTools = "com.android.tools.build:gradle:8.1.2"
 
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -30,7 +32,7 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 gitVersionGradle = { id = "com.gladed.androidgitversion", version = "0.4.14"}
-versionsUpdate = { id = "com.github.ben-manes.versions", version = "0.46.0" }
+versionsUpdate = { id = "com.github.ben-manes.versions", version = "0.49.0" }
 
 [bundles]
 moshi = ["moshi", "moshi-kotlin", "moshi-adapters"]

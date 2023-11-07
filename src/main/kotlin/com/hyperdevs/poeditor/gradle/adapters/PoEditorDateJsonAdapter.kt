@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HyperDevs
+ * Copyright 2023 HyperDevs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.squareup.moshi.adapters
+package com.hyperdevs.poeditor.gradle.adapters
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader

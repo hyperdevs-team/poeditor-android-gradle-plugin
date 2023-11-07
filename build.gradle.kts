@@ -64,8 +64,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.sdk.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.sdk.get())
 
     withJavadocJar()
     withSourcesJar()
@@ -79,7 +79,7 @@ tasks.javadoc {
 
 detekt {
     toolVersion = libs.versions.detekt.get()
-    config = files("${project.rootDir}/config/detekt.yml")
+    config.setFrom(files("${project.rootDir}/config/detekt.yml"))
     autoCorrect = true
 }
 
@@ -94,9 +94,10 @@ tasks {
         maxHeapSize = "1G"
     }
 
-    withType<io.gitlab.arturbosch.detekt.Detekt> {
-        // Target version of the generated JVM bytecode. It is used for type resolution.
-        this.jvmTarget = "1.8"
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = libs.versions.java.sdk.get()
+        }
     }
 
     val installGitHooks by registering(Copy::class) {
@@ -169,18 +170,16 @@ publishing {
         }
     }
 }
-
-// https://github.com/ben-manes/gradle-versions-plugin
-// Disallow release candidates as upgradable versions from stable versions
-fun String.isNonStable(): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(this)
-    return isStable.not()
-}
-
+// Get only stable versions when running dependencyUpdates
 tasks.withType<DependencyUpdatesTask> {
+    fun isNonStable(version: String): Boolean {
+        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        val isStable = stableKeyword || regex.matches(version)
+        return isStable.not()
+    }
+
     rejectVersionIf {
-        candidate.version.isNonStable() && !currentVersion.isNonStable()
+        isNonStable(this.candidate.version) && !isNonStable(this.currentVersion)
     }
 }

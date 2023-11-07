@@ -8,7 +8,7 @@ This plug-in super-charges your Android project by providing tasks to download y
 It also provides a built-in syntax to handle placeholders to enhance the already awesome Android support from PoEditor.
 
 ## Minimum requirements
-* Android Gradle Plug-in 7.0 or above
+* Android Gradle Plug-in 8.0 or above
 
 ## Setting Up
 In your main `build.gradle`, add [jitpack.io](https://jitpack.io/) repository in the `buildscript` block and include the plug-in as a dependency:
