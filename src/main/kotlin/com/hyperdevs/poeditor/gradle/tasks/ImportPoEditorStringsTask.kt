@@ -1,3 +1,4 @@
+@file:Suppress("NoUnusedImports", "UnusedImports") // Needed because detekt removes the "assign" import
 /*
  * Copyright 2021 HyperDevs
  *
@@ -18,6 +19,7 @@
 
 package com.hyperdevs.poeditor.gradle.tasks
 
+import com.hyperdevs.poeditor.gradle.ConfigName
 import com.hyperdevs.poeditor.gradle.PoEditorPluginExtension
 import com.hyperdevs.poeditor.gradle.PoEditorStringsImporter
 import com.hyperdevs.poeditor.gradle.network.api.FilterType
@@ -25,17 +27,137 @@ import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.utils.DEFAULT_PLUGIN_NAME
 import com.hyperdevs.poeditor.gradle.utils.POEDITOR_CONFIG_NAME
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.assign
 import javax.inject.Inject
 
 /**
  * Task that:
- * 1. Downloads all strings files (every available lang) from PoEditor given a api_token and project_id.
+ * 1. Downloads all strings files (every available lang) from PoEditor given an api_token and project_id.
  * 2. Extracts "tablet" strings to another XML (strings with the suffix "_tablet")
  * 3. Creates and saves two strings.xml files to values-<lang> and values-<lang>-sw600dp (tablet specific strings)
  */
-abstract class ImportPoEditorStringsTask
-@Inject constructor(private val extension: PoEditorPluginExtension) : DefaultTask() {
+abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
+    /**
+     * Name of the configuration to use to save strings.
+     *
+     * Must be present in order to run the plugin. Configured internally
+     */
+    @get:Optional
+    @get:Input
+    internal abstract val configName: Property<String>
+
+    /**
+     * PoEditor API token.
+     *
+     * Must be present in order to run the plugin.
+     */
+    @get:Input
+    abstract val apiToken: Property<String>
+
+    /**
+     * PoEditor project ID.
+     *
+     * Must be present in order to run the plugin.
+     */
+    @get:Input
+    abstract val projectId: Property<Int>
+
+    /**
+     * Default language of the project, in ISO-2 format.
+     *
+     * Defaults to 'en' if not defined.
+     */
+    @get:Optional
+    @get:Input
+    abstract val defaultLang: Property<String>
+
+    /**
+     * Default resources path for the module where the strings should be put in.
+     *
+     * Defaults to the module with the `com.android.application` plugin.
+     */
+    @get:Optional
+    @get:Input
+    abstract val defaultResPath: Property<String>
+
+    /**
+     * File name of the string resource files.
+     *
+     * Defaults to "strings" if not defined.
+     */
+    @get:Optional
+    @get:Input
+    abstract val resFileName: Property<String>
+
+    /**
+     * Filters to limit downloaded strings with, from the officially supported list in PoEditor.
+     *
+     * Defaults to an empty list of filters if not present.
+     */
+    @get:Optional
+    @get:Input
+    abstract val filters: ListProperty<String>
+
+    /**
+     * Defines the order for the export. If set to "terms" it will be ordered alphabetically by the terms.
+     *
+     * Defaults to "none" meaning no order will be applied.
+     */
+    @get:Optional
+    @get:Input
+    abstract val order: Property<String>
+
+    /**
+     * Tags to filter downloaded strings with, previously declared in PoEditor.
+     *
+     * Defaults to an empty list of tags if not present.
+     */
+    @get:Optional
+    @get:Input
+    abstract val tags: ListProperty<String>
+
+    /**
+     * Map of languages to override their default values folder.
+     *
+     * Defaults to an empty map of language overrides map.
+     */
+    @get:Optional
+    @get:Input
+    abstract val languageValuesOverridePathMap: MapProperty<String, String>
+
+    /**
+     * The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched.
+     *
+     * Defaults to no minimum if not present, meaning that all languages will be fetched.
+     */
+    @get:Optional
+    @get:Input
+    abstract val minimumTranslationPercentage: Property<Int>
+
+    /**
+     * Defines if the output strings exported from PoEditor should be unquoted.
+     *
+     * Defaults to "false" meaning that all texts will be quoted.
+     */
+    @get:Optional
+    @get:Input
+    abstract val unquoted: Property<Boolean>
+
+    /**
+     * Whether HTML tags in strings should be unescaped or not.
+     *
+     * Defaults to true.
+     */
+    @get:Optional
+    @get:Input
+    abstract val unescapeHtmlTags: Property<Boolean>
 
     /**
      * Main task entrypoint.
@@ -43,54 +165,57 @@ abstract class ImportPoEditorStringsTask
     @TaskAction
     @Suppress("ThrowsCount")
     fun importPoEditorStrings() {
+        // Ensure that mandatory parameters are defined
         val apiToken: String
         val projectId: Int
-        val defaultLang: String
-        val defaultResPath: String
-        val filters: List<FilterType>
-        val order: OrderType
-        val tags: List<String>
-        val languageOverridePathMap: Map<String, String>
-        val minimumTranslationPercentage: Int
-        val resFileName: String
-        val unquoted: Boolean
-        val unescapeHtmlTags: Boolean
 
         try {
-            apiToken = extension.apiToken.get()
-            projectId = extension.projectId.get()
-            defaultLang = extension.defaultLang.get()
-            defaultResPath = extension.defaultResPath.get()
-            filters = extension.filters.get().map { FilterType.from(it) }
-            order = OrderType.from(extension.order.get())
-            tags = extension.tags.get()
-            languageOverridePathMap = extension.languageValuesOverridePathMap.get()
-            minimumTranslationPercentage = extension.minimumTranslationPercentage.get()
-            resFileName = extension.resFileName.get()
-            unquoted = extension.unquoted.get()
-            unescapeHtmlTags = extension.unescapeHtmlTags.get()
+            apiToken = this.apiToken.get()
+            projectId = this.projectId.get()
         } catch (e: Exception) {
             logger.error("Import configuration failed", e)
 
             throw IllegalArgumentException(
-                "You don't have the config '${extension.name}' properly set-up in your '$POEDITOR_CONFIG_NAME' block " +
+                "You don't have the config properly set-up in your '$POEDITOR_CONFIG_NAME' block " +
                 "or you don't have your main '$DEFAULT_PLUGIN_NAME' config properly set-up.\n" +
                 "Please review the input parameters of both blocks and try again.")
         }
 
+        val conventionDefaultResPath = getResourceDirectory(project, configName.getOrElse("main"))
+            .asFile.absolutePath
+
         PoEditorStringsImporter.importPoEditorStrings(
             apiToken,
             projectId,
-            defaultLang,
-            defaultResPath,
-            filters,
-            order,
-            tags,
-            languageOverridePathMap,
-            minimumTranslationPercentage,
-            resFileName,
-            unquoted,
-            unescapeHtmlTags
+            defaultLang.getOrElse("en"),
+            defaultResPath.getOrElse(conventionDefaultResPath),
+            filters.getOrElse(emptyList()).map { FilterType.from(it) },
+            OrderType.from(order.getOrElse(OrderType.NONE.name.lowercase())),
+            tags.getOrElse(emptyList()),
+            languageValuesOverridePathMap.getOrElse(emptyMap()),
+            minimumTranslationPercentage.getOrElse(-1),
+            resFileName.getOrElse("strings"),
+            unquoted.getOrElse(false),
+            unescapeHtmlTags.getOrElse(true)
         )
     }
+
+    internal fun configureTask(configName: ConfigName, extension: PoEditorPluginExtension) {
+        this.configName = configName
+        this.apiToken = extension.apiToken
+        this.projectId = extension.projectId
+        this.defaultLang = extension.defaultLang
+        this.defaultResPath = extension.defaultResPath
+        this.resFileName = extension.resFileName
+        this.filters = extension.filters
+        this.order = extension.order
+        this.tags = extension.tags
+        this.languageValuesOverridePathMap = extension.languageValuesOverridePathMap
+        this.minimumTranslationPercentage = extension.minimumTranslationPercentage
+        this.unquoted = extension.unquoted
+        this.unescapeHtmlTags = extension.unescapeHtmlTags
+    }
+
+    private fun getResourceDirectory(project: Project, configName: ConfigName) =
+        project.layout.projectDirectory.dir("src/$configName/res")
 }

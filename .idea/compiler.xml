@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="17">
+      <module name="poeditor-android-gradle-plugin.plugin" target="17" />
+      <module name="poeditor-android-gradle-plugin.plugin.main" target="17" />
+      <module name="poeditor-android-gradle-plugin.plugin.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

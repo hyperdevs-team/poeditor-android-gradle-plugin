@@ -579,6 +579,25 @@ poEditor {
 
 </details>
 
+## Creating extra PoEditor tasks
+> Requires version 4.1.0 of the plug-in
+
+You can create extra PoEditor tasks to import strings for other projects, for example. You can do so by adding this to
+your `build.gradle(.kts)` file:
+<details><summary>Kotlin</summary>
+
+```kotlin
+tasks.register("importCustomPoEditorStrings", ImportPoEditorStringsTask::class.java) {
+    description = "Imports custom strings from POEditor."
+    group = "strings"
+
+    apiToken = "another_token_from_a_different_project"
+    projectId = 12345
+    resFileName = "strings_custom"
+}
+```
+
+</details>
 
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)

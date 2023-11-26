@@ -38,6 +38,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     override fun getName(): String = name
 
     /**
+     * Name of the configuration to use to save strings.
+     *
+     * Must be present in order to run the plugin. Configured internally
+     */
+    @get:Optional
+    @get:Input
+    internal val configName: Property<String> = objects.property(String::class.java)
+
+    /**
      * Whether the configuration is enabled or not.
      */
     @get:Optional
@@ -143,7 +152,7 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val unquoted: Property<Boolean> = objects.property(Boolean::class.java)
 
     /**
-     * Whether or not HTML tags in strings should be unescaped or not.
+     * Whether HTML tags in strings should be unescaped or not.
      *
      * Defaults to true.
      */
