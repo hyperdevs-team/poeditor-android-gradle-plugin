@@ -25,7 +25,6 @@ import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.hyperdevs.poeditor.gradle.ktx.registerNewTask
-import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.tasks.ImportPoEditorStringsTask
 import com.hyperdevs.poeditor.gradle.utils.*
 import org.gradle.api.NamedDomainObjectContainer
@@ -44,24 +43,11 @@ typealias ConfigName = String
 class PoEditorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val mainConfigName = "main"
-        val mainResourceDirectory = getResourceDirectory(project, mainConfigName)
 
         // Add the 'poEditorPlugin' extension object in the project,
         // used to pass parameters to the main PoEditor task
         val mainPoEditorExtension: PoEditorPluginExtension = project.extensions
-            .create<PoEditorPluginExtension>(DEFAULT_PLUGIN_NAME, project.objects, mainConfigName).apply {
-                enabled.convention(true)
-                defaultLang.convention("en")
-                defaultResPath.convention(mainResourceDirectory.asFile.absolutePath)
-                filters.convention(emptyList())
-                order.convention(OrderType.NONE.name.toLowerCase())
-                tags.convention(emptyList())
-                languageValuesOverridePathMap.convention(emptyMap())
-                minimumTranslationPercentage.convention(-1)
-                resFileName.convention("strings")
-                unquoted.convention(false)
-                unescapeHtmlTags.convention(true)
-            }
+            .create<PoEditorPluginExtension>(DEFAULT_PLUGIN_NAME, project.objects, mainConfigName)
 
         // Add flavor and build-type configurations if the project has the "com.android.application" plugin
         project.plugins.withType<AppPlugin> {
@@ -182,8 +168,10 @@ class PoEditorPlugin : Plugin<Project> {
                 project.registerNewTask<ImportPoEditorStringsTask>(
                     mainPoEditorTaskName,
                     mainPoEditorTaskDescription,
-                    PLUGIN_GROUP,
-                    arrayOf(mainPoEditorExtension))
+                    PLUGIN_GROUP
+                ) {
+                    configureTask("main", mainPoEditorExtension)
+                }
             }
         }
     }
@@ -205,8 +193,7 @@ class PoEditorPlugin : Plugin<Project> {
             project.tasks.findByName(configTaskName) ?: run {
                 val rawConfigExtension = configsExtensionContainer.findByName(configName)?.also {
                     // Don't forget to add the default resources path for the configuration
-                    val configResDir = getResourceDirectory(project, configName)
-                    it.defaultResPath.convention(configResDir.asFile.absolutePath)
+                    it.configName = configName
                 }
 
                 if (rawConfigExtension != null) {
@@ -222,8 +209,10 @@ class PoEditorPlugin : Plugin<Project> {
                         val newConfigPoEditorTask = project.registerNewTask<ImportPoEditorStringsTask>(
                             configTaskName,
                             getPoEditorDescriptionForConfig(configName),
-                            PLUGIN_GROUP,
-                            arrayOf(mergedConfigExtension))
+                            PLUGIN_GROUP
+                        ) {
+                            configureTask(configName, mergedConfigExtension)
+                        }
 
                         configPoEditorTaskProvidersMap.put(configName, newConfigPoEditorTask)
                     }
@@ -255,9 +244,6 @@ class PoEditorPlugin : Plugin<Project> {
     }
 
     private fun getPoEditorTaskName(configName: ConfigName = "") = "import${configName.capitalize()}PoEditorStrings"
-
-    private fun getResourceDirectory(project: Project, configName: ConfigName) =
-        project.layout.projectDirectory.dir("src/$configName/res")
 
     private fun getMainPoEditorDescription(): String = """
         Imports all PoEditor strings for all flavors and build types configurations.
