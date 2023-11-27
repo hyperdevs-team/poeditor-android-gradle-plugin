@@ -584,7 +584,7 @@ poEditor {
 
 You can create extra PoEditor tasks to import strings for other projects, for example. You can do so by adding this to
 your `build.gradle(.kts)` file:
-<details><summary>Kotlin</summary>
+<details open><summary>Kotlin</summary>
 
 ```kotlin
 tasks.register("importCustomPoEditorStrings", ImportPoEditorStringsTask::class.java) {
