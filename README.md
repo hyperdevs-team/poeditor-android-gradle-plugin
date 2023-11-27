@@ -584,6 +584,7 @@ poEditor {
 
 You can create extra PoEditor tasks to import strings for other projects, for example. You can do so by adding this to
 your `build.gradle(.kts)` file:
+
 <details open><summary>Kotlin</summary>
 
 ```kotlin
