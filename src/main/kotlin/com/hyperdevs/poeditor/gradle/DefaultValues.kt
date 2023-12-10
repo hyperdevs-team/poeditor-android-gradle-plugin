@@ -24,16 +24,17 @@ import java.io.File
  */
 @Suppress("MayBeConst", "MayBeConstant")
 object DefaultValues {
-    val ENABLED = true
-    val DEFAULT_LANG = "en"
-    val FILTERS = emptyList<String>()
-    val ORDER_TYPE = OrderType.NONE.name.lowercase()
-    val TAGS = emptyList<String>()
-    val LANGUAGE_VALUES_OVERRIDE_PATH_MAP = emptyMap<String, String>()
-    val MINIMUM_TRANSLATION_PERCENTAGE = -1
-    val RES_FILE_NAME = "string"
-    val UNQUOTED = false
-    val UNESCAPE_HTML_TAGS = true
+    internal val ENABLED = true
+    internal val MAIN_CONFIG_NAME: ConfigName = "main"
+    internal val DEFAULT_LANG = "en"
+    internal val FILTERS = emptyList<String>()
+    internal val ORDER_TYPE = OrderType.NONE.name.lowercase()
+    internal val TAGS = emptyList<String>()
+    internal val LANGUAGE_VALUES_OVERRIDE_PATH_MAP = emptyMap<String, String>()
+    internal val MINIMUM_TRANSLATION_PERCENTAGE = -1
+    internal val RES_FILE_NAME = "string"
+    internal val UNQUOTED = false
+    internal val UNESCAPE_HTML_TAGS = true
 
     /**
      * Apply the default convention to a [PoEditorPluginExtension].

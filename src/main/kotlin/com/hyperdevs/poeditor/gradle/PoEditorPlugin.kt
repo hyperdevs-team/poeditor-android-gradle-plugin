@@ -42,7 +42,7 @@ typealias ConfigName = String
  */
 class PoEditorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val mainConfigName = "main"
+        val mainConfigName = DefaultValues.MAIN_CONFIG_NAME
         val mainResourceDirectory = getResourceDirectory(project, mainConfigName)
 
         // Add the 'poEditorPlugin' extension object in the project,
@@ -89,7 +89,9 @@ class PoEditorPlugin : Plugin<Project> {
 
         // Add tasks for every flavor or build type
         androidComponentsExtension.beforeVariants {
+            // Add main extension since we have the main extension evaluated here
             addMainPoEditorTask(project, mainExtension)
+
             val configs = getConfigs(it.productFlavors.map { it.second }, it.buildType)
 
             generatePoEditorTasks(configs,
@@ -173,7 +175,7 @@ class PoEditorPlugin : Plugin<Project> {
                     mainPoEditorTaskDescription,
                     PLUGIN_GROUP
                 ) {
-                    configureTask("main", mainPoEditorExtension)
+                    configureTask(mainPoEditorExtension)
                 }
             }
         }
@@ -196,7 +198,8 @@ class PoEditorPlugin : Plugin<Project> {
             project.tasks.findByName(configTaskName) ?: run {
                 val rawConfigExtension = configsExtensionContainer.findByName(configName)?.also {
                     // Don't forget to add the default resources path for the configuration
-                    it.configName = configName
+                    val configResDir = getResourceDirectory(project, configName)
+                    it.defaultResPath.convention(configResDir.absolutePath)
                 }
 
                 if (rawConfigExtension != null) {
@@ -214,7 +217,7 @@ class PoEditorPlugin : Plugin<Project> {
                             getPoEditorDescriptionForConfig(configName),
                             PLUGIN_GROUP
                         ) {
-                            configureTask(configName, mergedConfigExtension)
+                            configureTask(mergedConfigExtension)
                         }
 
                         configPoEditorTaskProvidersMap.put(configName, newConfigPoEditorTask)

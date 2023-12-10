@@ -34,6 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [4.1.1] - 2023-12-11
+### Fixed
+- Restore conventions for uninitialized properties
+- Fix flavor-specific configs not picking up the default resource path for the brand
+
 ## [4.1.0] - 2023-11-26
 ### Changed
 - Allow PoEditor importing task lazy configuration.
@@ -487,7 +492,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.1...HEAD
+[4.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.0...4.1.1
 [4.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.0.0...4.1.0
 [4.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.2...4.0.0
 [3.4.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.1...3.4.2
