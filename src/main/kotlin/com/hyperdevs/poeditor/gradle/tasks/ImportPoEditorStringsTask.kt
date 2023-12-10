@@ -20,12 +20,14 @@
 package com.hyperdevs.poeditor.gradle.tasks
 
 import com.hyperdevs.poeditor.gradle.ConfigName
+import com.hyperdevs.poeditor.gradle.DefaultValues
 import com.hyperdevs.poeditor.gradle.PoEditorPluginExtension
 import com.hyperdevs.poeditor.gradle.PoEditorStringsImporter
 import com.hyperdevs.poeditor.gradle.network.api.FilterType
 import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.utils.DEFAULT_PLUGIN_NAME
 import com.hyperdevs.poeditor.gradle.utils.POEDITOR_CONFIG_NAME
+import com.hyperdevs.poeditor.gradle.utils.getResourceDirectory
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
@@ -181,22 +183,22 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
                 "Please review the input parameters of both blocks and try again.")
         }
 
-        val conventionDefaultResPath = getResourceDirectory(project, configName.getOrElse("main"))
-            .asFile.absolutePath
+        val conventionDefaultResPath =
+            getResourceDirectory(project, configName.getOrElse("main")).absolutePath
 
         PoEditorStringsImporter.importPoEditorStrings(
             apiToken,
             projectId,
-            defaultLang.getOrElse("en"),
+            defaultLang.getOrElse(DefaultValues.DEFAULT_LANG),
             defaultResPath.getOrElse(conventionDefaultResPath),
-            filters.getOrElse(emptyList()).map { FilterType.from(it) },
-            OrderType.from(order.getOrElse(OrderType.NONE.name.lowercase())),
-            tags.getOrElse(emptyList()),
-            languageValuesOverridePathMap.getOrElse(emptyMap()),
-            minimumTranslationPercentage.getOrElse(-1),
-            resFileName.getOrElse("strings"),
-            unquoted.getOrElse(false),
-            unescapeHtmlTags.getOrElse(true)
+            filters.getOrElse(DefaultValues.FILTERS).map { FilterType.from(it) },
+            OrderType.from(order.getOrElse(DefaultValues.ORDER_TYPE.lowercase())),
+            tags.getOrElse(DefaultValues.TAGS),
+            languageValuesOverridePathMap.getOrElse(DefaultValues.LANGUAGE_VALUES_OVERRIDE_PATH_MAP),
+            minimumTranslationPercentage.getOrElse(DefaultValues.MINIMUM_TRANSLATION_PERCENTAGE),
+            resFileName.getOrElse(DefaultValues.RES_FILE_NAME),
+            unquoted.getOrElse(DefaultValues.UNQUOTED),
+            unescapeHtmlTags.getOrElse(DefaultValues.UNESCAPE_HTML_TAGS)
         )
     }
 
@@ -215,7 +217,4 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
         this.unquoted = extension.unquoted
         this.unescapeHtmlTags = extension.unescapeHtmlTags
     }
-
-    private fun getResourceDirectory(project: Project, configName: ConfigName) =
-        project.layout.projectDirectory.dir("src/$configName/res")
 }

@@ -8,6 +8,7 @@ This plug-in super-charges your Android project by providing tasks to download y
 It also provides a built-in syntax to handle placeholders to enhance the already awesome Android support from PoEditor.
 
 ## Minimum requirements
+* Gradle 8.2 or above
 * Android Gradle Plug-in 8.0 or above
 
 ## Setting Up

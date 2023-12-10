@@ -43,11 +43,14 @@ typealias ConfigName = String
 class PoEditorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val mainConfigName = "main"
+        val mainResourceDirectory = getResourceDirectory(project, mainConfigName)
 
         // Add the 'poEditorPlugin' extension object in the project,
         // used to pass parameters to the main PoEditor task
         val mainPoEditorExtension: PoEditorPluginExtension = project.extensions
-            .create<PoEditorPluginExtension>(DEFAULT_PLUGIN_NAME, project.objects, mainConfigName)
+            .create<PoEditorPluginExtension>(DEFAULT_PLUGIN_NAME, project.objects, mainConfigName).apply {
+                DefaultValues.applyDefaultConvention(this, mainResourceDirectory)
+            }
 
         // Add flavor and build-type configurations if the project has the "com.android.application" plugin
         project.plugins.withType<AppPlugin> {
