@@ -19,15 +19,15 @@
 
 package com.hyperdevs.poeditor.gradle.tasks
 
-import com.hyperdevs.poeditor.gradle.ConfigName
+import com.hyperdevs.poeditor.gradle.DefaultValues
 import com.hyperdevs.poeditor.gradle.PoEditorPluginExtension
 import com.hyperdevs.poeditor.gradle.PoEditorStringsImporter
 import com.hyperdevs.poeditor.gradle.network.api.FilterType
 import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.utils.DEFAULT_PLUGIN_NAME
 import com.hyperdevs.poeditor.gradle.utils.POEDITOR_CONFIG_NAME
+import com.hyperdevs.poeditor.gradle.utils.getResourceDirectory
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
@@ -44,15 +44,6 @@ import javax.inject.Inject
  * 3. Creates and saves two strings.xml files to values-<lang> and values-<lang>-sw600dp (tablet specific strings)
  */
 abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
-    /**
-     * Name of the configuration to use to save strings.
-     *
-     * Must be present in order to run the plugin. Configured internally
-     */
-    @get:Optional
-    @get:Input
-    internal abstract val configName: Property<String>
-
     /**
      * PoEditor API token.
      *
@@ -181,27 +172,23 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
                 "Please review the input parameters of both blocks and try again.")
         }
 
-        val conventionDefaultResPath = getResourceDirectory(project, configName.getOrElse("main"))
-            .asFile.absolutePath
-
         PoEditorStringsImporter.importPoEditorStrings(
             apiToken,
             projectId,
-            defaultLang.getOrElse("en"),
-            defaultResPath.getOrElse(conventionDefaultResPath),
-            filters.getOrElse(emptyList()).map { FilterType.from(it) },
-            OrderType.from(order.getOrElse(OrderType.NONE.name.lowercase())),
-            tags.getOrElse(emptyList()),
-            languageValuesOverridePathMap.getOrElse(emptyMap()),
-            minimumTranslationPercentage.getOrElse(-1),
-            resFileName.getOrElse("strings"),
-            unquoted.getOrElse(false),
-            unescapeHtmlTags.getOrElse(true)
+            defaultLang.getOrElse(DefaultValues.DEFAULT_LANG),
+            defaultResPath.getOrElse(getResourceDirectory(project, DefaultValues.MAIN_CONFIG_NAME).absolutePath),
+            filters.getOrElse(DefaultValues.FILTERS).map { FilterType.from(it) },
+            OrderType.from(order.getOrElse(DefaultValues.ORDER_TYPE.lowercase())),
+            tags.getOrElse(DefaultValues.TAGS),
+            languageValuesOverridePathMap.getOrElse(DefaultValues.LANGUAGE_VALUES_OVERRIDE_PATH_MAP),
+            minimumTranslationPercentage.getOrElse(DefaultValues.MINIMUM_TRANSLATION_PERCENTAGE),
+            resFileName.getOrElse(DefaultValues.RES_FILE_NAME),
+            unquoted.getOrElse(DefaultValues.UNQUOTED),
+            unescapeHtmlTags.getOrElse(DefaultValues.UNESCAPE_HTML_TAGS)
         )
     }
 
-    internal fun configureTask(configName: ConfigName, extension: PoEditorPluginExtension) {
-        this.configName = configName
+    internal fun configureTask(extension: PoEditorPluginExtension) {
         this.apiToken = extension.apiToken
         this.projectId = extension.projectId
         this.defaultLang = extension.defaultLang
@@ -215,7 +202,4 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
         this.unquoted = extension.unquoted
         this.unescapeHtmlTags = extension.unescapeHtmlTags
     }
-
-    private fun getResourceDirectory(project: Project, configName: ConfigName) =
-        project.layout.projectDirectory.dir("src/$configName/res")
 }
