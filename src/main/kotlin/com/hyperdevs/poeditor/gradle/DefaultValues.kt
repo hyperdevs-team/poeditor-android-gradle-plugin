@@ -32,7 +32,7 @@ object DefaultValues {
     internal val TAGS = emptyList<String>()
     internal val LANGUAGE_VALUES_OVERRIDE_PATH_MAP = emptyMap<String, String>()
     internal val MINIMUM_TRANSLATION_PERCENTAGE = -1
-    internal val RES_FILE_NAME = "string"
+    internal val RES_FILE_NAME = "strings"
     internal val UNQUOTED = false
     internal val UNESCAPE_HTML_TAGS = true
 
