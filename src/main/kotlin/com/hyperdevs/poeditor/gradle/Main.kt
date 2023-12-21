@@ -37,28 +37,29 @@ fun main() {
     val resDirPath = dotenv.get("RES_DIR_PATH", "")
     val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
     val filters = dotenv.get("FILTERS", "")
-        .takeIf { it.isNotBlank() }
-        ?.split(",")
-        ?.map { it.trim() }
-        ?.map { FilterType.from(it) }
-        ?: emptyList()
+                      .takeIf { it.isNotBlank() }
+                      ?.split(",")
+                      ?.map { it.trim() }
+                      ?.map { FilterType.from(it) }
+                  ?: emptyList()
     val order = OrderType.from(dotenv.get("ORDER", OrderType.NONE.name))
     val tags = dotenv.get("TAGS", "")
-        .takeIf { it.isNotBlank() }
-        ?.split(",")
-        ?.map { it.trim() }
-        ?: emptyList()
+                   .takeIf { it.isNotBlank() }
+                   ?.split(",")
+                   ?.map { it.trim() }
+               ?: emptyList()
     val languageValuesOverridePathMap = dotenv.get("LANGUAGE_VALUES_OVERRIDE_PATH_MAP", "")
-        .takeIf { it.isNotBlank() }
-        ?.split(",")
-        ?.associate {
-            val (key, value) = it.split(":")
-            key to value
-        }
-        ?: emptyMap()
+                                            .takeIf { it.isNotBlank() }
+                                            ?.split(",")
+                                            ?.associate {
+                                                val (key, value) = it.split(":")
+                                                key to value
+                                            }
+                                        ?: emptyMap()
     val minimumTranslationPercentage = dotenv.get("MINIMUM_TRANSLATION_PERCENTAGE", "85").toInt()
     val unquoted = dotenv.get("UNQUOTED", "false").toBoolean()
     val unescapeHtmlTags = dotenv.get("UNESCAPE_HTML_TAGS", "true").toBoolean()
+    val untranslatableStringsRegex = dotenv.get("UNTRANSLATABLE_STRINGS_REGEX", null)
 
     PoEditorStringsImporter.importPoEditorStrings(
         apiToken,
@@ -72,6 +73,7 @@ fun main() {
         minimumTranslationPercentage,
         resFileName,
         unquoted,
-        unescapeHtmlTags
+        unescapeHtmlTags,
+        untranslatableStringsRegex
     )
 }

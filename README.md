@@ -124,6 +124,7 @@ Attribute                              | Description
 ```order```                            | (Since 3.1.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
 ```unquoted```                         | (Since 3.2.0) (Optional) Defines if the strings should be unquoted, overriding default PoEditor configuration. Defaults to `false`.
 ```unescapeHtmlTags```                 | (Since 3.4.0) (Optional) Whether or not to unescape HTML entitites from strings. Defaults to true.
+```untranslatableStringsRegex```       | (Since 4.2.0) (Optional) Pattern to use to mark strings as translatable=false in the strings file. Defaults to null.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -600,6 +601,41 @@ tasks.register("importCustomPoEditorStrings", ImportPoEditorStringsTask::class.j
 ```
 
 </details>
+
+### Mark strings as untranslatable
+> Requires version 4.2.0 of the plug-in
+
+You can use the `untranslatableStringsRegex` property to define a regex to mark matching PoEditor string keys as 
+untranslatable.
+These strings will be marked as `translatable="false"` in the final strings file.
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    untranslatableStringsRegex = "(.*)"
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    untranslatableStringsRegex = "(.*)"
+}
+```
+
+Keep in mind that the regex must match the whole string name and not just a part, as it relies on 
+[`CharSequence.matches(Regex)`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/matches.html) from the 
+Kotlin API.
 
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)

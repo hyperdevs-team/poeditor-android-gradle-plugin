@@ -152,6 +152,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val unescapeHtmlTags: Property<Boolean> = objects.property(Boolean::class.java)
 
     /**
+     * Pattern to use to mark strings as translatable=false in the strings file.
+     *
+     * Defaults to null.
+     */
+    @get:Optional
+    @get:Input
+    val untranslatableStringsRegex: Property<String?> = objects.property(String::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -280,4 +289,14 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `unescapeHtmlTags.set(value)`.
      */
     fun setUnescapeHtmlTags(value: Boolean) = unescapeHtmlTags.set(value)
+
+    /**
+     * Sets the pattern to use to mark strings as translatable=false in the strings file.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `setUntranslatableStringsRegex.set(value)`.
+     */
+    fun setUntranslatableStringsRegex(value: String) = untranslatableStringsRegex.set(value)
 }

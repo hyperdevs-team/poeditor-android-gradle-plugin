@@ -94,7 +94,8 @@ object PoEditorStringsImporter {
                               minimumTranslationPercentage: Int,
                               resFileName: String,
                               unquoted: Boolean,
-                              unescapeHtmlTags: Boolean) {
+                              unescapeHtmlTags: Boolean,
+                              untranslatableStringsRegex: String?) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, moshi, poEditorApi)
 
@@ -145,7 +146,8 @@ object PoEditorStringsImporter {
                 val postProcessedXmlDocumentMap = xmlPostProcessor.postProcessTranslationXml(
                     translationFile,
                     listOf(TABLET_REGEX_STRING),
-                    unescapeHtmlTags
+                    unescapeHtmlTags,
+                    untranslatableStringsRegex
                 )
 
                 xmlWriter.saveXml(
