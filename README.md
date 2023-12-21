@@ -602,7 +602,7 @@ tasks.register("importCustomPoEditorStrings", ImportPoEditorStringsTask::class.j
 
 </details>
 
-### Mark strings as untranslatable
+## Mark strings as untranslatable
 > Requires version 4.2.0 of the plug-in
 
 You can use the `untranslatableStringsRegex` property to define a regex to mark matching PoEditor string keys as 
