@@ -633,6 +633,8 @@ poEditor {
 }
 ```
 
+</details>
+
 Keep in mind that the regex must match the whole string name and not just a part, as it relies on 
 [`CharSequence.matches(Regex)`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/matches.html) from the 
 Kotlin API.

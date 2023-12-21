@@ -61,6 +61,8 @@ poEditor {
 }
 ```
 
+</details>
+
 ## [4.1.2] - 2023-12-11
 ### Fixed
 - Fix default resource file name constant value.
