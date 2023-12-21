@@ -296,7 +296,7 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
      * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
      *
-     * Gradle Kotlin DSL users must use `unescapeHtmlTags.set(value)`.
+     * Gradle Kotlin DSL users must use `setUntranslatableStringsRegex.set(value)`.
      */
-    fun setuntranslatableStringsRegex(value: String) = untranslatableStringsRegex.set(value)
+    fun setUntranslatableStringsRegex(value: String) = untranslatableStringsRegex.set(value)
 }
