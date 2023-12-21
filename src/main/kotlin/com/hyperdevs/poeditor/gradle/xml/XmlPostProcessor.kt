@@ -70,7 +70,7 @@ class XmlPostProcessor {
             translationFileXmlDocument,
             translationFileXmlDocument.childNodes,
             null,
-            untranslatableStringsRegex
+            untranslatableStringsRegex?.toRegex()
         )
 
         return translationFileXmlDocument.toAndroidXmlString(unescapeHtmlTags)
@@ -144,7 +144,7 @@ class XmlPostProcessor {
     private fun formatTranslationXmlDocument(document: Document,
                                              nodeList: NodeList,
                                              rootNode: Node? = null,
-                                             untranslatableStringsRegex: String?) {
+                                             untranslatableStringsRegex: Regex?) {
         for (i in 0 until nodeList.length) {
             if (nodeList.item(i).nodeType == Node.ELEMENT_NODE) {
                 val nodeElement = nodeList.item(i) as Element
@@ -183,7 +183,7 @@ class XmlPostProcessor {
     private fun processTextAndReplaceNodeContent(document: Document,
                                                  nodeElement: Element,
                                                  rootNode: Node?,
-                                                 untranslatableStringsRegex: String?) {
+                                                 untranslatableStringsRegex: Regex?) {
         // First check if we have a CDATA node as the child of the element. If we have it, we have to
         // preserve the CDATA node but process the text. Else, we handle the node as a usual text node
         val copiedNodeElement: Element
@@ -207,10 +207,9 @@ class XmlPostProcessor {
 
         // Add the translatable = false node if the string name matches the untranslatable pattern
         untranslatableStringsRegex?.let {
-            val regex = Regex(untranslatableStringsRegex)
             val nodeName = copiedNodeElement.getAttribute(ATTR_NAME)
 
-            if (nodeName.matches(regex)) {
+            if (nodeName.matches(untranslatableStringsRegex)) {
                 // Add translatable attribute
                 copiedNodeElement.setAttribute(ATTR_TRANSLATABLE, "false")
             }
