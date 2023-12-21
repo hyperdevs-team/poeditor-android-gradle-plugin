@@ -34,6 +34,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [4.2.0] - 2023-12-21
+### Added
+- Add new `untranslatableStringsRegex` to define a regex to mark matching PoEditor string keys as untranslatable.
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    untranslatableStringsRegex = "(.*)"
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    untranslatableStringsRegex = "(.*)"
+}
+```
+
 ## [4.1.2] - 2023-12-11
 ### Fixed
 - Fix default resource file name constant value.
@@ -496,8 +523,9 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.2...HEAD
-[4.1.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.0...4.1.2
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.0...HEAD
+[4.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.2...4.2.0
+[4.1.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.1...4.1.2
 [4.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.0...4.1.1
 [4.1.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.0.0...4.1.0
 [4.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/3.4.2...4.0.0

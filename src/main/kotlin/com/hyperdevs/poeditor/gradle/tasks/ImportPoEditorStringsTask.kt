@@ -151,6 +151,15 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
     abstract val unescapeHtmlTags: Property<Boolean>
 
     /**
+     * Pattern to use to mark strings as translatable=false in the strings file.
+     *
+     * Defaults to null.
+     */
+    @get:Optional
+    @get:Input
+    abstract val untranslatableStringsRegex: Property<String?>
+
+    /**
      * Main task entrypoint.
      */
     @TaskAction
@@ -184,7 +193,8 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
             minimumTranslationPercentage.getOrElse(DefaultValues.MINIMUM_TRANSLATION_PERCENTAGE),
             resFileName.getOrElse(DefaultValues.RES_FILE_NAME),
             unquoted.getOrElse(DefaultValues.UNQUOTED),
-            unescapeHtmlTags.getOrElse(DefaultValues.UNESCAPE_HTML_TAGS)
+            unescapeHtmlTags.getOrElse(DefaultValues.UNESCAPE_HTML_TAGS),
+            untranslatableStringsRegex.orNull
         )
     }
 
