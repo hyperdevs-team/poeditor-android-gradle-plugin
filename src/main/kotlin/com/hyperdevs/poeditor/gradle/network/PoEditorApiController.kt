@@ -84,10 +84,10 @@ class PoEditorApiControllerImpl(private val apiToken: String,
         val response = poEditorApi.getExportFileInfo(
             apiToken = apiToken,
             id = projectId,
-            type = type.toString().toLowerCase(),
-            filters = filters?.map { it.name.toLowerCase() },
+            type = type.toString().lowercase(),
+            filters = filters?.map { it.name.lowercase() },
             language = code,
-            order = order.name.toLowerCase(),
+            order = order.name.lowercase(),
             tags = tagsAdapter.toJson(tags),
             options = options
         ).execute()
