@@ -30,9 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - No removed features!
 ### Fixed
-- Fixed the issue with toLowerCase behavior for the Turkish language 
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [4.2.1] - 2024-12-07
+### Fixed
+- Fix issue with toLowerCase behavior for the Turkish language. _Thanks to [@fevziomurtekin](https://github.com/fevziomurtekin) for the contribution!_
 
 ## [4.2.0] - 2023-12-21
 ### Added
