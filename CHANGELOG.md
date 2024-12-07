@@ -529,7 +529,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.1...HEAD
+[4.2.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.0...4.2.1
 [4.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.2...4.2.0
 [4.1.2]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.1...4.1.2
 [4.1.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.0...4.1.1
