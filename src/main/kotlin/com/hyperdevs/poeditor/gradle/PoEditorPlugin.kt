@@ -24,7 +24,7 @@ import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import com.hyperdevs.poeditor.gradle.ktx.registerNewTask
+import com.hyperdevs.poeditor.gradle.extensions.registerNewTask
 import com.hyperdevs.poeditor.gradle.tasks.ImportPoEditorStringsTask
 import com.hyperdevs.poeditor.gradle.utils.*
 import org.gradle.api.NamedDomainObjectContainer

@@ -16,9 +16,19 @@
  * limitations under the License.
  */
 
-package com.hyperdevs.poeditor.gradle.ktx
+package com.hyperdevs.poeditor.gradle.extensions
+
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 /**
- * Unescapes HTML tags from string.
+ * Downloads a file from network and outputs it as a String.
+ *
+ * Returns null if the request fails.
  */
-fun String.unescapeHtmlTags() = this.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
+fun OkHttpClient.downloadUrlToString(fileUrl: String): String {
+    val translationFileRequest = Request.Builder()
+            .url(fileUrl)
+            .build()
+    return newCall(translationFileRequest).execute().body!!.string()
+}

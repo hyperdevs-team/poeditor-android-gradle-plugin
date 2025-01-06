@@ -19,7 +19,7 @@
 package com.hyperdevs.poeditor.gradle
 
 import com.hyperdevs.poeditor.gradle.adapters.PoEditorDateJsonAdapter
-import com.hyperdevs.poeditor.gradle.ktx.downloadUrlToString
+import com.hyperdevs.poeditor.gradle.extensions.downloadUrlToString
 import com.hyperdevs.poeditor.gradle.network.PoEditorApiControllerImpl
 import com.hyperdevs.poeditor.gradle.network.api.ExportType
 import com.hyperdevs.poeditor.gradle.network.api.FilterType
@@ -28,8 +28,9 @@ import com.hyperdevs.poeditor.gradle.network.api.PoEditorApi
 import com.hyperdevs.poeditor.gradle.network.api.ProjectLanguage
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.hyperdevs.poeditor.gradle.utils.logger
-import com.hyperdevs.poeditor.gradle.xml.AndroidXmlWriter
-import com.hyperdevs.poeditor.gradle.xml.XmlPostProcessor
+import com.hyperdevs.poeditor.gradle.xml.StringsXmlPostProcessor
+import com.hyperdevs.poeditor.gradle.xml.StringsXmlWriter
+import com.hyperdevs.poeditor.gradle.xml.parser.SaxStringsXmlDocumentParser
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -59,12 +60,14 @@ object PoEditorStringsImporter {
         .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .addInterceptor(HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                logger.debug(message)
-            }
-        })
-            .setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(
+            HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    logger.debug(message)
+                }
+            })
+                .setLevel(HttpLoggingInterceptor.Level.BODY)
+        )
         .build()
 
     private val retrofit = Retrofit.Builder()
@@ -75,27 +78,25 @@ object PoEditorStringsImporter {
 
     private val poEditorApi: PoEditorApi = retrofit.create(PoEditorApi::class.java)
 
-    private val xmlPostProcessor = XmlPostProcessor()
-
-    private val xmlWriter = AndroidXmlWriter()
-
     /**
      * Imports PoEditor strings.
      */
-    @Suppress("LongParameterList")
-    fun importPoEditorStrings(apiToken: String,
-                              projectId: Int,
-                              defaultLang: String,
-                              resDirPath: String,
-                              filters: List<FilterType>,
-                              order: OrderType,
-                              tags: List<String>,
-                              languageValuesOverridePathMap: Map<String, String>,
-                              minimumTranslationPercentage: Int,
-                              resFileName: String,
-                              unquoted: Boolean,
-                              unescapeHtmlTags: Boolean,
-                              untranslatableStringsRegex: String?) {
+    @Suppress("LongParameterList", "LongMethod")
+    fun importPoEditorStrings(
+        apiToken: String,
+        projectId: Int,
+        defaultLang: String,
+        resDirPath: String,
+        filters: List<FilterType>,
+        order: OrderType,
+        tags: List<String>,
+        languageValuesOverridePathMap: Map<String, String>,
+        minimumTranslationPercentage: Int,
+        resFileName: String,
+        unquoted: Boolean,
+        unescapeHtmlTags: Boolean,
+        untranslatableStringsRegex: String?
+    ) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, moshi, poEditorApi)
 
@@ -122,6 +123,8 @@ object PoEditorStringsImporter {
                 logger.lifecycle("Using the following filters for all languages: $filters")
             }
 
+            val stringsXmlDocumentParser = SaxStringsXmlDocumentParser()
+
             projectLanguages.minus(skippedLanguages).forEach { languageData ->
                 val languageCode = languageData.code
 
@@ -143,26 +146,31 @@ object PoEditorStringsImporter {
                 val translationFile = okHttpClient.downloadUrlToString(translationFileUrl)
 
                 // Extract final files from downloaded translation XML
-                val postProcessedXmlDocumentMap = xmlPostProcessor.postProcessTranslationXml(
-                    translationFile,
+                val originalStringsXmlDocument = stringsXmlDocumentParser.deserialize(translationFile)
+
+                val postProcessedStringsXmlDocumentMap = StringsXmlPostProcessor.processTranslationXml(
+                    originalStringsXmlDocument,
                     listOf(TABLET_REGEX_STRING),
                     unescapeHtmlTags,
-                    untranslatableStringsRegex
+                    untranslatableStringsRegex?.toRegex()
                 )
 
-                xmlWriter.saveXml(
+                StringsXmlWriter.saveXml(
                     resDirPath,
                     resFileName,
-                    postProcessedXmlDocumentMap,
+                    postProcessedStringsXmlDocumentMap.mapValues { (_, document) ->
+                        stringsXmlDocumentParser.serialize(document)
+                    },
                     defaultLang,
                     languageCode,
-                    languageValuesOverridePathMap,
-                    unescapeHtmlTags
+                    languageValuesOverridePathMap
                 )
             }
         } catch (e: Exception) {
-            logger.error("An error happened when retrieving strings from project. " +
-                         "Please review the plug-in's input parameters and try again")
+            logger.error(
+                "An error happened when retrieving strings from project. " +
+                "Please review the plug-in's input parameters and try again"
+            )
             throw e
         }
     }

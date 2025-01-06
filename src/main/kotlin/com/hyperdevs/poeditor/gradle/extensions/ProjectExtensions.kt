@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.hyperdevs.poeditor.gradle.ktx
+package com.hyperdevs.poeditor.gradle.extensions
 
 import org.gradle.api.Project
 import org.gradle.api.Task

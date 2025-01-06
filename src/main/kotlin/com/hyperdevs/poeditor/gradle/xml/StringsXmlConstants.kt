@@ -1,7 +1,5 @@
 /*
- * Copyright 2021 HyperDevs
- *
- * Copyright 2020 BQ
+ * Copyright 2025 HyperDevs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +14,13 @@
  * limitations under the License.
  */
 
-package com.hyperdevs.poeditor.gradle.ktx
+package com.hyperdevs.poeditor.gradle.xml
 
-import okhttp3.OkHttpClient
-import okhttp3.Request
+internal const val STRING_ELEMENT_NAME = "string"
+internal const val PLURALS_ELEMENT_NAME = "plurals"
+internal const val STRING_ARRAY_ELEMENT_NAME = "string-array"
+internal const val ITEM_ELEMENT_NAME = "item"
 
-/**
- * Downloads a file from network and outputs it as a String.
- *
- * Returns null if the request fails.
- */
-fun OkHttpClient.downloadUrlToString(fileUrl: String): String {
-    val translationFileRequest = Request.Builder()
-            .url(fileUrl)
-            .build()
-    return newCall(translationFileRequest).execute().body!!.string()
-}
+internal const val NAME_ATTRIBUTE_NAME = "name"
+internal const val QUANTITY_ATTRIBUTE_NAME = "quantity"
+internal const val TRANSLATABLE_ATTRIBUTE_NAME = "translatable"

@@ -18,31 +18,30 @@
 
 package com.hyperdevs.poeditor.gradle.xml
 
-import com.hyperdevs.poeditor.gradle.ktx.toAndroidXmlString
 import com.hyperdevs.poeditor.gradle.utils.TABLET_REGEX_STRING
 import com.hyperdevs.poeditor.gradle.utils.TABLET_RES_FOLDER_SUFFIX
 import com.hyperdevs.poeditor.gradle.utils.createValuesModifierFromLangCode
 import com.hyperdevs.poeditor.gradle.utils.logger
-import org.w3c.dom.Document
 import java.io.File
 
 /**
- * Class that converts XML data into Android XML files.
+ * Object that converts XML data into Android XML files.
  */
-class AndroidXmlWriter {
+object StringsXmlWriter {
 
     /**
      * Saves a given map of XML files related to a language that the project contains to the
      * project's strings folder.
      */
     @Suppress("LongParameterList")
-    fun saveXml(resDirPath: String,
-                resFileName: String,
-                postProcessedXmlDocumentMap: Map<String, Document>,
-                defaultLang: String,
-                languageCode: String,
-                languageValuesOverridePathMap: Map<String, String>?,
-                unescapeHtmlTags: Boolean) {
+    fun saveXml(
+        resDirPath: String,
+        resFileName: String,
+        stringsXmlDocumentMap: Map<String, String>,
+        defaultLang: String,
+        languageCode: String,
+        languageValuesOverridePathMap: Map<String, String>?
+    ) {
         // First check if we have passed a default "values" folder for the given language
         var baseValuesDir: File? = languageValuesOverridePathMap?.get(languageCode)?.let { File(it) }
 
@@ -56,7 +55,7 @@ class AndroidXmlWriter {
             baseValuesDir = File(File(resDirPath), valuesFolderName)
         }
 
-        val folderToXmlMap = postProcessedXmlDocumentMap.mapKeys { (regexString, _) ->
+        val folderToXmlMap = stringsXmlDocumentMap.mapKeys { (regexString, _) ->
             // Compose values folder file for the given modifiers
             if (regexString == TABLET_REGEX_STRING) {
                 File("${baseValuesDir.absolutePath}-$TABLET_RES_FOLDER_SUFFIX")
@@ -65,15 +64,16 @@ class AndroidXmlWriter {
             }
         }
 
-        folderToXmlMap.forEach { (valuesFolderFile, document) ->
-            saveXmlToFolder(valuesFolderFile, document, resFileName, unescapeHtmlTags)
+        folderToXmlMap.forEach { (valuesFolderFile, xmlString) ->
+            saveXmlToFolder(valuesFolderFile, xmlString, resFileName)
         }
     }
 
-    private fun saveXmlToFolder(stringsFolderFile: File,
-                                document: Document,
-                                resFileName: String,
-                                unescapeHtmlTags: Boolean) {
+    private fun saveXmlToFolder(
+        stringsFolderFile: File,
+        xmlString: String,
+        resFileName: String
+    ) {
         if (!stringsFolderFile.exists()) {
             logger.debug("Creating strings folder for new language")
             val folderCreated = stringsFolderFile.mkdirs()
@@ -82,6 +82,6 @@ class AndroidXmlWriter {
         }
 
         logger.lifecycle("Saving strings to ${stringsFolderFile.absolutePath}")
-        File(stringsFolderFile, "$resFileName.xml").writeText(document.toAndroidXmlString(unescapeHtmlTags))
+        File(stringsFolderFile, "$resFileName.xml").writeText(xmlString)
     }
 }
