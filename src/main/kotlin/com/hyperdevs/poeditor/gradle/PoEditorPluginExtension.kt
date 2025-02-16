@@ -161,6 +161,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val untranslatableStringsRegex: Property<String?> = objects.property(String::class.java)
 
     /**
+     * Whether to include comments from the downloaded strings.
+     *
+     * Defaults to true.
+     */
+    @get:Optional
+    @get:Input
+    val includeComments: Property<Boolean> = objects.property(Boolean::class.java)
+
+    /**
      * Sets the configuration as enabled or not.
      *
      * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
@@ -299,4 +308,14 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `setUntranslatableStringsRegex.set(value)`.
      */
     fun setUntranslatableStringsRegex(value: String) = untranslatableStringsRegex.set(value)
+
+    /**
+     * Sets if comments from the downloaded strings should be included in the output strings file.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `includeComments.set(value)`.
+     */
+    fun setIncludeComments(value: Boolean) = includeComments.set(value)
 }

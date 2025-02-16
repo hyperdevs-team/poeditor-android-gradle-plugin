@@ -252,4 +252,27 @@ sealed class StringsXmlResource(open val name: String, open val comments: List<S
             )
         }
     }
+
+    /**
+     * Removes the comments from the resource, returning a new resource without comments.
+     */
+    fun removeComment() = when (this) {
+        is StringElement -> {
+            this.copy(
+                comments = emptyList()
+            )
+        }
+
+        is PluralsElement -> {
+            this.copy(
+                comments = emptyList()
+            )
+        }
+
+        is StringArrayElement -> {
+            this.copy(
+                comments = emptyList()
+            )
+        }
+    }
 }

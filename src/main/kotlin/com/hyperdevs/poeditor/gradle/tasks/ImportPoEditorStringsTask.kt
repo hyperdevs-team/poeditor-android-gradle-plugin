@@ -160,6 +160,15 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
     abstract val untranslatableStringsRegex: Property<String?>
 
     /**
+     * Whether to include comments from the downloaded strings.
+     *
+     * Defaults to true.
+     */
+    @get:Optional
+    @get:Input
+    abstract val includeComments: Property<Boolean>
+
+    /**
      * Main task entrypoint.
      */
     @TaskAction
@@ -182,19 +191,26 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
         }
 
         PoEditorStringsImporter.importPoEditorStrings(
-            apiToken,
-            projectId,
-            defaultLang.getOrElse(DefaultValues.DEFAULT_LANG),
-            defaultResPath.getOrElse(getResourceDirectory(project, DefaultValues.MAIN_CONFIG_NAME).absolutePath),
-            filters.getOrElse(DefaultValues.FILTERS).map { FilterType.from(it) },
-            OrderType.from(order.getOrElse(DefaultValues.ORDER_TYPE.lowercase())),
-            tags.getOrElse(DefaultValues.TAGS),
-            languageValuesOverridePathMap.getOrElse(DefaultValues.LANGUAGE_VALUES_OVERRIDE_PATH_MAP),
-            minimumTranslationPercentage.getOrElse(DefaultValues.MINIMUM_TRANSLATION_PERCENTAGE),
-            resFileName.getOrElse(DefaultValues.RES_FILE_NAME),
-            unquoted.getOrElse(DefaultValues.UNQUOTED),
-            unescapeHtmlTags.getOrElse(DefaultValues.UNESCAPE_HTML_TAGS),
-            untranslatableStringsRegex.orNull
+            apiToken = apiToken,
+            projectId = projectId,
+            defaultLang = defaultLang.getOrElse(DefaultValues.DEFAULT_LANG),
+            resDirPath = defaultResPath.getOrElse(getResourceDirectory(
+                project, DefaultValues.MAIN_CONFIG_NAME).absolutePath
+            ),
+            filters = filters.getOrElse(DefaultValues.FILTERS).map { FilterType.from(it) },
+            order = OrderType.from(order.getOrElse(DefaultValues.ORDER_TYPE.lowercase())),
+            tags = tags.getOrElse(DefaultValues.TAGS),
+            languageValuesOverridePathMap = languageValuesOverridePathMap.getOrElse(
+                DefaultValues.LANGUAGE_VALUES_OVERRIDE_PATH_MAP
+            ),
+            minimumTranslationPercentage = minimumTranslationPercentage.getOrElse(
+                DefaultValues.MINIMUM_TRANSLATION_PERCENTAGE
+            ),
+            resFileName = resFileName.getOrElse(DefaultValues.RES_FILE_NAME),
+            unquoted = unquoted.getOrElse(DefaultValues.UNQUOTED),
+            unescapeHtmlTags = unescapeHtmlTags.getOrElse(DefaultValues.UNESCAPE_HTML_TAGS),
+            untranslatableStringsRegex = untranslatableStringsRegex.orNull,
+            includeComments = includeComments.getOrElse(DefaultValues.INCLUDE_COMMENTS)
         )
     }
 
@@ -211,5 +227,7 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
         this.minimumTranslationPercentage = extension.minimumTranslationPercentage
         this.unquoted = extension.unquoted
         this.unescapeHtmlTags = extension.unescapeHtmlTags
+        this.untranslatableStringsRegex = extension.untranslatableStringsRegex
+        this.includeComments = extension.includeComments
     }
 }

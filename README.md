@@ -123,8 +123,9 @@ Attribute                              | Description
 ```resFileName```                      | (Since 3.1.0) (Optional) Sets the file name for the imported string resource XML files. Defaults to `strings`.
 ```order```                            | (Since 3.1.0) (Optional) Defines how to order the export. Accepted values are defined by the POEditor API.
 ```unquoted```                         | (Since 3.2.0) (Optional) Defines if the strings should be unquoted, overriding default PoEditor configuration. Defaults to `false`.
-```unescapeHtmlTags```                 | (Since 3.4.0) (Optional) Whether or not to unescape HTML entitites from strings. Defaults to true.
-```untranslatableStringsRegex```       | (Since 4.2.0) (Optional) Pattern to use to mark strings as translatable=false in the strings file. Defaults to null.
+```unescapeHtmlTags```                 | (Since 3.4.0) (Optional) Whether or not to unescape HTML entitites from strings. Defaults to `true`.
+```untranslatableStringsRegex```       | (Since 4.2.0) (Optional) Pattern to use to mark strings as translatable=false in the strings file. Defaults to `null`.
+```includeComments```                  | (Since 5.0.0) (Optional) Whether to include comments from the downloaded strings. Defaults to `true`.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
