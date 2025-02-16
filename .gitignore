@@ -13,6 +13,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/**/runConfigurations.xml
+.idea/**/other.xml
 .idea/kotlinc.xml
 
 # Generated files

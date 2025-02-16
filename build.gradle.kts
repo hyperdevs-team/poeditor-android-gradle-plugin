@@ -50,11 +50,13 @@ dependencies {
 
     compileOnly(libs.android.buildTools)
 
+
     implementation(libs.kotlin.stdlib)
     implementation(libs.bundles.moshi)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.okhttp3)
     implementation(libs.dotenvKotlin)
+    implementation(libs.xerces)
 
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test"))

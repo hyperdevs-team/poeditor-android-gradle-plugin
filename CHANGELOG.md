@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - No new features!
 ### Changed
-- No changed features!
+- Refactor the whole parsing logic to better handle input and improve performance.
 ### Deprecated
 - No deprecated features!
 ### Removed
