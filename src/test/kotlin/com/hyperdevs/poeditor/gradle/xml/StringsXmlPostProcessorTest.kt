@@ -212,7 +212,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -234,7 +234,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -252,7 +252,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -270,7 +270,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -316,7 +316,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -410,7 +410,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -428,7 +428,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -446,7 +446,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -464,7 +464,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, false, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, false, null, true))
     }
 
     @Test
@@ -482,7 +482,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, false, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, false, null, true))
     }
 
     @Test
@@ -500,7 +500,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -530,7 +530,7 @@ class StringsXmlPostProcessorTest {
             )
         )
 
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null))
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
     }
 
     @Test
@@ -643,8 +643,53 @@ class StringsXmlPostProcessorTest {
             StringsXmlPostProcessor.formatTranslationXml(
                 inputStringsXmlDocument,
                 true,
-                Regex("""^untranslatable(.+)$""")
+                Regex("""^untranslatable(.+)$"""),
+                true
             )
         )
+    }
+
+    @Test
+    fun `Postprocessing with including comments works`() {
+        // Test complete Xml
+        val inputStringsXmlDocument = StringsXmlDocument(
+            resources = listOf(
+                StringsXmlResource.StringElement("general_link_showAll", "Ver todo {{name}}", comments = listOf("Comment 1")),
+                StringsXmlResource.StringElement("general_button_goTop", "Ir arriba", comments = listOf("Comment 2")),
+                StringsXmlResource.StringElement("general_button_goBottom", "Ir${'\n'}abajo", comments = listOf("Comment 3"))
+            )
+        )
+
+        val expectedResult = StringsXmlDocument(
+            resources = listOf(
+                StringsXmlResource.StringElement("general_link_showAll", "Ver todo %1\$s", comments = listOf("Comment 1")),
+                StringsXmlResource.StringElement("general_button_goTop", "Ir arriba", comments = listOf("Comment 2")),
+                StringsXmlResource.StringElement("general_button_goBottom", "Ir${'\n'}abajo", comments = listOf("Comment 3"))
+            )
+        )
+
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
+    }
+
+    @Test
+    fun `Postprocessing without including comments works`() {
+        // Test complete Xml
+        val inputStringsXmlDocument = StringsXmlDocument(
+            resources = listOf(
+                StringsXmlResource.StringElement("general_link_showAll", "Ver todo {{name}}", comments = listOf("Comment 1")),
+                StringsXmlResource.StringElement("general_button_goTop", "Ir arriba", comments = listOf("Comment 2")),
+                StringsXmlResource.StringElement("general_button_goBottom", "Ir${'\n'}abajo", comments = listOf("Comment 3"))
+            )
+        )
+
+        val expectedResult = StringsXmlDocument(
+            resources = listOf(
+                StringsXmlResource.StringElement("general_link_showAll", "Ver todo %1\$s"),
+                StringsXmlResource.StringElement("general_button_goTop", "Ir arriba"),
+                StringsXmlResource.StringElement("general_button_goBottom", "Ir${'\n'}abajo")
+            )
+        )
+
+        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, false))
     }
 }

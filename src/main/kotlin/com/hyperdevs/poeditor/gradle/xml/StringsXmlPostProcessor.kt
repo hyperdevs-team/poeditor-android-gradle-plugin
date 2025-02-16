@@ -44,10 +44,16 @@ object StringsXmlPostProcessor {
         translationStringsXmlDocument: StringsXmlDocument,
         fileSplitRegexStringList: List<String>,
         unescapeHtmlTags: Boolean,
-        untranslatableStringsRegex: Regex?
+        untranslatableStringsRegex: Regex?,
+        includeComments: Boolean
     ): Map<String, StringsXmlDocument> {
         val formattedStringsXmlDocument =
-            formatTranslationXml(translationStringsXmlDocument, unescapeHtmlTags, untranslatableStringsRegex)
+            formatTranslationXml(
+                translationStringsXmlDocument,
+                unescapeHtmlTags,
+                untranslatableStringsRegex,
+                includeComments
+            )
 
         val splitStringsXmlDocuments = splitTranslationXml(
             formattedStringsXmlDocument,
@@ -63,10 +69,18 @@ object StringsXmlPostProcessor {
     fun formatTranslationXml(
         translationStringsXmlDocument: StringsXmlDocument,
         unescapeHtmlTags: Boolean,
-        untranslatableStringsRegex: Regex?
+        untranslatableStringsRegex: Regex?,
+        includeComments: Boolean
     ): StringsXmlDocument {
         return translationStringsXmlDocument.map { resource ->
-            formatResource(resource, unescapeHtmlTags, untranslatableStringsRegex)
+            formatResource(resource, unescapeHtmlTags, untranslatableStringsRegex).let {
+                // Remove comments if the user specifies that they should not be included
+                if (!includeComments) {
+                    it.removeComment()
+                } else {
+                    it
+                }
+            }
         }
     }
 

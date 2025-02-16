@@ -35,6 +35,7 @@ object DefaultValues {
     internal val RES_FILE_NAME = "strings"
     internal val UNQUOTED = false
     internal val UNESCAPE_HTML_TAGS = true
+    internal val INCLUDE_COMMENTS = true
 
     /**
      * Apply the default convention to a [PoEditorPluginExtension].
@@ -52,6 +53,7 @@ object DefaultValues {
             resFileName.convention(RES_FILE_NAME)
             unquoted.convention(UNQUOTED)
             unescapeHtmlTags.convention(UNESCAPE_HTML_TAGS)
+            includeComments.convention(INCLUDE_COMMENTS)
         }
     }
 }

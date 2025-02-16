@@ -95,7 +95,8 @@ object PoEditorStringsImporter {
         resFileName: String,
         unquoted: Boolean,
         unescapeHtmlTags: Boolean,
-        untranslatableStringsRegex: String?
+        untranslatableStringsRegex: String?,
+        includeComments: Boolean
     ) {
         try {
             val poEditorApiController = PoEditorApiControllerImpl(apiToken, moshi, poEditorApi)
@@ -152,7 +153,8 @@ object PoEditorStringsImporter {
                     originalStringsXmlDocument,
                     listOf(TABLET_REGEX_STRING),
                     unescapeHtmlTags,
-                    untranslatableStringsRegex?.toRegex()
+                    untranslatableStringsRegex?.toRegex(),
+                    includeComments
                 )
 
                 StringsXmlWriter.saveXml(

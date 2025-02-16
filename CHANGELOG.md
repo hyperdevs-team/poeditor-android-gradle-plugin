@@ -22,7 +22,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- No new features!
+- Add new `includeComments` flag to keep comments generated in PoEditor in the generated XML files.
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    includeComments = true
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    includeComments = true
+}
+```
+
+</details>
 ### Changed
 - Refactor the whole parsing logic to better handle input and improve performance.
 ### Deprecated

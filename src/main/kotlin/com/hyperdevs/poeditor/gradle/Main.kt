@@ -60,6 +60,7 @@ fun main() {
     val unquoted = dotenv.get("UNQUOTED", "false").toBoolean()
     val unescapeHtmlTags = dotenv.get("UNESCAPE_HTML_TAGS", "true").toBoolean()
     val untranslatableStringsRegex = dotenv.get("UNTRANSLATABLE_STRINGS_REGEX", null)
+    val includeComments = dotenv.get("INCLUDE_COMMENTS", "true").toBoolean()
 
     PoEditorStringsImporter.importPoEditorStrings(
         apiToken,
@@ -74,6 +75,7 @@ fun main() {
         resFileName,
         unquoted,
         unescapeHtmlTags,
-        untranslatableStringsRegex
+        untranslatableStringsRegex,
+        includeComments
     )
 }
