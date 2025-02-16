@@ -48,6 +48,7 @@ poEditor {
 ```
 
 </details>
+
 ### Changed
 - Refactor the whole parsing logic to better handle input and improve performance.
 ### Deprecated
@@ -55,7 +56,7 @@ poEditor {
 ### Removed
 - No removed features!
 ### Fixed
-- No fixed issues!
+- Fix bug with `&` character not being properly escaped.
 ### Security
 - No security issues fixed!
 
