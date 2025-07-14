@@ -20,6 +20,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No security issues fixed!
 -->
 
+## [Unreleased]
+### Added
+- No new features!
+### Changed
+- No changed features!
+### Deprecated
+- No deprecated features!
+### Removed
+- No removed features!
+### Fixed
+- No fixed issues!
+### Security
+- No security issues fixed!
+
 ## [4.3.0] - 2025-07-14
 ### Added
 - Add new `includeComments` flag to keep comments generated in PoEditor in the generated XML files.
@@ -50,18 +64,7 @@ poEditor {
 </details>
 
 ### Fixed
-- Fix issue with ampersands
-
-### Changed
-- Refactor the whole parsing logic to better handle input and improve performance.
-### Deprecated
-- No deprecated features!
-### Removed
-- No removed features!
-### Fixed
 - Fix bug with `&` character not being properly escaped.
-### Security
-- No security issues fixed!
 
 ## [4.2.1] - 2024-12-07
 ### Fixed
