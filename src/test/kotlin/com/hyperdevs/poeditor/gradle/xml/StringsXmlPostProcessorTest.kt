@@ -432,24 +432,6 @@ class StringsXmlPostProcessorTest {
     }
 
     @Test
-    fun `Postprocessing XML with string HTML symbols works 2`() {
-        // Test complete Xml
-        val inputStringsXmlDocument = StringsXmlDocument(
-            resources = listOf(
-                StringsXmlResource.StringElement("hello_friend_bold", "&amp;lt;b&amp;gt;Hello world&amp;lt;/b&amp;gt;")
-            )
-        )
-
-        val expectedResult = StringsXmlDocument(
-            resources = listOf(
-                StringsXmlResource.StringElement("hello_friend_bold", "&lt;b&gt;Hello world&lt;/b&gt;")
-            )
-        )
-
-        assertEquals(expectedResult, StringsXmlPostProcessor.formatTranslationXml(inputStringsXmlDocument, true, null, true))
-    }
-
-    @Test
     fun `Postprocessing XML with string HTML symbols and unescape set to false works`() {
         // Test complete Xml
         val inputStringsXmlDocument = StringsXmlDocument(

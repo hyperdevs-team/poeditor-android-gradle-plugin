@@ -26,9 +26,6 @@ private val cdataRegex = Regex("^<!\\[CDATA\\[(.*)]]>$", RegexOption.DOT_MATCHES
 fun String.unescapeHtmlTags() = this
     .replace("&lt;", "<")
     .replace("&gt;", ">")
-    .replace("&amp;", "&")
-    .replace("&apos;", "'")
-    .replace("&quot;", "\"")
 
 /**
  * Returns if the given string is a CDATA string.
