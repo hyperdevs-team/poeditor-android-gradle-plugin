@@ -48,6 +48,7 @@ poEditor {
 ```
 
 </details>
+
 ### Fixed
 - Fix issue with ampersands
 
