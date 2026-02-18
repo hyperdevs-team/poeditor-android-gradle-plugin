@@ -36,6 +36,15 @@ fun main() {
     val resFileName = dotenv.get("RES_FILE_NAME", "strings")
     val resDirPath = dotenv.get("RES_DIR_PATH", "")
     val defaultLanguage = dotenv.get("DEFAULT_LANGUAGE", "")
+    val languages = dotenv.get("SELECTED_LANGUAGES", "")
+                        .takeIf { it.isNotBlank() }
+                        ?.split(",")
+                        ?.map { it.trim() }
+                    ?: emptyList()
+
+    println("DEBUG: SELECTED_LANGUAGES from .env: '${dotenv.get("SELECTED_LANGUAGES", "")}'")
+    println("DEBUG: Parsed languages: $languages (isEmpty: ${languages.isEmpty()})")
+
     val filters = dotenv.get("FILTERS", "")
                       .takeIf { it.isNotBlank() }
                       ?.split(",")
@@ -66,6 +75,7 @@ fun main() {
         apiToken,
         projectId,
         defaultLanguage,
+        languages,
         resDirPath,
         filters,
         order,

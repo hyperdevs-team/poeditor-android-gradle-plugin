@@ -88,6 +88,15 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
     val resFileName: Property<String> = objects.property(String::class.java)
 
     /**
+     * List of language codes to download. If empty, all languages will be downloaded.
+     *
+     * Defaults to an empty list if not present.
+     */
+    @get:Optional
+    @get:Input
+    val languages: ListProperty<String> = objects.listProperty(String::class.java)
+
+    /**
      * Filters to limit downloaded strings with, from the officially supported list in PoEditor.
      *
      * Defaults to an empty list of filters if not present.
@@ -228,6 +237,16 @@ open class PoEditorPluginExtension @Inject constructor(objects: ObjectFactory, p
      * Gradle Kotlin DSL users must use `resFileName.set(value)`.
      */
     fun setResFileName(value: String) = resFileName.set(value)
+
+    /**
+     * Sets the list of language codes to download.
+     *
+     * NOTE: added for Gradle Groovy DSL compatibility. Check the note on
+     * https://docs.gradle.org/current/userguide/lazy_configuration.html#lazy_properties for more details.
+     *
+     * Gradle Kotlin DSL users must use `languages.set(value)`.
+     */
+    fun setLanguages(value: List<String>) = languages.set(value)
 
     /**
      * Sets the filters to limit downloaded strings with, from the officially supported list in PoEditor.

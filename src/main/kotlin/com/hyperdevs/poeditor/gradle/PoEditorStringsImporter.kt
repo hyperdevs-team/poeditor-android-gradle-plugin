@@ -86,6 +86,7 @@ object PoEditorStringsImporter {
         apiToken: String,
         projectId: Int,
         defaultLang: String,
+        languages: List<String>,
         resDirPath: String,
         filters: List<FilterType>,
         order: OrderType,
@@ -104,10 +105,21 @@ object PoEditorStringsImporter {
             // Retrieve available languages from PoEditor
             logger.lifecycle("Retrieving project languages...")
             val projectLanguages = poEditorApiController.getProjectLanguages(projectId)
-            val skippedLanguages = projectLanguages.filter { it.percentage < minimumTranslationPercentage }.toSet()
+
+            // Filter project languages based on the languages parameter.
+            if (languages.isNotEmpty()) {
+                logger.lifecycle("Filtering languages: ${languages.joinToString(", ", "[", "]")}")
+            }
+            val selectedLanguages = when {
+                languages.isEmpty() -> projectLanguages
+                else -> projectLanguages.filter { it.code in languages }
+            }
+
+            val skippedLanguages = selectedLanguages.filter { it.percentage < minimumTranslationPercentage }.toSet()
 
             // Iterate over every available language
             logger.lifecycle("Available languages: ${projectLanguages.joinAndFormat { it.code }}")
+            logger.lifecycle("Selected languages to download: ${selectedLanguages.joinAndFormat { it.code }}")
 
             if (minimumTranslationPercentage >= 0) {
                 val skippedLanguagesMessage = if (skippedLanguages.isEmpty()) {
@@ -126,7 +138,7 @@ object PoEditorStringsImporter {
 
             val stringsXmlDocumentParser = SaxStringsXmlDocumentParser()
 
-            projectLanguages.minus(skippedLanguages).forEach { languageData ->
+            selectedLanguages.minus(skippedLanguages).forEach { languageData ->
                 val languageCode = languageData.code
 
                 // Retrieve translation file URL for the given language and for the "android_strings" type,

@@ -88,6 +88,15 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
     abstract val resFileName: Property<String>
 
     /**
+     * List of language codes to download. If empty, all languages will be downloaded.
+     *
+     * Defaults to an empty list if not present.
+     */
+    @get:Optional
+    @get:Input
+    abstract val languages: ListProperty<String>
+
+    /**
      * Filters to limit downloaded strings with, from the officially supported list in PoEditor.
      *
      * Defaults to an empty list of filters if not present.
@@ -194,6 +203,7 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
             apiToken = apiToken,
             projectId = projectId,
             defaultLang = defaultLang.getOrElse(DefaultValues.DEFAULT_LANG),
+            languages = languages.getOrElse(DefaultValues.LANGUAGES),
             resDirPath = defaultResPath.getOrElse(getResourceDirectory(
                 project, DefaultValues.MAIN_CONFIG_NAME).absolutePath
             ),
@@ -220,6 +230,7 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
         this.defaultLang = extension.defaultLang
         this.defaultResPath = extension.defaultResPath
         this.resFileName = extension.resFileName
+        this.languages = extension.languages
         this.filters = extension.filters
         this.order = extension.order
         this.tags = extension.tags

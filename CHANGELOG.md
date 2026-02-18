@@ -34,6 +34,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [4.3.1] - 2026-02-18
+### Added
+- Add new `languages` parameter to filter which languages to download from PoEditor. If not specified or empty, all languages will be downloaded.
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    languages = ["en", "es", "fr"] // Download only English, Spanish, and French
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    languages.set(listOf("en", "es", "fr")) // Download only English, Spanish, and French
+}
+```
+
+</details>
+
 ## [4.3.0] - 2025-07-14
 ### Added
 - Add new `includeComments` flag to keep comments generated in PoEditor in the generated XML files.
