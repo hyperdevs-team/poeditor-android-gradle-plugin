@@ -548,6 +548,8 @@ poEditor {
 ```
 
 </details>
+
+
 ## Handling filters
 > Requires version 2.4.0 of the plug-in
 
