@@ -27,6 +27,7 @@ object DefaultValues {
     internal val ENABLED = true
     internal val MAIN_CONFIG_NAME: ConfigName = "main"
     internal val DEFAULT_LANG = "en"
+    internal val LANGUAGES = emptyList<String>()
     internal val FILTERS = emptyList<String>()
     internal val ORDER_TYPE = OrderType.NONE.name.lowercase()
     internal val TAGS = emptyList<String>()
@@ -45,6 +46,7 @@ object DefaultValues {
             enabled.convention(ENABLED)
             defaultResPath.convention(resourceDirectory.absolutePath)
             defaultLang.convention(DEFAULT_LANG)
+            languages.convention(LANGUAGES)
             filters.convention(FILTERS)
             order.convention(ORDER_TYPE)
             tags.convention(TAGS)
