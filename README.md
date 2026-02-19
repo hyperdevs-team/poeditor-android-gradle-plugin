@@ -116,7 +116,6 @@ Attribute                              | Description
 ```defaultLang```                      | (Optional) The lang to be used to build default ```strings.xml``` (```/values``` folder). Defaults to English (`en`).
 ```defaultResPath```                   | (Since 1.3.0) (Optional) Path where the plug-in should dump strings. Defaults to the module's default (or build variant) `res` path.
 ```enabled```                          | (Since 1.4.0) (Optional) Enables the generation of the block's related task. Defaults to `true`.
-```languages```                        | (Since 4.3.1) (Optional) List of language codes to download. If empty, all languages will be downloaded. Defaults to empty list.
 ```tags```                             | (Since 2.1.0) (Optional) List of PoEditor tags to download. Defaults to empty list.
 ```languageValuesOverridePathMap```    | (Since 2.2.0) (Optional) Map of `language_code:path` entries that you want to override the default language values folder with. Defaults to empty map.
 ```minimumTranslationPercentage```     | (Since 2.3.0) (Optional) The minimum accepted percentage of translated strings per language. Languages with fewer translated strings will not be fetched. Defaults to no minimum, allowing all languages to be fetched.
@@ -127,6 +126,7 @@ Attribute                              | Description
 ```unescapeHtmlTags```                 | (Since 3.4.0) (Optional) Whether or not to unescape HTML tags (`<`, `>`) from strings. Defaults to `true`.
 ```untranslatableStringsRegex```       | (Since 4.2.0) (Optional) Pattern to use to mark strings as translatable=false in the strings file. Defaults to `null`.
 ```includeComments```                  | (Since 4.3.0) (Optional) Whether to include comments from the downloaded strings. Defaults to `true`.
+```languages```                        | (Since 4.3.1) (Optional) List of language codes to download. If empty, all languages will be downloaded. Defaults to empty list.
 
 After the configuration is done, just run the new ```importPoEditorStrings``` task via Android Studio or command line:
 
@@ -517,39 +517,6 @@ poEditor {
     
 </details>
 
-
-## Selecting specific languages to download
-> Requires version 4.3.1 of the plug-in
-
-You can specify which languages to download from PoEditor using the `languages` parameter. If not specified or left empty, all available languages in the project will be downloaded.
-
-<details open><summary>Groovy</summary>
-
-```groovy
-poEditor {
-    apiToken = "your_api_token"
-    projectId = 12345
-    defaultLang = "en"
-    languages = ["en", "es", "fr"] // Download only English, Spanish, and French
-}
-```
-
-</details>
-
-<details><summary>Kotlin</summary>
-
-```kotlin
-poEditor {
-    apiToken = "your_api_token"
-    projectId = 12345
-    defaultLang = "en"
-    languages.set(listOf("en", "es", "fr")) // Download only English, Spanish, and French
-}
-```
-
-</details>
-
-
 ## Handling filters
 > Requires version 2.4.0 of the plug-in
 
@@ -672,6 +639,37 @@ poEditor {
 Keep in mind that the regex must match the whole string name and not just a part, as it relies on 
 [`CharSequence.matches(Regex)`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/matches.html) from the 
 Kotlin API.
+
+## Selecting specific languages to download
+> Requires version 4.3.1 of the plug-in
+
+You can specify which languages to download from PoEditor using the `languages` parameter. If not specified or left empty, all available languages in the project will be downloaded.
+
+<details open><summary>Groovy</summary>
+
+```groovy
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    languages = ["en", "es", "fr"] // Download only English, Spanish, and French
+}
+```
+
+</details>
+
+<details><summary>Kotlin</summary>
+
+```kotlin
+poEditor {
+    apiToken = "your_api_token"
+    projectId = 12345
+    defaultLang = "en"
+    languages.set(listOf("en", "es", "fr")) // Download only English, Spanish, and French
+}
+```
+
+</details>
 
 ## iOS alternative
 If you want a similar solution for your iOS projects, check this out: [poeditor-parser-swift](https://github.com/hyperdevs-team/poeditor-parser-swift)

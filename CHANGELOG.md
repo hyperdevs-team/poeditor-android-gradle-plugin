@@ -36,7 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.3.1] - 2026-02-18
 ### Added
-- Add new `languages` parameter to filter which languages to download from PoEditor. If not specified or empty, all languages will be downloaded.
+- Add new `languages` parameter to filter which languages to download from PoEditor. 
+  If not specified or empty, all languages will be downloaded. _Thanks to [@DaniAguion](https://github.com/DaniAguion) for the contribution!_
 <details open><summary>Groovy</summary>
 
 ```groovy
@@ -590,7 +591,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.3.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.3.1...HEAD
+[4.3.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.3.0...4.3.1
 [4.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.1...4.3.0
 [4.2.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.0...4.2.1
 [4.2.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.1.2...4.2.0
