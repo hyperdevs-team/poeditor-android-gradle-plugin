@@ -24,13 +24,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - No new features!
 ### Changed
-- No changed features!
+- Migrate to AGP 9 public DSL types for compatibility with Gradle 9 and AGP 9.
 ### Deprecated
 - No deprecated features!
 ### Removed
 - No removed features!
 ### Fixed
-- No fixed issues!
+- Fix Gradle configuration cache incompatibility in `ImportPoEditorStringsTask`: accessing `Task.project` at execution time is no longer supported with the configuration cache enabled by default in Gradle 9.
 ### Security
 - No security issues fixed!
 
