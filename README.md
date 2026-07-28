@@ -9,7 +9,7 @@ It also provides a built-in syntax to handle placeholders to enhance the already
 
 ## Minimum requirements
 * Gradle 8.2 or above
-* Android Gradle Plug-in 8.0 or above
+* Android Gradle Plug-in 9.0 or above
 
 ## Setting Up
 In your main `build.gradle`, add [jitpack.io](https://jitpack.io/) repository in the `buildscript` block and include the plug-in as a dependency:

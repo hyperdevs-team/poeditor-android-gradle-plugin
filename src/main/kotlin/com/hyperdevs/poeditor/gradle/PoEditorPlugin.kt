@@ -18,12 +18,12 @@
 
 package com.hyperdevs.poeditor.gradle
 
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.hyperdevs.poeditor.gradle.extensions.registerNewTask
 import com.hyperdevs.poeditor.gradle.tasks.ImportPoEditorStringsTask
 import com.hyperdevs.poeditor.gradle.utils.*
@@ -81,7 +81,7 @@ class PoEditorPlugin : Plugin<Project> {
         // Add android.poEditorConfig extension container so we can set-up flavors and build types
         // configurations with Android app modules.
         val configsExtensionContainer = project.container<PoEditorPluginExtension>()
-        val androidExtension = project.the<BaseAppModuleExtension>()
+        val androidExtension = project.the<ApplicationExtension>()
         val androidComponentsExtension = project.the<ApplicationAndroidComponentsExtension>()
         (androidExtension as ExtensionAware).extensions.add(POEDITOR_CONFIG_NAME, configsExtensionContainer)
 
@@ -103,9 +103,8 @@ class PoEditorPlugin : Plugin<Project> {
 
         project.afterEvaluate {
             val allPossibleConfigNames: Set<String> by lazy {
-                androidExtension.applicationVariants.flatMapTo(mutableSetOf()) {
-                    listOf(it.buildType.name) + it.productFlavors.map { it.name }
-                }
+                (androidExtension.productFlavors.map { it.name } +
+                 androidExtension.buildTypes.map { it.name }).toSet()
             }
 
             verifyAndLinkTasks(configsExtensionContainer,
@@ -142,9 +141,8 @@ class PoEditorPlugin : Plugin<Project> {
 
         project.afterEvaluate {
             val allPossibleConfigNames: Set<String> by lazy {
-                androidExtension.libraryVariants.flatMapTo(mutableSetOf()) {
-                    listOf(it.buildType.name) + it.productFlavors.map { it.name }
-                }
+                (androidExtension.productFlavors.map { it.name } +
+                 androidExtension.buildTypes.map { it.name }).toSet()
             }
 
             verifyAndLinkTasks(configsExtensionContainer,

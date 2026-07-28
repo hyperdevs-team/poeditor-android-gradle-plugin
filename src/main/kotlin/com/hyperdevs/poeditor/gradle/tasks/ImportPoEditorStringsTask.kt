@@ -26,7 +26,6 @@ import com.hyperdevs.poeditor.gradle.network.api.FilterType
 import com.hyperdevs.poeditor.gradle.network.api.OrderType
 import com.hyperdevs.poeditor.gradle.utils.DEFAULT_PLUGIN_NAME
 import com.hyperdevs.poeditor.gradle.utils.POEDITOR_CONFIG_NAME
-import com.hyperdevs.poeditor.gradle.utils.getResourceDirectory
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -204,9 +203,7 @@ abstract class ImportPoEditorStringsTask @Inject constructor() : DefaultTask() {
             projectId = projectId,
             defaultLang = defaultLang.getOrElse(DefaultValues.DEFAULT_LANG),
             languages = languages.getOrElse(DefaultValues.LANGUAGES),
-            resDirPath = defaultResPath.getOrElse(getResourceDirectory(
-                project, DefaultValues.MAIN_CONFIG_NAME).absolutePath
-            ),
+            resDirPath = defaultResPath.get(),
             filters = filters.getOrElse(DefaultValues.FILTERS).map { FilterType.from(it) },
             order = OrderType.from(order.getOrElse(DefaultValues.ORDER_TYPE.lowercase())),
             tags = tags.getOrElse(DefaultValues.TAGS),
