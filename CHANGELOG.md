@@ -24,15 +24,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - No new features!
 ### Changed
-- Migrate to AGP 9 public DSL types for compatibility with Gradle 9 and AGP 9.
+- No changed features!
 ### Deprecated
 - No deprecated features!
 ### Removed
 - No removed features!
 ### Fixed
-- Fix Gradle configuration cache incompatibility in `ImportPoEditorStringsTask`: accessing `Task.project` at execution time is no longer supported with the configuration cache enabled by default in Gradle 9.
+- No fixed issues!
 ### Security
 - No security issues fixed!
+
+## [5.0.0] - 2026-07-28
+### Changed
+- Migrate to AGP 9 public DSL types for compatibility with Gradle 9 and AGP 9. _Thanks to [@jawnpaul](https://github.com/jawnpaul) for the contribution!_
+### Fixed
+- Fix Gradle configuration cache incompatibility in `ImportPoEditorStringsTask`: accessing `Task.project` at execution time is no longer supported with the configuration cache enabled by default in Gradle 9. _Thanks to [@jawnpaul](https://github.com/jawnpaul) for the contribution!_
 
 ## [4.3.1] - 2026-02-18
 ### Added
@@ -591,7 +597,8 @@ res_dir_path -> resDirPath
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.3.1...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/5.0.0...HEAD
+[5.0.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.3.1...5.0.0
 [4.3.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.3.0...4.3.1
 [4.3.0]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.1...4.3.0
 [4.2.1]: https://github.com/hyperdevs-team/poeditor-android-gradle-plugin/compare/4.2.0...4.2.1
